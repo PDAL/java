@@ -39,7 +39,7 @@ object Commands {
     Command.command(s"${commandProcess}Javastyle")((state: State) => {
       val extracted = Project extract state
       import extracted._
-      commandProcess :: append(Seq(crossPaths := false), state)
+      commandProcess :: appendWithoutSession(Seq(crossPaths := false), state)
     })
   }
 }

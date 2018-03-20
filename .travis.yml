@@ -1,0 +1,20 @@
+sudo: false
+language: scala
+addons:
+  hostname: localhost
+services:
+  - docker
+jdk:
+  - oraclejdk8
+scala:
+  - 2.11.11
+cache:
+  directories:
+   - $HOME/.ivy2
+   - $HOME/.sbt
+script:
+  - docker run -it --net=host -v $HOME/.ivy2:/root/.ivy2 -v $HOME/.sbt:/root/.sbt -v $TRAVIS_BUILD_DIR:/pdal-java -e TRAVIS_SCALA_VERSION=$TRAVIS_SCALA_VERSION -e TRAVIS_COMMIT=$TRAVIS_COMMIT -e TRAVIS_JDK_VERSION=$TRAVIS_JDK_VERSION pdal/dependencies:latest /bin/bash -c "cd /pdal-java; ./sbt test"
+notifications:
+  email:
+    recipients:
+      - gr.pomadchin@gmail.com
