@@ -1,8 +1,12 @@
 # PDAL Java bindings
 
-[![Join the chat at https://gitter.im/PDAL/PDAL](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PDAL/PDAL?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://api.travis-ci.org/PDAL/java.svg)](http://travis-ci.org/PDAL/java) [![Join the chat at https://gitter.im/PDAL/PDAL](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PDAL/PDAL?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.pdal/pdal/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.pdal/pdal)
 
 Java bindings to use PDAL on JVM (supports PDAL >= 1.4).
+
+The repository for PDAL's JNI bindings and PDAL Scala is available at https://github.com/PDAL/java
+
+It is released independently from PDAL itself as of PDAL 1.7.
 
 ## Using PDAL JNI with SBT
 
