@@ -1,22 +1,58 @@
 sudo: false
-before_install:
-  - docker pull daunnc/pdal:1.7.1
-language: scala
+
+matrix:
+  include:
+    - os: linux
+      jdk: oraclejdk8
+      language: scala
+      scala:
+        - 2.11.12
+      before_install:
+        - docker pull daunnc/pdal:1.7.1
+      services:
+        - docker
+
+    - os: linux
+      jdk: oraclejdk8
+      language: scala
+      scala:
+        - 2.12.5
+      before_install:
+        - docker pull daunnc/pdal:1.7.1
+      services:
+        - docker
+
+    - os: osx
+      scala:
+        - 2.11.12
+      compiler:
+        - gcc
+        - clang
+      before_install:
+        - brew update
+        - brew install pdal || true # to make travis happy
+
+    - os: osx
+      scala:
+        - 2.12.5
+      compiler:
+        - gcc
+        - clang
+      before_install:
+        - brew update
+        - brew install pdal || true # to make travis happy
+
 addons:
   hostname: localhost
-services:
-  - docker
-jdk:
-  - oraclejdk8
-scala:
-  - 2.11.12
-  - 2.12.5
+
 cache:
   directories:
    - $HOME/.ivy2
    - $HOME/.sbt
+
 script:
-  - docker run -it --net=host -v $HOME/.ivy2:/root/.ivy2 -v $HOME/.sbt:/root/.sbt -v $TRAVIS_BUILD_DIR:/pdal-java -e TRAVIS_SCALA_VERSION=$TRAVIS_SCALA_VERSION -e TRAVIS_COMMIT=$TRAVIS_COMMIT -e TRAVIS_JDK_VERSION=$TRAVIS_JDK_VERSION daunnc/pdal:1.7.1 /bin/bash -c "cd /pdal-java; .travis/test-all.sh"
+  - .travis/run.sh
+
 notifications:
   email:
     recipients:
