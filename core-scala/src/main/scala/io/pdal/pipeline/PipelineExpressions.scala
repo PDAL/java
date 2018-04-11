@@ -124,6 +124,7 @@ case class LasRead(
   compression: Option[String] = None,
   spatialreference: Option[String] = None,
   tag: Option[String] = None,
+  useEbVlr: Option[String] = None,
   `type`: ReaderType = ReaderTypes.las
 ) extends PipelineExpr
 
@@ -136,6 +137,17 @@ object NitfRead {
   def apply(filename: String, spatialreference: Option[String] = None, tag: Option[String] = None): Read =
     Read(filename, spatialreference, tag, Some(ReaderTypes.nitf))
 }
+
+@ConfiguredJsonCodec
+case class NumpyRead(
+  filename: String,
+  dimension: Option[String] = None,
+  x: Option[Int] = None,
+  y: Option[Int] = None,
+  z: Option[Int] = None,
+  assignZ: Option[String] = None,
+  `type`: ReaderType = ReaderTypes.numpy
+)
 
 @ConfiguredJsonCodec
 case class OciRead(
@@ -222,10 +234,15 @@ case class SqliteRead(
   `type`: ReaderType = ReaderTypes.sqlite
 ) extends PipelineExpr
 
-object TextRead {
-  def apply(filename: String, spatialreference: Option[String] = None, tag: Option[String] = None): Read =
-    Read(filename, spatialreference, tag, Some(ReaderTypes.text))
-}
+@ConfiguredJsonCodec
+case class TextRead(
+  filename: String,
+  separator: Option[String] = None,
+  header: Option[String] = None,
+  skip: Option[Int] = None,
+  count: Option[Long] = None,
+  `type`: ReaderType = ReaderTypes.text
+) extends PipelineExpr
 
 @ConfiguredJsonCodec
 case class TindexRead(
@@ -454,7 +471,8 @@ case class MongusFilter(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class MortnOrderFilter(
+case class MortonOrderFilter(
+  reverse: Option[String] = None,
   `type`: FilterType = FilterTypes.mortonorder
 ) extends PipelineExpr
 
@@ -635,7 +653,7 @@ case class BpfWrite(
   format: Option[String] = None,
   bundledfile: Option[String] = None,
   headerData: Option[String] = None,
-  coordId: Option[Int] = None,
+  coordId: Option[String] = None,
   scaleX: Option[Double] = None,
   scaleY: Option[Double] = None,
   scaleZ: Option[Double] = None,
@@ -835,6 +853,7 @@ case class TextWrite(
   filename: String,
   format: Option[String] = None,
   order: Option[String] = None,
+  precision: Option[Int] = None,
   keepUnspecified: Option[Boolean] = None,
   jscallback: Option[String] = None,
   quoteHeader: Option[String] = None,
