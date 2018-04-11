@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [[ $TRAVIS_OS_NAME == "osx" ]]; then
+if [ "$TRAVIS_OS_NAME" = "osx" ]; then
     .travis/test-all.sh
 else
     docker run -it --net=host \

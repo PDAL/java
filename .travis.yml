@@ -49,6 +49,7 @@ cache:
   directories:
    - $HOME/.ivy2
    - $HOME/.sbt
+   - $HOME/Library/Caches/Homebrew
 
 script:
   - .travis/run.sh

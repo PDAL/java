@@ -29,3 +29,4 @@ if ${SIGNED}; then
 fi
 
 PDAL_DEPEND_ON_NATIVE=false ./sbt "-212" "project core" ${COMMAND}Javastyle
+./sbt "-212" "project native" ${COMMAND}

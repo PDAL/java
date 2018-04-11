@@ -4,8 +4,6 @@
 
 Java bindings to use PDAL on JVM (supports PDAL >= 1.4).
 
-The repository for PDAL's JNI bindings and PDAL Scala is available at https://github.com/PDAL/java
-
 It is released independently from PDAL itself as of PDAL 1.7.
 
 ## Using PDAL JNI with SBT

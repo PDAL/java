@@ -30,3 +30,4 @@ fi
 
 PDAL_DEPEND_ON_NATIVE=false ./sbt "project core" ${COMMAND}
 PDAL_DEPEND_ON_NATIVE=false ./sbt "project core-scala" ${COMMAND}
+./sbt "project native" ${COMMAND}

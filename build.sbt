@@ -77,6 +77,8 @@ lazy val core = project
   .dependsOn(Environment.dependOnNative(native % Runtime): _*)
 
 lazy val native = project
-  .settings(commonSettings.head)
+  .settings(commonSettings: _*)
+  .settings(crossPaths := false)
+  .settings(name := "pdal-native")
   .settings(sourceDirectory in nativeCompile := sourceDirectory.value)
   .enablePlugins(JniNative, JniPackage)
