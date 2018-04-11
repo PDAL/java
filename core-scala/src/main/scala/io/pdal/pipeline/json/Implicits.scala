@@ -27,9 +27,9 @@ object Implicits extends Implicits
 
 trait Implicits extends Serializable {
   implicit val customConfig: Configuration =
-    Configuration.default.withSnakeCaseKeys.withDiscriminator("class_type")
+    Configuration.default.withSnakeCaseMemberNames.withDiscriminator("class_type")
 
-  val pipelinePrettyPrinter: Printer = Printer.spaces2.copy(dropNullKeys = true)
+  val pipelinePrettyPrinter: Printer = Printer.spaces2.copy(dropNullValues = true)
 
   implicit def exprTypeEncoder[T <: ExprType]: Encoder[T] = Encoder.instance { _.toString.asJson }
   implicit def exprTypeDecoder[T <: ExprType]: Decoder[T] = Decoder.decodeString.emap { str =>
