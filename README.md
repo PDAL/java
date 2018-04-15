@@ -25,7 +25,6 @@ It's required to have native JNI binary in `java.library.path`:
 
 ```scala
 // Mac OS X example with manual JNI installation
-// Though it's strongly recommended to use WITH_PDAL_JNI during PDAL build
 // cp -f native/target/resource_managed/main/native/x86_64-darwin/libpdaljni.1.4.dylib /usr/local/lib/libpdaljni.1.4.dylib
 // place built binary into /usr/local/lib, and pass java.library.path to your JVM
 javaOptions += "-Djava.library.path=/usr/local/lib"
@@ -87,7 +86,7 @@ JNI bindings basic usage examples can be found [here](./examples).
 ## How to compile
 
 Development purposes (including binaries):
-  1. Install PDAL (using brew / package managers (unix) / build from sources / etc) _without_ `-DWITH_PDAL_JNI=ON` flag     
+  1. Install PDAL (using brew / package managers (unix) / build from sources / etc)     
   2. Build native libs `./sbt native/nativeCompile` (optionally, binaries would be built during tests run)
   3. Run `./sbt core/test` to run PDAL tests
 
