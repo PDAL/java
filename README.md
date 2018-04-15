@@ -16,8 +16,8 @@ resolvers ++= Seq(
 )
 
 libraryDependencies ++= Seq(
-  "io.pdal" %% "pdal" % "1.7.0-RC1",
-  "io.pdal" %  "pdal-native" % "1.7.0-RC1"
+  "io.pdal" %% "pdal" % "1.7.0-RC1", // core library
+  "io.pdal" %  "pdal-native" % "1.7.0-RC1" // jni bindings
 )
 ```
 
@@ -32,6 +32,7 @@ javaOptions += "-Djava.library.path=/usr/local/lib"
 ```
 
 You can use `pdal-native` dep in case you don't have installed JNI bindings and to avoid steps described above.
+Dependency contains bindings for `x86_64-darwin` and `x86_64-linux`, other versions are not supported yet.
 
 ## PDAL-Scala
 
@@ -39,11 +40,12 @@ Scala API to build pipeline expressions instead of writing a raw JSON.
 
 ```scala
 libraryDependencies ++= Seq(
-  "io.pdal" %% "pdal-scala" % "1.7.0-RC1"
+  "io.pdal" %% "pdal-scala" % "1.7.0-RC1", // scala core library
+  "io.pdal" %  "pdal-native" % "1.7.0-RC1" // jni bindings
 )
 ```
 
-Scala API covers PDAL 1.7.0 but is compatible with PDAL >= 1.4, to use any custom DSL
+Scala API covers PDAL 1.7.x but is compatible with PDAL >= 1.4.x, to use any custom DSL
 that is not covered by the current Scala API you can use `RawExpr` type to build `Pipeline 
 Expression`.
 
@@ -80,8 +82,7 @@ val pcWithRawExpr = LasRead("/path/to/las") ~ RawExpr(Map("type" -> "filters.cro
 
 ### Demo project example
 
-SBT projects with examples how to add dependencies, and with some working basic example can
-be found [here](./examples)
+JNI bindings basic usage examples can be found [here](./examples).
 
 ## How to compile
 
