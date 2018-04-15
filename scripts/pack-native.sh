@@ -16,8 +16,6 @@ done
 
 export PDAL_VERSION_SUFFIX=${PDAL_VERSION_SUFFIX-"-SNAPSHOT"}
 
-echo $PDAL_VERSION_SUFFIX
-
 rm -rf ./native/target/native
 ./sbt -J-Xmx2G "project native" package
 rm -rf ./native/target/native

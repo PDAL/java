@@ -16,12 +16,18 @@ done
 
 export PDAL_VERSION_SUFFIX=${PDAL_VERSION_SUFFIX-"-SNAPSHOT"}
 
-# Linux 
+# Linux
 docker run -it --rm \
-  -v $PWD:/workdir \
+  -v $PWD:/pdal-java \
   -v $HOME/.ivy2:/root/.ivy2 \
   -v $HOME/.sbt:/root/.sbt \
-  daunnc/crossbuild-pdal:latest bash -c "./scripts/pack-native.sh --suffix=${PDAL_VERSION_SUFFIX}"
+ daunnc/pdal:1.7.1 bash -c "cd ./pdal-java; ./scripts/pack-native.sh --suffix=${PDAL_VERSION_SUFFIX}"
+
+# docker run -it --rm \
+#   -v $PWD:/workdir \
+#   -v $HOME/.ivy2:/root/.ivy2 \
+#   -v $HOME/.sbt:/root/.sbt \
+#  daunnc/crossbuild-pdal:latest bash -c "./scripts/pack-native.sh --suffix=${PDAL_VERSION_SUFFIX}"
 
 # Apple cross compilation
 # docker run -it --rm -v $PWD:/workdir -e CROSS_TRIPLE=x86_64-apple-darwin daunnc/crossbuild-pdal:latest ./sbt "project native" nativeCompile
