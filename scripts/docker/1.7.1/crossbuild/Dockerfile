@@ -15,4 +15,5 @@ ENV JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk-amd64
 
 RUN echo 'deb http://ftp.us.debian.org/debian/ unstable main contrib non-free' > /etc/apt/sources.list.d/debian-unstable.list
 
-RUN apt-get update && apt-get -y install pdal bash
+# https://tracker.debian.org/pkg/pdal
+RUN apt-get update && apt-get -y install pdal libpdal-dev bash

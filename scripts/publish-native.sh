@@ -28,4 +28,5 @@ if ${SIGNED}; then
     COMMAND=publishSigned
 fi
 
-PDAL_DEPEND_ON_NATIVE=false ./sbt "-212" "project core" ${COMMAND}Javastyle
+./scripts/crosscompile-mac.sh "$@"
+./sbt "project native" ${COMMAND}

@@ -46,7 +46,9 @@ lazy val commonSettings = Seq(
           <url>http://github.com/pomadchin/</url>
         </developer>
       </developers>
-    )
+    ),
+  PgpKeys.useGpg in Global := true,
+  PgpKeys.gpgCommand in Global := "gpg"
 )
 
 lazy val root = (project in file("."))
@@ -81,4 +83,7 @@ lazy val native = project
   .settings(crossPaths := false)
   .settings(name := "pdal-native")
   .settings(sourceDirectory in nativeCompile := sourceDirectory.value)
+  .settings(artifactName := { (sv: ScalaVersion, module: ModuleID, artifact: Artifact) =>
+    artifact.name + "-" + nativePlatform.value + "-" + module.revision + "." + artifact.extension
+  })
   .enablePlugins(JniNative, JniPackage)

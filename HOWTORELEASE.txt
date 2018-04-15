@@ -28,6 +28,7 @@ Release Process
             To publish everything in a local repo use command:
               - ./scripts/publish-local.sh (publishes scala 2.11 version)
               - ./scripts/publish-local-212.sh (publishes scala 2.12 version)
+              - ./scripts/publish-local-native.sh (publishes native dependencies)
             To publish everything into sonatype snapshot repo use:
               - ./scripts/publish-all.sh
             Summary:

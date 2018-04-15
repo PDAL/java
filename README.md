@@ -16,7 +16,8 @@ resolvers ++= Seq(
 )
 
 libraryDependencies ++= Seq(
-  "io.pdal" %% "pdal" % "1.6.0"
+  "io.pdal" %% "pdal" % "1.7.0-RC1",
+  "io.pdal" %  "pdal-native" % "1.7.0-RC1"
 )
 ```
 
@@ -30,17 +31,19 @@ It's required to have native JNI binary in `java.library.path`:
 javaOptions += "-Djava.library.path=/usr/local/lib"
 ```
 
+You can use `pdal-native` dep in case you don't have installed JNI bindings and to avoid steps described above.
+
 ## PDAL-Scala
 
 Scala API to build pipeline expressions instead of writing a raw JSON.
 
 ```scala
 libraryDependencies ++= Seq(
-  "io.pdal" %% "pdal-scala" % "1.6.0"
+  "io.pdal" %% "pdal-scala" % "1.7.0-RC1"
 )
 ```
 
-Scala API covers PDAL 1.6.0 but is compatible with PDAL >= 1.4, to use any custom DSL
+Scala API covers PDAL 1.7.0 but is compatible with PDAL >= 1.4, to use any custom DSL
 that is not covered by the current Scala API you can use `RawExpr` type to build `Pipeline 
 Expression`.
 
@@ -75,6 +78,11 @@ val pc: PipelineConstructor = LasRead("/path/to/las") ~ CropFilter() ~ LasWrite(
 val pcWithRawExpr = LasRead("/path/to/las") ~ RawExpr(Map("type" -> "filters.crop").asJson) ~ LasWrite("/path/to/new/las") 
 ```
 
+### Demo project example
+
+SBT projects with examples how to add dependencies, and with some working basic example can
+be found [here](./examples)
+
 ## How to compile
 
 Development purposes (including binaries):
@@ -93,13 +101,11 @@ Finally the possible command to launch and build PDAL JNI bindings could be:
 
 ```bash
 # Including binaries build
-# WARN: PDAL should be built without `-DWITH_PDAL_JNI=ON` flag
 ./sbt
 ```
 
 ```bash
 # Java side development without binaries build
-# WARN: PDAL should be built with `-DWITH_PDAL_JNI=ON` flag
 PDAL_DEPEND_ON_NATIVE=false ./sbt -Djava.library.path=<path>
 ```
 
