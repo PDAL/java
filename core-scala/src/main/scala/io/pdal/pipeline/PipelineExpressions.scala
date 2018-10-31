@@ -107,7 +107,7 @@ case class Ilvis2Read(
 case class MatlabRead(
   filename: String,
   struct: Option[String] = None, // [default: PDAL]
-  `type`: ReaderType = ReaderTypes.mbio
+  `type`: ReaderType = ReaderTypes.matlab
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
