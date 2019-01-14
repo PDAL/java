@@ -17,7 +17,7 @@ resolvers ++= Seq(
 
 libraryDependencies ++= Seq(
   "io.pdal" %% "pdal" % "1.7.0-RC4", // core library
-  "io.pdal" %  "pdal-native" % "1.7.0-RC$" // jni bindings
+  "io.pdal" %  "pdal-native" % "1.7.0-RC4" // jni bindings
 )
 ```
 
