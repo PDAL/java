@@ -667,7 +667,7 @@ case class BpfWrite(
 @ConfiguredJsonCodec
 case class GdalWrite(
   filename: String,
-  resoultion: Int,
+  resolution: Int,
   radius: Double,
   gdaldriver: Option[String] = None,
   gdalopts: Option[String] = None,
