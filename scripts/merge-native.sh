@@ -17,11 +17,11 @@ done
 export PDAL_VERSION_SUFFIX=${PDAL_VERSION_SUFFIX-"-SNAPSHOT"}
 
 cd ./native/target
-rm -f ./pdal-native-1.7.0-SNAPSHOT.jar
+rm -f ./pdal-native-1.7.0${PDAL_VERSION_SUFFIX}.jar
 rm -rf ./tmp; mkdir -p ./tmp
 
-cd tmp; jar -xf ../pdal-native-x86_64-darwin-1.7.0-SNAPSHOT.jar; cd ~-
-cd tmp; jar -xf ../pdal-native-x86_64-linux-1.7.0-SNAPSHOT.jar; cd ~-
+cd tmp; jar -xf ../pdal-native-x86_64-darwin-1.7.0${PDAL_VERSION_SUFFIX}; cd ~-
+cd tmp; jar -xf ../pdal-native-x86_64-linux-1.7.0${PDAL_VERSION_SUFFIX}.jar; cd ~-
 
 jar -cvf pdal-native-1.7.0${PDAL_VERSION_SUFFIX}.jar -C tmp .
 

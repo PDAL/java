@@ -8,7 +8,7 @@ matrix:
       scala:
         - 2.11.12
       before_install:
-        - docker pull daunnc/pdal-debian:1.7.1
+        - docker pull daunnc/pdal-debian:1.8.0
       services:
         - docker
 
@@ -16,9 +16,9 @@ matrix:
       jdk: oraclejdk8
       language: scala
       scala:
-        - 2.12.6
+        - 2.12.8
       before_install:
-        - docker pull daunnc/pdal-debian:1.7.1
+        - docker pull daunnc/pdal-debian:1.8.0
       services:
         - docker
 
@@ -34,7 +34,7 @@ matrix:
 
     - os: osx
       scala:
-        - 2.12.5
+        - 2.12.8
       compiler:
         - gcc
         - clang
