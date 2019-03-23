@@ -17,7 +17,7 @@
 package io.pdal.pipeline
 
 import io.pdal.PointCloud
-import com.vividsolutions.jts.geom.Coordinate
+import org.locationtech.jts.geom.Coordinate
 
 object Implicits extends Implicits
 
