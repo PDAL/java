@@ -6,6 +6,6 @@ object Dependencies {
   val circeGenericExtras = "io.circe" %% "circe-generic-extras" % Version.circe
   val circeParser        = "io.circe" %% "circe-parser" % Version.circe
 
-  val jtsCore   = "com.vividsolutions" % "jts-core" % Version.jtsCore
+  val jtsCore   = "org.locationtech.jts" % "jts-core" % Version.jtsCore
   val scalaTest = "org.scalatest" %% "scalatest" % Version.scalaTest
 }

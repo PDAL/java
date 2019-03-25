@@ -1,5 +1,5 @@
 object Version {
-  val circe     = "0.11.0"
-  val scalaTest = "3.0.5"
-  val jtsCore   = "1.14.0"
+  val circe     = "0.11.1"
+  val scalaTest = "3.0.7"
+  val jtsCore   = "1.16.0"
 }

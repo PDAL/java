@@ -1,7 +1,7 @@
 name := "pdal-jni"
 
 lazy val commonSettings = Seq(
-  version := "1.7.0" + Environment.versionSuffix,
+  version := "1.8.1" + Environment.versionSuffix,
   scalaVersion := "2.11.12",
   crossScalaVersions := Seq("2.12.8", "2.11.12"),
   organization := "io.pdal",
