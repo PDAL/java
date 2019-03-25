@@ -238,6 +238,7 @@ case class SqliteRead(
 case class TextRead(
   filename: String,
   separator: Option[String] = None,
+  spatialreference: Option[String] = None,
   header: Option[String] = None,
   skip: Option[Int] = None,
   count: Option[Long] = None,
