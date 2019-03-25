@@ -16,8 +16,7 @@ scalacOptions ++= Seq(
 
 resolvers ++= Seq(
   Resolver.sonatypeRepo("releases"),
-  Resolver.sonatypeRepo("snapshots"),
-  "Sonatype Local Releases" at "https://oss.sonatype.org/service/local/repositories/releases/content/"
+  Resolver.sonatypeRepo("snapshots")
  )
 
 fork := true
