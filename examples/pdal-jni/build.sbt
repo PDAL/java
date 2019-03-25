@@ -16,12 +16,13 @@ scalacOptions ++= Seq(
 
 resolvers ++= Seq(
   Resolver.sonatypeRepo("releases"),
-  Resolver.sonatypeRepo("snapshots")
+  Resolver.sonatypeRepo("snapshots"),
+  "Sonatype Local Releases" at "https://oss.sonatype.org/service/local/repositories/releases/content/"
  )
 
 fork := true
 
-val pdalVersion = "1.8.0"
+val pdalVersion = "1.8.1"
 
 libraryDependencies ++= Seq(
   "io.pdal" %% "pdal"        % pdalVersion,
