@@ -21,11 +21,11 @@ resolvers ++= Seq(
 
 fork := true
 
-val pdalVersion = "1.7.0-RC4"
+val pdalVersion = "1.8.0"
 
 libraryDependencies ++= Seq(
   "io.pdal" %% "pdal"        % pdalVersion,
   "io.pdal" %% "pdal-scala"  % pdalVersion,
   "io.pdal" %  "pdal-native" % pdalVersion,
-  "org.scalatest"  %% "scalatest" % "3.0.5" % Test
+  "org.scalatest"  %% "scalatest" % "3.0.7" % Test
 )
