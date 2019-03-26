@@ -102,7 +102,7 @@ JNIEXPORT jlong JNICALL Java_io_pdal_PointLayout_dimPackedOffset
     DimType dimType = pl->findDimType(fid);
     DimTypeList dims = pl->dimTypes();
 
-    auto it = std::find_if(dims.begin(), dims.end(), [&dimType](const DimType& dt) {
+    auto it = std::find_if(dims.begin(), dims.end(), [&dimType, pl](const DimType& dt) {
         return pl->dimName(dt.m_id) == pl->dimName(dimType.m_id);
     });
     auto index = std::distance(dims.begin(), it);
