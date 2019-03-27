@@ -55,7 +55,7 @@ JNIEXPORT jobjectArray JNICALL Java_io_pdal_PointLayout_dimTypes
     for (long i = 0; i < static_cast<long>(dimTypes.size()); i++)
     {
         auto dt = dimTypes.at(i);
-        jstring id = env->NewStringUTF(pdal::Dimension::name(dt.m_id).c_str());
+        jstring id = env->NewStringUTF(pl->dimName(dt.m_id).c_str());
         jstring type = env->NewStringUTF(pdal::Dimension::interpretationName(dt.m_type).c_str());
         jobject element = env->NewObject(dtClass, dtCtor, id, type, dt.m_xform.m_scale.m_val, dt.m_xform.m_offset.m_val);
 
@@ -75,7 +75,7 @@ JNIEXPORT jobject JNICALL Java_io_pdal_PointLayout_findDimType
     std::string fid = std::string(env->GetStringUTFChars(jstr, 0));
     PointLayout *pl = getHandle<PointLayout>(env, obj);
     DimType dt = pl->findDimType(fid);
-    jstring id = env->NewStringUTF(pdal::Dimension::name(dt.m_id).c_str());
+    jstring id = env->NewStringUTF(pl->dimName(dt.m_id).c_str());
     jstring type = env->NewStringUTF(pdal::Dimension::interpretationName(dt.m_type).c_str());
 
     jclass dtClass = env->FindClass("io/pdal/DimType");
@@ -102,8 +102,8 @@ JNIEXPORT jlong JNICALL Java_io_pdal_PointLayout_dimPackedOffset
     DimType dimType = pl->findDimType(fid);
     DimTypeList dims = pl->dimTypes();
 
-    auto it = std::find_if(dims.begin(), dims.end(), [&dimType](const DimType& dt) {
-        return pdal::Dimension::name(dt.m_id) == pdal::Dimension::name(dimType.m_id);
+    auto it = std::find_if(dims.begin(), dims.end(), [&dimType, pl](const DimType& dt) {
+        return pl->dimName(dt.m_id) == pl->dimName(dimType.m_id);
     });
     auto index = std::distance(dims.begin(), it);
     long offset = 0;
