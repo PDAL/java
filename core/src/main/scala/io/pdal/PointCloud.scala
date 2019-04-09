@@ -45,7 +45,7 @@ import scala.collection.JavaConversions._
 case class PointCloud(bytes: Array[Byte], dimTypes: util.Map[String, SizedDimType]) {
   val pointSize: Int = dimTypes.values.map(_.size).sum.toInt
   val length: Int = bytes.length / pointSize
-  val isPoint: Boolean = length == pointSize
+  val isPoint: Boolean = length == 1
 
   def dimSize(dim: SizedDimType) = dimTypes(dim.dimType.id).size
   def dimSize(dim: DimType) = dimTypes(dim.id).size

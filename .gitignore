@@ -9,6 +9,7 @@ bin
 target
 build/
 .gradle
+cmake-build-debug
 
 # Eclipse Project Files
 
