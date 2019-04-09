@@ -175,6 +175,67 @@ class PointCloudSpec extends TestEnvironmentSpec {
       pv.dispose()
       pvi.dispose()
     }
+
+    it("should work as expected with csv files") {
+      val expected = getJson("/test-pdal.csv").split(" ").tail.map(_.split(",").toList.map(_.toDouble)).toList
+
+      val json =
+        """
+          |{
+          |  "pipeline":[
+          |    {
+          |      "type" : "readers.text",
+          |      "filename":"core/src/test/resources/test-pdal.csv"
+          |    }
+          |  ]
+          |}
+        """.stripMargin
+
+      val pipeline = Pipeline(json)
+      pipeline.execute()
+      val pvi = pipeline.getPointViews()
+      val pv = pvi.next()
+      val length = pv.length
+
+      length should be (expected.size)
+
+      val layout = pv.layout()
+      val subsetDT = Array(layout.findDimType("X"), layout.findDimType("TEST"), layout.findDimType("Z"))
+
+      expected.zipWithIndex.foreach { case (List(x, y, z, test), idx) =>
+        val pc = pv.getPointCloud(idx)
+
+        val pcX = pc.getDouble(idx, "X")
+        val pcY = pc.getDouble(idx, "Y")
+        val pcZ = pc.getDouble(idx, "Z")
+        val pcTest = pc.getDouble(idx, "TEST")
+
+        val pvX = pv.getDouble(idx, "X")
+        val pvY = pv.getDouble(idx, "Y")
+        val pvZ = pv.getDouble(idx, "Z")
+        val pvTest = pv.getDouble(idx, "TEST")
+
+        val pcs = pv.getPointCloud(idx, subsetDT)
+
+        val pcsX = pc.getDouble(idx, "X")
+        val pcsZ = pc.getDouble(idx, "Z")
+        val pcsTest = pc.getDouble(idx, "TEST")
+
+        x should be(pcX)
+        x should be(pvX)
+        x should be(pcsX)
+        y should be(pcY)
+        y should be(pvY)
+        z should be(pcZ)
+        z should be(pvZ)
+        z should be(pcsZ)
+        test should be(pcTest)
+        test should be(pvTest)
+        test should be(pcsTest)
+      }
+
+      pipeline.dispose()
+    }
   }
 
   override def beforeAll() = {

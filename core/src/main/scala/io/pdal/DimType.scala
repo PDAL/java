@@ -33,7 +33,7 @@
 
 package io.pdal
 
-case class DimType(id: String, `type`: String, scale: Double = 1, offset: Double = 0)
+case class DimType(id: String, `type`: String)
 
 object DimType {
   object Id {
