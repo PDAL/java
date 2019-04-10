@@ -173,5 +173,19 @@ class PipelineSpec extends TestEnvironmentSpec {
       pv.dispose()
       pvi.dispose()
     }
+
+    it("should fail with InitializationException") {
+      intercept[InitializationException] { Pipeline(null) }
+    }
+
+    it("should fail with ExecutionException") {
+      val pipeline = Pipeline("{")
+      intercept[ExecutionException] { pipeline.execute() }
+      intercept[ExecutionException] { pipeline.getPointViews() }
+      intercept[ExecutionException] { pipeline.getMetadata() }
+      intercept[ExecutionException] { pipeline.getSchema() }
+
+      pipeline.dispose()
+    }
   }
 }

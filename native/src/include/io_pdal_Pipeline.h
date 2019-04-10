@@ -12,7 +12,7 @@ extern "C" {
  * Method:    initialise
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_io_pdal_Pipeline_initialise
+JNIEXPORT void JNICALL Java_io_pdal_Pipeline_initialize
   (JNIEnv *, jobject);
 
 /*
