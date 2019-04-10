@@ -49,13 +49,42 @@ using pdal::PointViewLess;
 using pdal::PointViewPtr;
 using pdal::pdal_error;
 
-JNIEXPORT void JNICALL Java_io_pdal_Pipeline_initialise
+jstring throwInitializationException(JNIEnv *env, const char *message)
+{
+    jclass Exception = env->FindClass("io/pdal/InitializationException");
+    env->ThrowNew(Exception, message);
+    return env->NewStringUTF(message);
+}
+
+jstring throwExecutionException(JNIEnv *env, const char *message)
+{
+    jclass Exception = env->FindClass("io/pdal/ExecutionException");
+    env->ThrowNew(Exception, message);
+    return env->NewStringUTF(message);
+}
+
+JNIEXPORT void JNICALL Java_io_pdal_Pipeline_initialize
   (JNIEnv *env, jobject obj)
 {
     jclass c = env->GetObjectClass(obj);
     jfieldID fid = env->GetFieldID(c, "json", "Ljava/lang/String;");
     jstring jstr = reinterpret_cast<jstring>(env->GetObjectField(obj, fid));
-    setHandle(env, obj, new Pipeline(std::string(env->GetStringUTFChars(jstr, 0))));
+
+    if(jstr == NULL)
+    {
+        throwInitializationException(env, "Null string passed into the Pipeline constructor.");
+    }
+    else
+    {
+        try
+        {
+            setHandle(env, obj, new Pipeline(std::string(env->GetStringUTFChars(jstr, 0))));
+        }
+        catch (const pdal_error &pe)
+        {
+            throwInitializationException(env, pe.what());
+        }
+    }
 }
 
 JNIEXPORT void JNICALL Java_io_pdal_Pipeline_dispose
@@ -70,21 +99,42 @@ JNIEXPORT void JNICALL Java_io_pdal_Pipeline_execute
   (JNIEnv *env, jobject obj)
 {
     Pipeline *p = getHandle<Pipeline>(env, obj);
-    p->execute();
+    try
+    {
+        p->execute();
+    }
+    catch(const pdal_error &pe)
+    {
+        throwExecutionException(env, pe.what());
+    }
 }
 
 JNIEXPORT jstring JNICALL Java_io_pdal_Pipeline_getMetadata
   (JNIEnv *env, jobject obj)
 {
-    Pipeline *p = getHandle<Pipeline>(env, obj);
-    return env->NewStringUTF(p->getMetadata().c_str());
+    try
+    {
+        Pipeline *p = getHandle<Pipeline>(env, obj);
+        return env->NewStringUTF(p->getMetadata().c_str());
+    }
+    catch(const pdal_error &pe)
+    {
+        return throwExecutionException(env, pe.what());
+    }
 }
 
 JNIEXPORT jstring JNICALL Java_io_pdal_Pipeline_getSchema
   (JNIEnv *env, jobject obj)
 {
-    Pipeline *p = getHandle<Pipeline>(env, obj);
-    return env->NewStringUTF(p->getSchema().c_str());
+    try
+    {
+        Pipeline *p = getHandle<Pipeline>(env, obj);
+        return env->NewStringUTF(p->getSchema().c_str());
+    }
+    catch(const pdal_error &pe)
+    {
+        return throwExecutionException(env, pe.what());
+    }
 }
 
 JNIEXPORT jboolean JNICALL Java_io_pdal_Pipeline_validate
@@ -129,16 +179,23 @@ JNIEXPORT jstring JNICALL Java_io_pdal_Pipeline_getLog
 JNIEXPORT jobject JNICALL Java_io_pdal_Pipeline_getPointViews
   (JNIEnv *env, jobject obj)
 {
-    Pipeline *p = getHandle<Pipeline>(env, obj);
-    PointViewSet pvset = p->getPointViews();
+    try
+    {
+        Pipeline *p = getHandle<Pipeline>(env, obj);
+        PointViewSet pvset = p->getPointViews();
 
-    jclass pviClass = env->FindClass("io/pdal/PointViewIterator");
-    jmethodID pviCtor = env->GetMethodID(pviClass, "<init>", "()V");
-    jobject pvi = env->NewObject(pviClass, pviCtor);
+        jclass pviClass = env->FindClass("io/pdal/PointViewIterator");
+        jmethodID pviCtor = env->GetMethodID(pviClass, "<init>", "()V");
+        jobject pvi = env->NewObject(pviClass, pviCtor);
 
-    PointViewIterator *it = new PointViewIterator(pvset);
+        PointViewIterator *it = new PointViewIterator(pvset);
 
-    setHandle(env, pvi, it);
+        setHandle(env, pvi, it);
 
-    return pvi;
+        return pvi;
+    }
+    catch(const libpdaljava::java_error &je)
+    {
+        return throwExecutionException(env, je.what());
+    }
 }

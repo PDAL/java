@@ -38,7 +38,7 @@ import ch.jodersky.jni.nativeLoader
 class Pipeline(val json: String) extends Native {
   Pipeline // reference the object so that the nativeLoader will load the JNI native libraries
 
-  @native def initialise(): Unit
+  @native def initialize(): Unit
   @native def execute(): Unit
   @native def getPointViews(): PointViewIterator
   @native def dispose(): Unit
@@ -52,5 +52,5 @@ class Pipeline(val json: String) extends Native {
 
 @nativeLoader("pdaljni.1.4")
 object Pipeline {
-  def apply(json: String): Pipeline = { val p = new Pipeline(json); p.initialise(); p }
+  def apply(json: String): Pipeline = { val p = new Pipeline(json); p.initialize(); p }
 }
