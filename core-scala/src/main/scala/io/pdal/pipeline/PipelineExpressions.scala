@@ -449,7 +449,7 @@ case class MadFilter(
 case class MatlabFilter(
   script: String,
   source: String,
-  addDimenstion: Option[String] = None,
+  addDimension: Option[String] = None,
   struct: Option[String] = None, // [default: PDAL]
   `type`: FilterType = FilterTypes.matlab
 ) extends PipelineExpr
@@ -535,11 +535,11 @@ case class PoissonFilter(
 
 @ConfiguredJsonCodec
 case class PythonFilter(
-  script: String,
   module: String,
   function: String,
-  source: String,
-  addDimenstion: Option[String] = None,
+  script: Option[String] = None,
+  source: Option[String] = None,
+  addDimension: Option[String] = None,
   pdalargs: Option[String] = None,
   `type`: FilterType = FilterTypes.python
 ) extends PipelineExpr
