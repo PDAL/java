@@ -34,6 +34,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <string>
+#include <mutex>
 
 #include "io_pdal_Pipeline.h"
 #include "JavaPipeline.hpp"
@@ -48,6 +49,8 @@ using pdal::PointView;
 using pdal::PointViewLess;
 using pdal::PointViewPtr;
 using pdal::pdal_error;
+
+std::mutex execute_mutex;
 
 jstring throwInitializationException(JNIEnv *env, const char *message)
 {
@@ -101,6 +104,7 @@ JNIEXPORT void JNICALL Java_io_pdal_Pipeline_execute
     Pipeline *p = getHandle<Pipeline>(env, obj);
     try
     {
+        std::lock_guard<std::mutex> lock (execute_mutex);
         p->execute();
     }
     catch(const pdal_error &pe)
