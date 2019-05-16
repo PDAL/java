@@ -3,6 +3,8 @@
 [![Build Status](https://api.travis-ci.org/PDAL/java.svg)](http://travis-ci.org/PDAL/java) [![Join the chat at https://gitter.im/PDAL/PDAL](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PDAL/PDAL?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.pdal/pdal/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.pdal/pdal)
 
 Java bindings to use PDAL on JVM (supports PDAL >= 1.4).
+Mac users can experience some issues with bindings that were build against a different PDAL version,
+so try to use a consistent PDAL version.
 
 It is released independently from PDAL itself as of PDAL 1.7.
 
@@ -16,8 +18,8 @@ resolvers ++= Seq(
 )
 
 libraryDependencies ++= Seq(
-  "io.pdal" %% "pdal" % "1.8.5", // core library
-  "io.pdal" %  "pdal-native" % "1.8.5" // jni bindings
+  "io.pdal" %% "pdal" % "1.9.0", // core library
+  "io.pdal" %  "pdal-native" % "1.9.0" // jni bindings
 )
 ```
 
@@ -39,8 +41,8 @@ Scala API to build pipeline expressions instead of writing a raw JSON.
 
 ```scala
 libraryDependencies ++= Seq(
-  "io.pdal" %% "pdal-scala" % "1.8.5", // scala core library
-  "io.pdal" %  "pdal-native" % "1.8.5" // jni bindings
+  "io.pdal" %% "pdal-scala" % "1.9.0", // scala core library
+  "io.pdal" %  "pdal-native" % "1.9.0" // jni bindings
 )
 ```
 
