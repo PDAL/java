@@ -33,6 +33,9 @@ README.html
 
 *.sublime-workspace
 
+# VSCode files
+.vscode
+
 # Test data files #
 
 java/data

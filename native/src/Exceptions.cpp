@@ -31,25 +31,20 @@
 * OF SUCH DAMAGE.
 ****************************************************************************/
 
-#ifndef _ACCESSORS_H_INCLUDED_
-#define _ACCESSORS_H_INCLUDED_
-
 #include <jni.h>
 #include <string>
+#include "Exceptions.hpp"
 
-jfieldID getHandleField(JNIEnv *, jobject);
-
-template <typename T>
-T *getHandle(JNIEnv *env, jobject obj)
+jstring throwInitializationException(JNIEnv *env, const char *message)
 {
-    jlong handle = env->GetLongField(obj, getHandleField(env, obj));
-    return reinterpret_cast<T *>(handle);
+    jclass Exception = env->FindClass("io/pdal/InitializationException");
+    env->ThrowNew(Exception, message);
+    return env->NewStringUTF(message);
 }
 
-template <typename T>
-void setHandle(JNIEnv *env, jobject obj, T *t)
+jstring throwExecutionException(JNIEnv *env, const char *message)
 {
-    jlong handle = reinterpret_cast<jlong>(t);
-    env->SetLongField(obj, getHandleField(env, obj), handle);
+    jclass Exception = env->FindClass("io/pdal/ExecutionException");
+    env->ThrowNew(Exception, message);
+    return env->NewStringUTF(message);
 }
-#endif

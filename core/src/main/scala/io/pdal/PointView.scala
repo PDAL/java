@@ -36,6 +36,8 @@ package io.pdal
 import java.nio.{ByteBuffer, ByteOrder}
 
 class PointView extends Native {
+  Pipeline // reference the object so that the nativeLoader will load the JNI native libraries
+
   def getPointCloud(idx: Long): PointCloud = getPointCloud(idx, layout.dimTypes())
   def getPointCloud(idx: Long, dims: Array[DimType]): PointCloud =
     PointCloud(
@@ -145,6 +147,7 @@ class PointView extends Native {
   def getY(packedPoint: Array[Byte]): Double = getDouble(packedPoint, DimType.Y)
   def getZ(packedPoint: Array[Byte]): Double = getDouble(packedPoint, DimType.Z)
 
+  @native def initialize(): Unit
   @native def layout(): PointLayout
   @native def size(): Int
   @native def empty(): Boolean
@@ -152,5 +155,10 @@ class PointView extends Native {
   @native def getCrsWKT(pretty: Boolean): String
   @native def getPackedPoint(idx: Long, dims: Array[DimType]): Array[Byte]
   @native def getPackedPoints(dims: Array[DimType]): Array[Byte]
+  @native def setField[T](dimType: DimType, idx: Long, value: T)
   @native def dispose(): Unit
+}
+
+object PointView {
+  def apply(): PointView = { val p = new PointView(); p.initialize(); p }
 }

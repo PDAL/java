@@ -33,36 +33,42 @@
 
 package io.pdal
 
-import java.util
-import scala.collection.JavaConversions._
-
-class PointLayout extends Native {
-  def dimSize(dimType: DimType): Long = dimSize(dimType.id)
-  def dimPackedOffset(dimType: DimType): Long = dimPackedOffset(dimType.id)
-
-  def sizedDimTypes(): util.Map[String, SizedDimType] = toSizedDimTypes(dimTypes())
-  def toSizedDimTypes(dimTypes: Array[DimType]): util.Map[String, SizedDimType] = {
-    var (i, offset, length) = (0, 0l, dimTypes.length)
-    val result = new util.HashMap[String, SizedDimType]()
-    while(i < length) {
-      val dt = dimTypes(i)
-      val size = dimSize(dt)
-      result += dt.id -> SizedDimType(dt, size, offset)
-      offset += size
-      i += 1
+class MemoryViewReaderSpec extends TestEnvironmentSpec {
+  describe("Pipeline execution with data read via MemoryViewReader") {
+    it("should allocate MemoryViewReader") {
+      val reader = MemoryViewReader()
+      reader.ptr() shouldNot be (0)
+      reader.dispose()
+      reader.ptr() shouldBe 0
     }
-    result
-  }
 
-  @native def dimTypes(): Array[DimType]
-  @native def findDimType(name: String): DimType
-  @native def dimSize(id: String): Long
-  /**
-    * Offset of a dim in a packed points byte array calculated as a sum of previous dim sizes.
-    * Valid for a point with all dims.
-    */
-  @native def dimPackedOffset(id: String): Long
-  @native def pointSize(): Long
-  @native def registerDim(dim: DimType): Unit
-  @native def dispose(): Unit
+    it("should allocate PointView") {
+      val pv = PointView()
+      val l = pv.layout()
+      pv.ptr() shouldNot be (0)
+      l.ptr() shouldNot be (0)
+      l.dispose()
+      pv.dispose()
+      l.ptr() shouldBe 0
+      pv.ptr() shouldBe 0
+    }
+
+    it("should register DimType for a new layout"){
+      val pv = PointView()
+      val l = pv.layout()
+      l.registerDim(DimType.X)
+      pv.setField(DimType.X, 0, 20)
+      val pc = pv.getPointCloud(0)
+      println(s"pc.getDouble(0, DimType.X): ${pc.getDouble(0, DimType.X)}")
+
+      l.dispose()
+      pv.dispose()
+    }
+
+    it("should push a field") {
+      val reader = MemoryViewReader()
+      reader.pushField(Field("X", DimType.X, 0))
+      reader.dispose()
+    }
+  }
 }

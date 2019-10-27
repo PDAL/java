@@ -41,6 +41,8 @@
 using libpdaljava::Pipeline;
 using libpdaljava::PointViewRawPtr;
 
+using pdal::PointTableRef;
+using pdal::PointTable;
 using pdal::PointView;
 using pdal::PointViewPtr;
 using pdal::PointLayoutPtr;
@@ -84,6 +86,15 @@ void appendPackedPoint(PointViewPtr pv, const DimTypeList& dims, PointId idx, st
     if(from >= pv->size() * pointSize) return;
     buf += from;
     pv->getPackedPoint(dims, idx, buf);
+}
+
+JNIEXPORT void JNICALL Java_io_pdal_PointView_initialize(JNIEnv *env, jobject obj)
+{
+  PointTable* table = new PointTable();
+  PointViewPtr view(new PointView(*table));
+
+  PointViewRawPtr *pvrp = new PointViewRawPtr(view);
+  setHandle(env, obj, pvrp);
 }
 
 JNIEXPORT jobject JNICALL Java_io_pdal_PointView_layout
@@ -195,6 +206,29 @@ JNIEXPORT jbyteArray JNICALL Java_io_pdal_PointView_getPackedPoints
     delete[] buf;
 
     return array;
+}
+
+JNIEXPORT void JNICALL Java_io_pdal_PointView_setField(JNIEnv *env, jobject obj, jobject dimType, jlong idx, jobject val) 
+{
+  PointViewRawPtr *pvrp = getHandle<PointViewRawPtr>(env, obj);
+  PointViewPtr pv = pvrp->shared_pointer;
+
+  jclass c = env->GetObjectClass(dimType);
+  jfieldID fid = env->GetFieldID(c, "id", "Ljava/lang/String;");
+  jstring jid = reinterpret_cast<jstring>(env->GetObjectField(dimType, fid));
+  std::string sid = std::string(env->GetStringUTFChars(jid, 0));
+
+  jfieldID ftype = env->GetFieldID(c, "type", "Ljava/lang/String;");
+  jstring jtype = reinterpret_cast<jstring>(env->GetObjectField(dimType, ftype));
+  std::string stype = std::string(env->GetStringUTFChars(jtype, 0));
+
+  // pl->registerDim(pdal::Dimension::id(sid));  
+
+  // for test purposes
+  // TODO: case basing on the stype
+  const double x = static_cast<double>((long) idx + 1);
+
+  pv->setField(pdal::Dimension::id(sid), (PointId) idx, x);
 }
 
 JNIEXPORT void JNICALL Java_io_pdal_PointView_dispose

@@ -49,6 +49,14 @@ JNIEXPORT jlong JNICALL Java_io_pdal_PointLayout_pointSize
 
 /*
  * Class:     io_pdal_PointLayout
+ * Method:    registerDim
+ * Signature: (Lio/pdal/DimType;)V
+ */
+JNIEXPORT void JNICALL Java_io_pdal_PointLayout_registerDim
+  (JNIEnv *, jobject, jobject);
+
+/*
+ * Class:     io_pdal_PointLayout
  * Method:    dispose
  * Signature: ()V
  */

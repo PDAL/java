@@ -40,6 +40,7 @@
 #include "JavaPipeline.hpp"
 #include "JavaIterator.hpp"
 #include "Accessors.hpp"
+#include "Exceptions.hpp"
 
 using libpdaljava::Pipeline;
 using libpdaljava::PointViewIterator;
@@ -51,20 +52,6 @@ using pdal::PointViewPtr;
 using pdal::pdal_error;
 
 std::mutex execute_mutex;
-
-jstring throwInitializationException(JNIEnv *env, const char *message)
-{
-    jclass Exception = env->FindClass("io/pdal/InitializationException");
-    env->ThrowNew(Exception, message);
-    return env->NewStringUTF(message);
-}
-
-jstring throwExecutionException(JNIEnv *env, const char *message)
-{
-    jclass Exception = env->FindClass("io/pdal/ExecutionException");
-    env->ThrowNew(Exception, message);
-    return env->NewStringUTF(message);
-}
 
 JNIEXPORT void JNICALL Java_io_pdal_Pipeline_initialize
   (JNIEnv *env, jobject obj)

@@ -123,6 +123,23 @@ JNIEXPORT jlong JNICALL Java_io_pdal_PointLayout_pointSize
     return pl->pointSize();
 }
 
+JNIEXPORT void JNICALL Java_io_pdal_PointLayout_registerDim
+  (JNIEnv *env, jobject obj, jobject dimType)
+{
+  PointLayout *pl = getHandle<PointLayout>(env, obj);
+
+  jclass c = env->GetObjectClass(dimType);
+  jfieldID fid = env->GetFieldID(c, "id", "Ljava/lang/String;");
+  jstring jid = reinterpret_cast<jstring>(env->GetObjectField(dimType, fid));
+  std::string sid = std::string(env->GetStringUTFChars(jid, 0));
+
+  jfieldID ftype = env->GetFieldID(c, "type", "Ljava/lang/String;");
+  jstring jtype = reinterpret_cast<jstring>(env->GetObjectField(dimType, ftype));
+  std::string stype = std::string(env->GetStringUTFChars(jtype, 0));
+
+  pl->registerDim(pdal::Dimension::id(sid));  
+}
+
 JNIEXPORT void JNICALL Java_io_pdal_PointLayout_dispose
   (JNIEnv *env, jobject obj)
 {

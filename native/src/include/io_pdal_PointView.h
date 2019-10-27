@@ -9,6 +9,14 @@ extern "C" {
 #endif
 /*
  * Class:     io_pdal_PointView
+ * Method:    initialize
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_io_pdal_PointView_initialize
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     io_pdal_PointView
  * Method:    layout
  * Signature: ()Lio/pdal/PointLayout;
  */
@@ -42,7 +50,7 @@ JNIEXPORT jstring JNICALL Java_io_pdal_PointView_getCrsProj4
 /*
  * Class:     io_pdal_PointView
  * Method:    getCrsWKT
- * Signature: (IZ)Ljava/lang/String;
+ * Signature: (Z)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_io_pdal_PointView_getCrsWKT
   (JNIEnv *, jobject, jboolean);
@@ -62,6 +70,14 @@ JNIEXPORT jbyteArray JNICALL Java_io_pdal_PointView_getPackedPoint
  */
 JNIEXPORT jbyteArray JNICALL Java_io_pdal_PointView_getPackedPoints
   (JNIEnv *, jobject, jobjectArray);
+
+/*
+ * Class:     io_pdal_PointView
+ * Method:    setField
+ * Signature: (Lio/pdal/DimType;JLjava/lang/Object;)V
+ */
+JNIEXPORT void JNICALL Java_io_pdal_PointView_setField
+  (JNIEnv *, jobject, jobject, jlong, jobject);
 
 /*
  * Class:     io_pdal_PointView
