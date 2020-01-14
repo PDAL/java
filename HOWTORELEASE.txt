@@ -26,8 +26,9 @@ Release Process
         - Publishing snaphots:
             Snapshot can be published without PGP sign, it is published to a snapshot repo and allows immediate snaphot updates.
             To publish everything in a local repo use command:
-              - ./scripts/publish-local.sh (publishes scala 2.11 version)
+              - ./scripts/publish-local.sh (publishes scala 2.13 version)
               - ./scripts/publish-local-212.sh (publishes scala 2.12 version)
+              - ./scripts/publish-local-211.sh (publishes scala 2.11 version)
               - ./scripts/publish-local-native.sh (publishes native dependencies)
             To publish everything into sonatype snapshot repo use:
               - ./scripts/publish-all.sh

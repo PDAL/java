@@ -20,9 +20,11 @@ import io.circe._
 import io.circe.syntax._
 import io.circe.parser._
 
-import org.scalatest._
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 
-class PipelineExpressionsSpec extends FunSpec with Matchers with BeforeAndAfterAll {
+class PipelineExpressionsSpec extends AnyFunSpec with Matchers with BeforeAndAfterAll {
   describe("Pipeline Expressions spec") {
     it("should print a correct json, using DSL") {
       val expected =

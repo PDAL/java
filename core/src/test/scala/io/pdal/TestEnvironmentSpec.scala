@@ -33,9 +33,11 @@
 
 package io.pdal
 
-import org.scalatest._
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 
-trait TestEnvironmentSpec extends FunSpec with Matchers with BeforeAndAfterAll {
+trait TestEnvironmentSpec extends AnyFunSpec with Matchers with BeforeAndAfterAll {
   def getJson(resource: String): String = {
     val stream = getClass.getResourceAsStream(resource)
     val lines = scala.io.Source.fromInputStream(stream).getLines
@@ -58,7 +60,8 @@ trait TestEnvironmentSpec extends FunSpec with Matchers with BeforeAndAfterAll {
       |}
      """.stripMargin
 
-  val proj4String = "+proj=lcc +lat_1=43 +lat_2=45.5 +lat_0=41.75 +lon_0=-120.5 +x_0=400000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
+  val proj4String    = "+proj=lcc +lat_1=43 +lat_2=45.5 +lat_0=41.75 +lon_0=-120.5 +x_0=400000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
+  val proj4StringNew = "+proj=lcc +lat_0=41.75 +lon_0=-120.5 +lat_1=43 +lat_2=45.5 +x_0=400000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
 
   val pipeline: Pipeline = Pipeline(json)
 

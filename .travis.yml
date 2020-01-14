@@ -3,28 +3,28 @@ sudo: false
 matrix:
   include:
     - os: linux
-      jdk: oraclejdk8
+      jdk: openjdk8
       language: scala
       scala:
-        - 2.11.12
+        - 2.13.1
       before_install:
-        - docker pull daunnc/pdal-debian:1.8.0
+        - docker pull daunnc/pdal-debian:2.0.0
       services:
         - docker
 
     - os: linux
-      jdk: oraclejdk8
+      jdk: openjdk8
       language: scala
       scala:
-        - 2.12.8
+        - 2.12.10
       before_install:
-        - docker pull daunnc/pdal-debian:1.8.0
+        - docker pull daunnc/pdal-debian:2.0.0
       services:
         - docker
 
     - os: osx
       scala:
-        - 2.11.12
+        - 2.13.1
       compiler:
         - gcc
         - clang
@@ -34,7 +34,7 @@ matrix:
 
     - os: osx
       scala:
-        - 2.12.8
+        - 2.12.10
       compiler:
         - gcc
         - clang
@@ -47,8 +47,11 @@ addons:
 
 cache:
   directories:
-   - $HOME/.ivy2
+   - $HOME/.m2
+   - $HOME/.ivy2/cache
    - $HOME/.sbt
+   - $HOME/.cache
+   - $HOME/.cache/coursier
    - $HOME/Library/Caches/Homebrew
 
 script:
