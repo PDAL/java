@@ -23,6 +23,7 @@ matrix:
         - docker
 
     - os: osx
+      osx_image: xcode9.3
       scala:
         - 2.13.1
       compiler:
@@ -33,6 +34,7 @@ matrix:
         - brew install pdal || true # to make travis happy
 
     - os: osx
+      osx_image: xcode9.3
       scala:
         - 2.12.10
       compiler:
