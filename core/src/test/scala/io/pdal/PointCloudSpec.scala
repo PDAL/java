@@ -35,7 +35,7 @@ package io.pdal
 
 import java.nio.{ByteBuffer, ByteOrder}
 
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 
 class PointCloudSpec extends TestEnvironmentSpec {
   var packedPoints: PointCloud = _
@@ -116,7 +116,7 @@ class PointCloudSpec extends TestEnvironmentSpec {
     it("should read correctly data as a packed point") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
-      packedPoints.dimTypes.foreach { case (_, sdt) =>
+      packedPoints.dimTypes.asScala.foreach { case (_, sdt) =>
         pv.get(0, sdt.dimType) should be (packedPoints.get(0, sdt))
       }
       pv.dispose()
@@ -162,7 +162,7 @@ class PointCloudSpec extends TestEnvironmentSpec {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
       val length = pv.length
-      val dimTypes = packedPoints.dimTypes.values().map(_.dimType)
+      val dimTypes = packedPoints.dimTypes.values().asScala.map(_.dimType)
       for (i <- 0 until length) {
         packedPoints.get(i) should be (pv.getPackedPoint(i))
         packedPoints.getX(i) should be (pv.getX(i))

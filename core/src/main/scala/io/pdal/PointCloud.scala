@@ -36,22 +36,22 @@ package io.pdal
 import java.nio.{ByteBuffer, ByteOrder}
 import java.util
 
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 
 /**
   * PointCloud abstraction to work with packed point(s) in JVM memory.
   * SizedDimType contains size and offset for a particular packed point with the current set of dims.
   **/
 case class PointCloud(bytes: Array[Byte], dimTypes: util.Map[String, SizedDimType]) {
-  val pointSize: Int = dimTypes.values.map(_.size).sum.toInt
+  val pointSize: Int = dimTypes.values.asScala.map(_.size).sum.toInt
   val length: Int = bytes.length / pointSize
   val isPoint: Boolean = length == 1
 
-  def dimSize(dim: SizedDimType) = dimTypes(dim.dimType.id).size
-  def dimSize(dim: DimType) = dimTypes(dim.id).size
-  def dimSize(dim: String) = dimTypes(dim).size
-  def findDimType(dim: String) = dimTypes(dim).dimType
-  def findSizedDimType(dim: String) = dimTypes(dim)
+  def dimSize(dim: SizedDimType): Long = dimTypes.asScala(dim.dimType.id).size
+  def dimSize(dim: DimType): Long = dimTypes.asScala(dim.id).size
+  def dimSize(dim: String): Long = dimTypes.asScala(dim).size
+  def findDimType(dim: String): DimType = dimTypes.asScala(dim).dimType
+  def findSizedDimType(dim: String): SizedDimType = dimTypes.asScala(dim)
 
   /**
     * Reads a packed point by point id from a set of packed points.
@@ -114,7 +114,7 @@ case class PointCloud(bytes: Array[Byte], dimTypes: util.Map[String, SizedDimTyp
     * Reads dim from a packed point.
     */
   def get(packedPoint: Array[Byte], dim: String): Array[Byte] = {
-    val sdt = dimTypes(dim)
+    val sdt = dimTypes.asScala(dim)
     val from = sdt.offset.toInt
     val dimSize = sdt.size.toInt
     val result = new Array[Byte](dimSize)

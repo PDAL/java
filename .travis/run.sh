@@ -9,5 +9,5 @@ else
                -v $TRAVIS_BUILD_DIR:/pdal-java \
                -e TRAVIS_SCALA_VERSION=$TRAVIS_SCALA_VERSION \
                -e TRAVIS_COMMIT=$TRAVIS_COMMIT \
-               -e TRAVIS_JDK_VERSION=$TRAVIS_JDK_VERSION daunnc/pdal-debian:1.8.0 /bin/bash -c "cd /pdal-java; .travis/test-all.sh"
+               -e TRAVIS_JDK_VERSION=$TRAVIS_JDK_VERSION daunnc/pdal-debian:2.0.0 /bin/bash -c "cd /pdal-java; .travis/test-all.sh"
 fi

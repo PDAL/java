@@ -8,8 +8,8 @@ set(MAKE_COLOR_MAKEFILE ON)
 #
 
 project (pdaljni)
-set(PROJECT_VERSION_MAJOR 1)
-set(PROJECT_VERSION_MINOR 4)
+set(PROJECT_VERSION_MAJOR 2)
+set(PROJECT_VERSION_MINOR 0)
 set(PROJECT_VERSION_PATCH 0)
 
 set(PDAL_LIB_NAME pdalcpp)
@@ -32,7 +32,7 @@ if (JNI_FOUND)
 endif()
 
 if (NOT PDAL_BUILD)
-    find_package(PDAL 1.0.0 REQUIRED CONFIG)
+    find_package(PDAL 2.0.0 REQUIRED CONFIG)
 endif()
 
 # Include directories

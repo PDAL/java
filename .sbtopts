@@ -2,3 +2,5 @@
 -J-Xss512M
 -Djava.awt.headless=true
 -Dsun.io.serialization.extendedDebugInfo=true
+-Dsbt.color=always
+-Dsbt.supershell=false

@@ -1,11 +1,19 @@
 import sbt._
+import sbt.Keys._
 
 object Dependencies {
-  val circeCore          = "io.circe" %% "circe-core" % Version.circe
-  val circeGeneric       = "io.circe" %% "circe-generic" % Version.circe
-  val circeGenericExtras = "io.circe" %% "circe-generic-extras" % Version.circe
-  val circeParser        = "io.circe" %% "circe-parser" % Version.circe
+  private def ver(for211: String, for213: String) = Def.setting {
+    CrossVersion.partialVersion(scalaVersion.value) match {
+      case Some((2, 11)) => for211
+      case Some((2, 12)) | Some((2, 13)) => for213
+      case _ => sys.error("not good")
+    }
+  }
 
-  val jtsCore   = "org.locationtech.jts" % "jts-core" % Version.jtsCore
-  val scalaTest = "org.scalatest" %% "scalatest" % Version.scalaTest
+  def circe(module: String) = Def.setting {
+    "io.circe" %% s"circe-$module" % ver("0.11.2", "0.12.2").value
+  }
+
+  val jtsCore   = "org.locationtech.jts" % "jts-core"  % "1.16.1"
+  val scalaTest = "org.scalatest"       %% "scalatest" % "3.1.0"
 }

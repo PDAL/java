@@ -2,7 +2,7 @@
 
 [![Build Status](https://api.travis-ci.org/PDAL/java.svg)](http://travis-ci.org/PDAL/java) [![Join the chat at https://gitter.im/PDAL/PDAL](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PDAL/PDAL?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.pdal/pdal/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.pdal/pdal)
 
-Java bindings to use PDAL on JVM (supports PDAL >= 1.4).
+Java bindings to use PDAL on JVM (supports PDAL >= 2.0).
 Mac users can experience some issues with bindings that were build against a different PDAL version,
 so try to use a consistent PDAL version.
 
@@ -18,8 +18,8 @@ resolvers ++= Seq(
 )
 
 libraryDependencies ++= Seq(
-  "io.pdal" %% "pdal" % "1.9.0", // core library
-  "io.pdal" %  "pdal-native" % "1.9.0" // jni bindings
+  "io.pdal" %% "pdal" % "2.0.0", // core library
+  "io.pdal" %  "pdal-native" % "2.0.0" // jni bindings
 )
 ```
 
@@ -27,7 +27,7 @@ It's required to have native JNI binary in `java.library.path`:
 
 ```scala
 // Mac OS X example with manual JNI installation
-// cp -f native/target/resource_managed/main/native/x86_64-darwin/libpdaljni.1.4.dylib /usr/local/lib/libpdaljni.1.4.dylib
+// cp -f native/target/resource_managed/main/native/x86_64-darwin/libpdaljni.2.0.dylib /usr/local/lib/libpdaljni.2.0.dylib
 // place built binary into /usr/local/lib, and pass java.library.path to your JVM
 javaOptions += "-Djava.library.path=/usr/local/lib"
 ```
@@ -41,8 +41,8 @@ Scala API to build pipeline expressions instead of writing a raw JSON.
 
 ```scala
 libraryDependencies ++= Seq(
-  "io.pdal" %% "pdal-scala" % "1.9.0", // scala core library
-  "io.pdal" %  "pdal-native" % "1.9.0" // jni bindings
+  "io.pdal" %% "pdal-scala" % "2.0.0", // scala core library
+  "io.pdal" %  "pdal-native" % "2.0.0" // jni bindings
 )
 ```
 

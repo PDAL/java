@@ -1,9 +1,9 @@
 name := "pdal-jni"
 
 lazy val commonSettings = Seq(
-  version := "1.9.1" + Environment.versionSuffix,
-  scalaVersion := "2.11.12",
-  crossScalaVersions := Seq("2.12.8", "2.11.12"),
+  version := "2.0.0" + Environment.versionSuffix,
+  scalaVersion := "2.13.1",
+  crossScalaVersions := Seq("2.13.1", "2.12.10", "2.11.12"),
   organization := "io.pdal",
   description := "PDAL JNI bindings",
   licenses := Seq("BSD" -> url("https://github.com/PDAL/PDAL/blob/master/LICENSE.txt")),
@@ -20,13 +20,13 @@ lazy val commonSettings = Seq(
     "-language:existentials",
     "-feature"
   ),
-  test in assembly := {},
+  assembly / test := {},
   shellPrompt := { s => Project.extract(s).currentProject.id + " > " },
   commands ++= Seq(
     Commands.processJavastyleCommand("publish"),
     Commands.processJavastyleCommand("publishSigned")
   ),
-  publishArtifact in Test := false,
+  Test / publishArtifact := false,
   publishTo := {
     val nexus = "https://oss.sonatype.org/"
     if (isSnapshot.value)
@@ -47,8 +47,8 @@ lazy val commonSettings = Seq(
         </developer>
       </developers>
     ),
-  PgpKeys.useGpg in Global := true,
-  PgpKeys.gpgCommand in Global := "gpg"
+  Global / PgpKeys.useGpg := true,
+  Global / PgpKeys.gpgCommand := "gpg"
 )
 
 lazy val root = (project in file("."))
@@ -58,12 +58,12 @@ lazy val root = (project in file("."))
 lazy val `core-scala` = project
   .settings(commonSettings: _*)
   .settings(name := "pdal-scala")
-  .settings(target in javah := (sourceDirectory in nativeCompile in native).value / "include")
+  .settings(javah / target := (native / nativeCompile / sourceDirectory).value / "include")
   .settings(libraryDependencies ++= Seq(
-    Dependencies.circeCore,
-    Dependencies.circeGeneric,
-    Dependencies.circeGenericExtras,
-    Dependencies.circeParser,
+    Dependencies.circe("core").value,
+    Dependencies.circe("generic").value,
+    Dependencies.circe("generic-extras").value,
+    Dependencies.circe("parser").value,
     Dependencies.jtsCore,
     Dependencies.scalaTest % Test
   ))
@@ -74,7 +74,7 @@ lazy val `core-scala` = project
 lazy val core = project
   .settings(commonSettings: _*)
   .settings(name := "pdal")
-  .settings(target in javah := (sourceDirectory in nativeCompile in native).value / "include")
+  .settings(javah / target := (native / nativeCompile / sourceDirectory).value / "include")
   .settings(libraryDependencies += Dependencies.scalaTest % Test)
   .dependsOn(Environment.dependOnNative(native % Runtime): _*)
 
@@ -82,7 +82,7 @@ lazy val native = project
   .settings(commonSettings: _*)
   .settings(crossPaths := false)
   .settings(name := "pdal-native")
-  .settings(sourceDirectory in nativeCompile := sourceDirectory.value)
+  .settings(nativeCompile / sourceDirectory := sourceDirectory.value)
   .settings(artifactName := { (sv: ScalaVersion, module: ModuleID, artifact: Artifact) =>
     artifact.name + "-" + nativePlatform.value + "-" + module.revision + "." + artifact.extension
   })
