@@ -7,7 +7,8 @@ RUN set -ex && \
       openjdk-8-jdk \
       ca-certificates-java -y
 
-ENV JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk-amd64
+ENV JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk-amd6
+RUN update-alternatives --set java `update-alternatives --list java | grep java-8`
 
 # https://tracker.debian.org/pkg/pdal
 RUN apt-get -y install pdal libpdal-dev bash gcc g++ cmake

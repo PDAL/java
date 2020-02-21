@@ -7,8 +7,6 @@ matrix:
       language: scala
       scala:
         - 2.13.1
-      before_install:
-        - docker pull daunnc/pdal-debian:2.0.0
       services:
         - docker
 
@@ -17,8 +15,6 @@ matrix:
       language: scala
       scala:
         - 2.12.10
-      before_install:
-        - docker pull daunnc/pdal-debian:2.0.0
       services:
         - docker
 
