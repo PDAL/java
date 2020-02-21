@@ -36,6 +36,9 @@ README.html
 # VSCode files
 .vscode
 
+# Metals
+.metals
+
 # Test data files #
 
 java/data
