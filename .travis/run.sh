@@ -6,6 +6,7 @@ else
     docker run -it --net=host \
                -v $HOME/.ivy2:/root/.ivy2 \
                -v $HOME/.sbt:/root/.sbt \
+               -v $HOME/.coursier:/root/.coursier \
                -v $TRAVIS_BUILD_DIR:/pdal-java \
                -e TRAVIS_SCALA_VERSION=$TRAVIS_SCALA_VERSION \
                -e TRAVIS_COMMIT=$TRAVIS_COMMIT \
