@@ -21,12 +21,14 @@ docker run -it --rm \
   -v $PWD:/pdal-java \
   -v $HOME/.ivy2:/root/.ivy2 \
   -v $HOME/.sbt:/root/.sbt \
+  -v $HOME/.coursier:/root/.coursier \
  daunnc/pdal-debian:2.0.1 bash -c "cd ./pdal-java; ./scripts/pack-native.sh --suffix=${PDAL_VERSION_SUFFIX}"
 
 # docker run -it --rm \
 #   -v $PWD:/workdir \
 #   -v $HOME/.ivy2:/root/.ivy2 \
 #   -v $HOME/.sbt:/root/.sbt \
+#   -v $HOME/.coursier:/root/.coursier \
 #  daunnc/crossbuild-pdal:latest bash -c "./scripts/pack-native.sh --suffix=${PDAL_VERSION_SUFFIX}"
 
 # Apple cross compilation
