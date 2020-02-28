@@ -42,7 +42,7 @@ JNIEXPORT jstring JNICALL Java_io_pdal_PointView_getCrsProj4
 /*
  * Class:     io_pdal_PointView
  * Method:    getCrsWKT
- * Signature: (IZ)Ljava/lang/String;
+ * Signature: (Z)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_io_pdal_PointView_getCrsWKT
   (JNIEnv *, jobject, jboolean);
@@ -62,6 +62,14 @@ JNIEXPORT jbyteArray JNICALL Java_io_pdal_PointView_getPackedPoint
  */
 JNIEXPORT jbyteArray JNICALL Java_io_pdal_PointView_getPackedPoints
   (JNIEnv *, jobject, jobjectArray);
+
+/*
+ * Class:     io_pdal_PointView
+ * Method:    getTriangularMesh
+ * Signature: (Ljava/lang/String;)Lio/pdal/TriangularMesh;
+ */
+JNIEXPORT jobject JNICALL Java_io_pdal_PointView_getTriangularMesh
+  (JNIEnv *, jobject, jstring);
 
 /*
  * Class:     io_pdal_PointView

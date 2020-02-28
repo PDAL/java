@@ -38,7 +38,7 @@
 
 #include "io_pdal_Pipeline.h"
 #include "JavaPipeline.hpp"
-#include "JavaIterator.hpp"
+#include "JavaSetIterator.hpp"
 #include "Accessors.hpp"
 
 using libpdaljava::Pipeline;

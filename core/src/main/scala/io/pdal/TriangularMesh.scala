@@ -1,5 +1,5 @@
 /******************************************************************************
-  * Copyright (c) 2016, hobu Inc.  (info@hobu.co)
+  * Copyright (c) 2020, hobu Inc.  (info@hobu.co)
   *
   * All rights reserved.
   *
@@ -33,51 +33,13 @@
 
 package io.pdal
 
-import org.scalatest.BeforeAndAfterAll
-import org.scalatest.funspec.AnyFunSpec
-import org.scalatest.matchers.should.Matchers
+import java.util
 
-trait TestEnvironmentSpec extends AnyFunSpec with Matchers with BeforeAndAfterAll {
-  def getJson(resource: String): String = {
-    val stream = getClass.getResourceAsStream(resource)
-    val lines = scala.io.Source.fromInputStream(stream).getLines
-    val json = lines.mkString(" ")
-    stream.close()
-    json
-  }
-
-  val json = getJson("/las.json")
-  val jsonDelaunay = getJson("/las-delaunay.json")
-  val badJson =
-    """
-      |{
-      |  "pipeline": [
-      |    "nofile.las",
-      |    {
-      |        "type": "filters.sort",
-      |        "dimension": "X"
-      |    }
-      |  ]
-      |}
-     """.stripMargin
-
-  val proj4String    = "+proj=lcc +lat_1=43 +lat_2=45.5 +lat_0=41.75 +lon_0=-120.5 +x_0=400000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
-  val proj4StringNew = "+proj=lcc +lat_0=41.75 +lon_0=-120.5 +lat_1=43 +lat_2=45.5 +x_0=400000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
-
-  val pipeline: Pipeline         = Pipeline(json)
-  val pipelineDelaunay: Pipeline = Pipeline(jsonDelaunay)
-
-  val expectedDelaunayPlyTriangles: List[Triangle] = {
-    val stream = getClass.getResourceAsStream("/delaunay.ply")
-    val lines = scala.io.Source.fromInputStream(stream).getLines drop 1088
-    val triangles =
-      lines.map { l =>
-        val List(a, b, c) = l.split(" ").toList.tail.map(_.toInt)
-        Triangle(a, b, c)
-      }.toList
-    stream.close()
-    triangles
-  }
-
-  override def afterAll(): Unit = { pipeline.dispose(); pipelineDelaunay.dispose() }
+class TriangularMesh extends util.Iterator[Triangle] with Native {
+  @native def size(): Int
+  @native def get(idx: Long): Triangle
+  @native def hasNext: Boolean
+  @native def next(): Triangle
+  @native def asArray(): Array[Triangle]
+  @native def dispose(): Unit
 }

@@ -35,11 +35,13 @@
 #include <vector>
 #include "io_pdal_PointView.h"
 #include "JavaPipeline.hpp"
+#include "JavaTriangularMeshIterator.hpp"
 #include "PointViewRawPtr.hpp"
 #include "Accessors.hpp"
 
 using libpdaljava::Pipeline;
 using libpdaljava::PointViewRawPtr;
+using libpdaljava::TriangularMeshIterator;
 
 using pdal::PointView;
 using pdal::PointViewPtr;
@@ -195,6 +197,23 @@ JNIEXPORT jbyteArray JNICALL Java_io_pdal_PointView_getPackedPoints
     delete[] buf;
 
     return array;
+}
+
+JNIEXPORT jobject JNICALL Java_io_pdal_PointView_getTriangularMesh
+  (JNIEnv *env, jobject obj, jstring name)
+{
+    PointViewRawPtr *pvrp = getHandle<PointViewRawPtr>(env, obj);
+    PointViewPtr pv = pvrp->shared_pointer;
+    std::string cname = std::string(env->GetStringUTFChars(name, 0));
+    TriangularMeshIterator *it = new TriangularMeshIterator(pv->mesh(cname));
+
+    jclass meshClass = env->FindClass("io/pdal/TriangularMesh");
+    jmethodID meshCtor = env->GetMethodID(meshClass, "<init>", "()V");
+    jobject mi = env->NewObject(meshClass, meshCtor);
+
+    setHandle(env, mi, it);
+
+    return mi;
 }
 
 JNIEXPORT void JNICALL Java_io_pdal_PointView_dispose

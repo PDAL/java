@@ -152,5 +152,6 @@ class PointView extends Native {
   @native def getCrsWKT(pretty: Boolean): String
   @native def getPackedPoint(idx: Long, dims: Array[DimType]): Array[Byte]
   @native def getPackedPoints(dims: Array[DimType]): Array[Byte]
+  @native def getTriangularMesh(name: String = ""): TriangularMesh
   @native def dispose(): Unit
 }

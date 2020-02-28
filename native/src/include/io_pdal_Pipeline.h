@@ -9,7 +9,7 @@ extern "C" {
 #endif
 /*
  * Class:     io_pdal_Pipeline
- * Method:    initialise
+ * Method:    initialize
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_io_pdal_Pipeline_initialize

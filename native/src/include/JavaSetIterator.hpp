@@ -31,45 +31,47 @@
 * OF SUCH DAMAGE.
 ****************************************************************************/
 
-#include <stdio.h>
-#include "io_pdal_PointViewIterator.h"
+#include <iostream>
+#include <string>
+#include <set>
 #include "JavaPipeline.hpp"
-#include "JavaSetIterator.hpp"
-#include "PointViewRawPtr.hpp"
-#include "Accessors.hpp"
 
-using libpdaljava::PointViewIterator;
-using libpdaljava::PointViewRawPtr;
+#ifndef _JAVASETITERATOR_H_INCLUDED_
+#define _JAVASETITERATOR_H_INCLUDED_
 
-JNIEXPORT jboolean JNICALL Java_io_pdal_PointViewIterator_hasNext
-  (JNIEnv *env, jobject obj)
+using pdal::PointViewLess;
+using pdal::PointViewPtr;
+
+namespace libpdaljava
 {
-    PointViewIterator *it = getHandle<PointViewIterator>(env, obj);
-    return it->hasNext();
+template <class K, class V>
+class JavaSetIterator {
+public:
+	JavaSetIterator() {}
+	JavaSetIterator(const std::set<K, V> set)
+        : container{set}, curr_pos{0}
+    { }
+    JavaSetIterator(const std::set<K, V> *set)
+        : container{*set}, curr_pos{0}
+    { }
+	bool hasNext() const {
+		return curr_pos < container.size();
+	}
+	K next() {
+	    if(!hasNext())
+            throw java_error("iterator is out of bounds");
+
+	    return *std::next(container.begin(), curr_pos++);
+    }
+    int size() const {
+        return container.size();
+    }
+
+private:
+	std::set<K, V> container;
+	unsigned int curr_pos;
+};
+
+typedef JavaSetIterator<PointViewPtr, PointViewLess> PointViewIterator;
 }
-
-JNIEXPORT jobject JNICALL Java_io_pdal_PointViewIterator_next
-  (JNIEnv *env, jobject obj)
-{
-    PointViewIterator *it = getHandle<PointViewIterator>(env, obj);
-
-    PointViewPtr pvptr = it->next();
-
-    jclass jpvClass = env->FindClass("io/pdal/PointView");
-    jmethodID jpvCtor = env->GetMethodID(jpvClass, "<init>", "()V");
-    jobject jpv = env->NewObject(jpvClass, jpvCtor);
-
-    PointViewRawPtr *pvrp = new PointViewRawPtr(pvptr);
-
-    setHandle(env, jpv, pvrp);
-
-    return jpv;
-}
-
-JNIEXPORT void JNICALL Java_io_pdal_PointViewIterator_dispose
-  (JNIEnv *env, jobject obj)
-{
-    PointViewIterator *it = getHandle<PointViewIterator>(env, obj);
-    setHandle<int>(env, obj, 0);
-    delete it;
-}
+#endif

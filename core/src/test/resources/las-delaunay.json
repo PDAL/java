@@ -1,0 +1,11 @@
+{
+  "pipeline":[
+    {
+      "filename":"core/src/test/resources/1.2-with-color.las",
+      "spatialreference":"EPSG:2993"
+    },
+    {
+      "type": "filters.delaunay"
+    }
+  ]
+}

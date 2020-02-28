@@ -187,5 +187,50 @@ class PipelineSpec extends TestEnvironmentSpec {
 
       pipeline.dispose()
     }
+
+    it("should extract delaunay mesh in iterative fashion") {
+      pipelineDelaunay.validate() should be (true)
+      pipelineDelaunay.execute()
+      val pvi = pipelineDelaunay.getPointViews()
+      val pv = pvi.next()
+      val mesh = pv.getTriangularMesh()
+      val actual = mesh.asScala.toList
+
+      actual should be (expectedDelaunayPlyTriangles)
+
+      mesh.dispose()
+      pv.dispose()
+      pvi.dispose()
+    }
+
+    it("should extract delaunay mesh as a bulk") {
+      val pvi = pipelineDelaunay.getPointViews()
+      val pv = pvi.next()
+      val mesh = pv.getTriangularMesh()
+
+      val actual = mesh.asArray().toList
+
+      actual should be (expectedDelaunayPlyTriangles)
+
+      mesh.dispose()
+      pv.dispose()
+      pvi.dispose()
+    }
+
+    it("should extract delaunay mesh directly by a triangle identifier") {
+      val pvi = pipelineDelaunay.getPointViews()
+      val pv = pvi.next()
+      val mesh = pv.getTriangularMesh()
+
+      var i = 0
+      while(i < mesh.size) {
+        mesh.get(i) shouldBe expectedDelaunayPlyTriangles(i)
+        i += 1
+      }
+
+      mesh.dispose()
+      pv.dispose()
+      pvi.dispose()
+    }
   }
 }

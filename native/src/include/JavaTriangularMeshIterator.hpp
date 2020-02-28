@@ -1,5 +1,5 @@
 /******************************************************************************
-* Copyright (c) 2016, hobu Inc.  (info@hobu.co)
+* Copyright (c) 2020, hobu Inc.  (info@hobu.co)
 *
 * All rights reserved.
 *
@@ -32,32 +32,30 @@
 ****************************************************************************/
 
 #include <iostream>
-#include <string>
-#include <set>
 #include "JavaPipeline.hpp"
 
-#ifndef _JAVAITERATOR_H_INCLUDED_
-#define _JAVAITERATOR_H_INCLUDED_
+#ifndef _JAVATRIANGULARITERATOR_H_INCLUDED_
+#define _JAVATRIANGULARITERATOR_H_INCLUDED_
 
-using pdal::PointViewLess;
-using pdal::PointViewPtr;
+using pdal::Triangle;
+using pdal::TriangularMesh;
+using pdal::PointId;
 
 namespace libpdaljava
 {
-template <class K, class V>
-class JavaIterator {
+class TriangularMeshIterator {
 public:
-	JavaIterator() {}
-	JavaIterator(const std::set<K, V> set)
-        : container{set}, curr_pos{0}
+	TriangularMeshIterator() {}
+	TriangularMeshIterator(const TriangularMesh mesh)
+        : container{mesh}, curr_pos{0}
     { }
-    JavaIterator(const std::set<K, V> *set)
-        : container{*set}, curr_pos{0}
+    TriangularMeshIterator(const TriangularMesh * mesh)
+        : container{*mesh}, curr_pos{0}
     { }
 	bool hasNext() const {
 		return curr_pos < container.size();
 	}
-	K next() {
+	Triangle next() {
 	    if(!hasNext())
             throw java_error("iterator is out of bounds");
 
@@ -66,12 +64,14 @@ public:
     int size() const {
         return container.size();
     }
+    const Triangle& get(PointId id) const { 
+        return container[id]; 
+    }
 
 private:
-	std::set<K, V> container;
+	TriangularMesh container;
 	unsigned int curr_pos;
 };
 
-typedef JavaIterator<PointViewPtr, PointViewLess> PointViewIterator;
 }
 #endif
