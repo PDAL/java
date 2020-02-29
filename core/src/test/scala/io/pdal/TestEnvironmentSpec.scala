@@ -46,9 +46,9 @@ trait TestEnvironmentSpec extends AnyFunSpec with Matchers with BeforeAndAfterAl
     json
   }
 
-  val json = getJson("/las.json")
-  val jsonDelaunay = getJson("/las-delaunay.json")
-  val badJson =
+  val json: String         = getJson("/las.json")
+  val jsonDelaunay: String = getJson("/las-delaunay.json")
+  val badJson: String      =
     """
       |{
       |  "pipeline": [

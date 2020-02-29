@@ -212,7 +212,7 @@ JNIEXPORT jobject JNICALL Java_io_pdal_PointView_getTriangularMesh
     
     if(m == NULL)
     {
-        return throwExecutionException(env, "No mesh was probably generated. Try to add a mesh filter into the PDAL Pipeline.");
+        return throwExecutionException(env, "No mesh was generated. Check that the appropriate filter is a part of a PDAL Pipeline.");
     }
 
     TriangularMeshIterator *it = new TriangularMeshIterator(m);

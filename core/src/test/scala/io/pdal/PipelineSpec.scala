@@ -82,7 +82,7 @@ class PipelineSpec extends TestEnvironmentSpec {
     it("should read a valid packed data") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
-      val layout = pv.layout
+      val layout = pv.layout()
       val arr = pv.getPackedPoint(0, Array(DimType.X, DimType.Y))
       val (xarr, yarr) = arr.take(layout.dimSize(DimType.X).toInt) -> arr.drop(layout.dimSize(DimType.Y).toInt)
 
@@ -106,7 +106,7 @@ class PipelineSpec extends TestEnvironmentSpec {
     it("should read all packed points and grab only one point out of it") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
-      pv.get(3, pv.getPackedPoints) should be (pv.getPackedPoint(3))
+      pv.get(3, pv.getPackedPoints()) should be (pv.getPackedPoint(3))
       pv.close()
       pvi.close()
     }
@@ -122,7 +122,7 @@ class PipelineSpec extends TestEnvironmentSpec {
     it("should read correctly data as a packed point") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
-      val layout = pv.layout
+      val layout = pv.layout()
       val arr = pv.getPackedPoint(0)
       layout.dimTypes().foreach { dt => pv.get(0, dt).array() should be(pv.get(arr, dt).array())}
       layout.close()
@@ -133,7 +133,7 @@ class PipelineSpec extends TestEnvironmentSpec {
     it("layout should have a valid number of dims") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
-      pv.layout.dimTypes().length should be (16)
+      pv.layout().dimTypes().length should be (16)
       pv.close()
       pvi.close()
     }
@@ -149,8 +149,8 @@ class PipelineSpec extends TestEnvironmentSpec {
     it("dim sizes should be of a valid size") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
-      val layout = pv.layout
-      layout.dimTypes().map(pv.layout.dimSize(_)).sum should be (layout.pointSize())
+      val layout = pv.layout()
+      layout.dimTypes().map(pv.layout().dimSize(_)).sum should be (layout.pointSize())
       layout.close()
       pv.close()
       pvi.close()
@@ -159,8 +159,8 @@ class PipelineSpec extends TestEnvironmentSpec {
     it("should read all packed points valid") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
-      val layout = pv.layout
-      pv.getPackedPoints.length should be (pv.length * layout.pointSize())
+      val layout = pv.layout()
+      pv.getPackedPoints().length should be (pv.length * layout.pointSize())
       layout.close()
       pv.close()
       pvi.close()

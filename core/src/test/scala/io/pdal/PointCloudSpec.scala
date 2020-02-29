@@ -45,7 +45,7 @@ class PointCloudSpec extends TestEnvironmentSpec {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
 
-      packedPoints = pv.getPointCloud
+      packedPoints = pv.getPointCloud()
 
       pv.close()
       pvi.close()
@@ -72,7 +72,7 @@ class PointCloudSpec extends TestEnvironmentSpec {
     it("should read a valid packed data") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
-      val layout = pv.layout
+      val layout = pv.layout()
       val arr = pv.getPackedPoint(0, Array(DimType.X, DimType.Y))
       val (xarr, yarr) = arr.take(layout.dimSize(DimType.X).toInt) -> arr.drop(layout.dimSize(DimType.Y).toInt)
 
@@ -100,7 +100,7 @@ class PointCloudSpec extends TestEnvironmentSpec {
     it("should read all packed points and grab only one point out of it") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
-      pv.get(3, pv.getPackedPoints) should be (packedPoints.get(3))
+      pv.get(3, pv.getPackedPoints()) should be (packedPoints.get(3))
       pv.close()
       pvi.close()
     }
@@ -126,7 +126,7 @@ class PointCloudSpec extends TestEnvironmentSpec {
     it("layout should have a valid number of dims") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
-      pv.layout.dimTypes().length should be (packedPoints.dimTypes.size)
+      pv.layout().dimTypes().length should be (packedPoints.dimTypes.size)
       pv.close()
       pvi.close()
     }
@@ -142,8 +142,8 @@ class PointCloudSpec extends TestEnvironmentSpec {
     it("dim sizes should be of a valid size") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
-      val layout = pv.layout
-      layout.dimTypes().map(pv.layout.dimSize(_)).sum should be (packedPoints.pointSize)
+      val layout = pv.layout()
+      layout.dimTypes().map(pv.layout().dimSize(_)).sum should be (packedPoints.pointSize)
       layout.close()
       pv.close()
       pvi.close()
@@ -153,7 +153,7 @@ class PointCloudSpec extends TestEnvironmentSpec {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
       val length = packedPoints.bytes.length
-      pv.getPackedPoints.length should be (length)
+      pv.getPackedPoints().length should be (length)
       pv.close()
       pvi.close()
     }
@@ -161,7 +161,7 @@ class PointCloudSpec extends TestEnvironmentSpec {
     it("should get correct points and all values") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
-      val length = pv.length
+      val length = pv.length()
       val dimTypes = packedPoints.dimTypes.values().asScala.map(_.dimType)
       for (i <- 0 until length) {
         packedPoints.get(i) should be (pv.getPackedPoint(i))
@@ -195,7 +195,7 @@ class PointCloudSpec extends TestEnvironmentSpec {
       pipeline.execute()
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
-      val length = pv.length
+      val length = pv.length()
 
       length should be (expected.size)
 
@@ -217,9 +217,9 @@ class PointCloudSpec extends TestEnvironmentSpec {
 
         val pcs = pv.getPointCloud(idx, subsetDT)
 
-        val pcsX = pc.getDouble(idx, "X")
-        val pcsZ = pc.getDouble(idx, "Z")
-        val pcsTest = pc.getDouble(idx, "TEST")
+        val pcsX = pcs.getDouble(idx, "X")
+        val pcsZ = pcs.getDouble(idx, "Z")
+        val pcsTest = pcs.getDouble(idx, "TEST")
 
         x should be(pcX)
         x should be(pvX)
@@ -238,7 +238,5 @@ class PointCloudSpec extends TestEnvironmentSpec {
     }
   }
 
-  override def beforeAll() = {
-    pipeline.execute()
-  }
+  override def beforeAll(): Unit = pipeline.execute()
 }
