@@ -123,7 +123,7 @@ JNIEXPORT jlong JNICALL Java_io_pdal_PointLayout_pointSize
     return pl->pointSize();
 }
 
-JNIEXPORT void JNICALL Java_io_pdal_PointLayout_dispose
+JNIEXPORT void JNICALL Java_io_pdal_PointLayout_close
   (JNIEnv *env, jobject obj)
 {
     // A bit unclear why we can't remove this pointer, probably wrapping here makes sense as well

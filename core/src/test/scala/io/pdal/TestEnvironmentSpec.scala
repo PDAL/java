@@ -79,5 +79,5 @@ trait TestEnvironmentSpec extends AnyFunSpec with Matchers with BeforeAndAfterAl
     triangles
   }
 
-  override def afterAll(): Unit = { pipeline.dispose(); pipelineDelaunay.dispose() }
+  override def afterAll(): Unit = { pipeline.close(); pipelineDelaunay.close() }
 }

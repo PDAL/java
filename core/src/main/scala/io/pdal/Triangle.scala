@@ -34,6 +34,13 @@
 package io.pdal
 
 /** Triangles with PointIds that correspond to PointIds from the original PDAL PointCloud table. */
-case class Triangle(a: Int, b: Int, c: Int) {
-  def tupled: (Int, Int, Int) = (a, b, c)
+case class Triangle(a: Int, b: Int, c: Int) extends Product3[Int, Int, Int] {
+  def _1: Int = a
+  def _2: Int = b
+  def _3: Int = c
+}
+
+object Triangle {
+  implicit def tupToTriangle(tup: (Int, Int, Int)): Triangle = Triangle(tup._1, tup._2, tup._3)
+  implicit def triangleToTup(triangle: Triangle): (Int, Int, Int) = (triangle.a, triangle.b, triangle.c)
 }

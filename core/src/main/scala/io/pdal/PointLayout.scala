@@ -63,5 +63,5 @@ class PointLayout extends Native {
     */
   @native def dimPackedOffset(id: String): Long
   @native def pointSize(): Long
-  @native def dispose(): Unit
+  @native def close(): Unit
 }

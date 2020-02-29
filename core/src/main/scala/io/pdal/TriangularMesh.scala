@@ -41,5 +41,5 @@ class TriangularMesh extends util.Iterator[Triangle] with Native {
   @native def hasNext: Boolean
   @native def next(): Triangle
   @native def asArray(): Array[Triangle]
-  @native def dispose(): Unit
+  @native def close(): Unit
 }

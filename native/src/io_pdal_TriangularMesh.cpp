@@ -115,7 +115,7 @@ JNIEXPORT jobjectArray JNICALL Java_io_pdal_TriangularMesh_asArray
 }
 
 
-JNIEXPORT void JNICALL Java_io_pdal_TriangularMesh_dispose
+JNIEXPORT void JNICALL Java_io_pdal_TriangularMesh_close
   (JNIEnv *env, jobject obj)
 {
     TriangularMeshIterator *it = getHandle<TriangularMeshIterator>(env, obj);

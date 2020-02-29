@@ -49,10 +49,10 @@ JNIEXPORT jobjectArray JNICALL Java_io_pdal_TriangularMesh_asArray
 
 /*
  * Class:     io_pdal_TriangularMesh
- * Method:    dispose
+ * Method:    close
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_io_pdal_TriangularMesh_dispose
+JNIEXPORT void JNICALL Java_io_pdal_TriangularMesh_close
   (JNIEnv *, jobject);
 
 #ifdef __cplusplus

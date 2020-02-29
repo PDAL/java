@@ -47,16 +47,16 @@ class PointCloudSpec extends TestEnvironmentSpec {
 
       packedPoints = pv.getPointCloud
 
-      pv.dispose()
-      pvi.dispose()
+      pv.close()
+      pvi.close()
     }
 
     it("should have a valid point view size") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
       pv.length should be (packedPoints.length)
-      pv.dispose()
-      pvi.dispose()
+      pv.close()
+      pvi.close()
     }
 
     it("should read a valid (X, Y, Z) data") {
@@ -65,8 +65,8 @@ class PointCloudSpec extends TestEnvironmentSpec {
       pv.getX(0) should be (packedPoints.getX(0))
       pv.getY(0) should be (packedPoints.getY(0))
       pv.getZ(0) should be (packedPoints.getZ(0))
-      pv.dispose()
-      pvi.dispose()
+      pv.close()
+      pvi.close()
     }
 
     it("should read a valid packed data") {
@@ -84,33 +84,33 @@ class PointCloudSpec extends TestEnvironmentSpec {
       ByteBuffer.wrap(xmarr).order(ByteOrder.nativeOrder()).getDouble should be (pv.getX(0))
       ByteBuffer.wrap(ymarr).order(ByteOrder.nativeOrder()).getDouble should be (pv.getY(0))
 
-      layout.dispose()
-      pv.dispose()
-      pvi.dispose()
+      layout.close()
+      pv.close()
+      pvi.close()
     }
 
     it("should read the whole packed point and grab only one dim") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
       packedPoints.get(0, DimType.Y).getDouble should be (pv.getY(0))
-      pv.dispose()
-      pvi.dispose()
+      pv.close()
+      pvi.close()
     }
 
     it("should read all packed points and grab only one point out of it") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
       pv.get(3, pv.getPackedPoints) should be (packedPoints.get(3))
-      pv.dispose()
-      pvi.dispose()
+      pv.close()
+      pvi.close()
     }
 
     it("should read a valid value by name") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
       pv.getByte(0, "ReturnNumber") should be (packedPoints.getByte(0, "ReturnNumber"))
-      pv.dispose()
-      pvi.dispose()
+      pv.close()
+      pvi.close()
     }
 
     it("should read correctly data as a packed point") {
@@ -119,24 +119,24 @@ class PointCloudSpec extends TestEnvironmentSpec {
       packedPoints.dimTypes.asScala.foreach { case (_, sdt) =>
         pv.get(0, sdt.dimType) should be (packedPoints.get(0, sdt))
       }
-      pv.dispose()
-      pvi.dispose()
+      pv.close()
+      pvi.close()
     }
 
     it("layout should have a valid number of dims") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
       pv.layout.dimTypes().length should be (packedPoints.dimTypes.size)
-      pv.dispose()
-      pvi.dispose()
+      pv.close()
+      pvi.close()
     }
 
     it("should find a dim by name") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
       pv.findDimType("Red") should be (packedPoints.findDimType("Red"))
-      pv.dispose()
-      pvi.dispose()
+      pv.close()
+      pvi.close()
     }
 
     it("dim sizes should be of a valid size") {
@@ -144,9 +144,9 @@ class PointCloudSpec extends TestEnvironmentSpec {
       val pv = pvi.next()
       val layout = pv.layout
       layout.dimTypes().map(pv.layout.dimSize(_)).sum should be (packedPoints.pointSize)
-      layout.dispose()
-      pv.dispose()
-      pvi.dispose()
+      layout.close()
+      pv.close()
+      pvi.close()
     }
 
     it("should read all packed points valid") {
@@ -154,8 +154,8 @@ class PointCloudSpec extends TestEnvironmentSpec {
       val pv = pvi.next()
       val length = packedPoints.bytes.length
       pv.getPackedPoints.length should be (length)
-      pv.dispose()
-      pvi.dispose()
+      pv.close()
+      pvi.close()
     }
 
     it("should get correct points and all values") {
@@ -172,8 +172,8 @@ class PointCloudSpec extends TestEnvironmentSpec {
           packedPoints.get(i, dt).array() should be (pv.get(i, dt).array())
         }
       }
-      pv.dispose()
-      pvi.dispose()
+      pv.close()
+      pvi.close()
     }
 
     it("should work as expected with csv files") {
@@ -234,7 +234,7 @@ class PointCloudSpec extends TestEnvironmentSpec {
         test should be(pcsTest)
       }
 
-      pipeline.dispose()
+      pipeline.close()
     }
   }
 

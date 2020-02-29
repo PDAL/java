@@ -41,7 +41,7 @@ class Pipeline(val json: String) extends Native {
   @native def initialize(): Unit
   @native def execute(): Unit
   @native def getPointViews(): PointViewIterator
-  @native def dispose(): Unit
+  @native def close(): Unit
   @native def getMetadata(): String
   @native def getSchema(): String
   @native def validate(): Boolean

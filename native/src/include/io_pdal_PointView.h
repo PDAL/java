@@ -73,10 +73,10 @@ JNIEXPORT jobject JNICALL Java_io_pdal_PointView_getTriangularMesh
 
 /*
  * Class:     io_pdal_PointView
- * Method:    dispose
+ * Method:    close
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_io_pdal_PointView_dispose
+JNIEXPORT void JNICALL Java_io_pdal_PointView_close
   (JNIEnv *, jobject);
 
 #ifdef __cplusplus

@@ -33,10 +33,10 @@ JNIEXPORT jobject JNICALL Java_io_pdal_Pipeline_getPointViews
 
 /*
  * Class:     io_pdal_Pipeline
- * Method:    dispose
+ * Method:    close
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_io_pdal_Pipeline_dispose
+JNIEXPORT void JNICALL Java_io_pdal_Pipeline_close
   (JNIEnv *, jobject);
 
 /*
