@@ -16,7 +16,6 @@
 
 package io.pdal.pipeline
 
-import io.circe._
 import io.circe.syntax._
 import io.circe.parser._
 
@@ -47,8 +46,8 @@ class PipelineExpressionsSpec extends AnyFunSpec with Matchers with BeforeAndAft
         """.stripMargin
 
 
-      val pc: PipelineConstructor = LasRead("/path/to/las") ~ CropFilter() ~ LasWrite("/path/to/new/las")
-      val pipelineJson: Json = LasRead("/path/to/las") ~ CropFilter() ~ LasWrite("/path/to/new/las")
+      val pc = ReadLas("/path/to/las") ~ FilterCrop() ~ WriteLas("/path/to/new/las")
+      val pipelineJson = pc.asJson
 
       parse(expected) match {
         case Right(r) => pipelineJson shouldBe r
@@ -76,7 +75,7 @@ class PipelineExpressionsSpec extends AnyFunSpec with Matchers with BeforeAndAft
           |}
         """.stripMargin
 
-      val pipelineJson: Json = LasRead("/path/to/las") ~ RawExpr(Map("type" -> "filters.crop").asJson) ~ LasWrite("/path/to/new/las")
+      val pipelineJson = ReadLas("/path/to/las") ~ RawExpr(Map("type" -> "filters.crop").asJson) ~ WriteLas("/path/to/new/las") asJson
 
       parse(expected) match {
         case Right(r) => pipelineJson shouldBe r

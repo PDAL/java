@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Expose PDAL Mesh API [#27](https://github.com/PDAL/java/pull/27)
 
+### Changed
+- **Breaking change** // Rename Scala DSL case classes [#28](https://github.com/PDAL/java/issues/28)
+
 ## [2.0.0] - 2020-01-14
 ### Changed 
 - PDAL 2.0 compatible release.
@@ -62,6 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.7.0-RC2] - 2018-04-15
 ### Added
 - An [examples](https://github.com/PDAL/java/tree/1.7.0-RC2/examples/pdal-jni) project.
+
 ### Changed
 - Release process improvements.
 

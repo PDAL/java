@@ -19,11 +19,10 @@ package io.pdal.pipeline
 import io.pdal.PointCloud
 import org.locationtech.jts.geom.Coordinate
 
-object Implicits extends Implicits
+object Implicits extends Implicits with Serializable
 
-trait Implicits extends Serializable {
+trait Implicits {
   implicit class withPointCloudMethods(pointCloud: PointCloud) {
-    def getCoordinate(i: Int) =
-      new Coordinate(pointCloud.getX(i), pointCloud.getY(i), pointCloud.getZ(i))
+    def getCoordinate(i: Int) = new Coordinate(pointCloud.getX(i), pointCloud.getY(i), pointCloud.getZ(i))
   }
 }

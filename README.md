@@ -18,8 +18,8 @@ resolvers ++= Seq(
 )
 
 libraryDependencies ++= Seq(
-  "io.pdal" %% "pdal" % "2.0.0", // core library
-  "io.pdal" %  "pdal-native" % "2.0.0" // jni bindings
+  "io.pdal" %% "pdal" % "2.1.0", // core library
+  "io.pdal" %  "pdal-native" % "2.1.0" // jni bindings
 )
 ```
 
@@ -41,8 +41,8 @@ Scala API to build pipeline expressions instead of writing a raw JSON.
 
 ```scala
 libraryDependencies ++= Seq(
-  "io.pdal" %% "pdal-scala" % "2.0.0", // scala core library
-  "io.pdal" %  "pdal-native" % "2.0.0" // jni bindings
+  "io.pdal" %% "pdal-scala" % "2.1.0", // scala core library
+  "io.pdal" %  "pdal-native" % "2.1.0" // jni bindings
 )
 ```
 
@@ -74,11 +74,11 @@ val expected =
   """.stripMargin
   
 // The same, but using scala DSL
-val pc: PipelineConstructor = LasRead("/path/to/las") ~ CropFilter() ~ LasWrite("/path/to/new/las")
+val pc = ReadLas("/path/to/las") ~ FilterCrop() ~ WriteLas("/path/to/new/las")
 
 // The same, but using RawExpr, to support not implemented PDAL Pipeline API features
 // RawExpr accepts a circe.Json type, which can be a json object of any desired complexity
-val pcWithRawExpr = LasRead("/path/to/las") ~ RawExpr(Map("type" -> "filters.crop").asJson) ~ LasWrite("/path/to/new/las") 
+val pcWithRawExpr = ReadLas("/path/to/las") ~ RawExpr(Map("type" -> "filters.crop").asJson) ~ WriteLas("/path/to/new/las") 
 ```
 
 ### Demo project example

@@ -57,6 +57,8 @@ lazy val root = (project in file("."))
 
 lazy val `core-scala` = project
   .settings(commonSettings: _*)
+  .settings(Dependencies.macroSettings)
+  .settings(Dependencies.licenseSettings)
   .settings(name := "pdal-scala")
   .settings(javah / target := (native / nativeCompile / sourceDirectory).value / "include")
   .settings(libraryDependencies ++= Seq(
@@ -67,8 +69,6 @@ lazy val `core-scala` = project
     Dependencies.jtsCore,
     Dependencies.scalaTest % Test
   ))
-  .settings(headerLicense := Some(HeaderLicense.ALv2("2017", "Azavea")))
-  .settings(licenses := Seq("Apache-2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0.html")))
   .dependsOn(core)
 
 lazy val core = project
