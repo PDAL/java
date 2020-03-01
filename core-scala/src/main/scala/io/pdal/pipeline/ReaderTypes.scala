@@ -21,10 +21,12 @@ sealed trait ReaderType extends ExprType { val `type` = "readers" }
 object ReaderTypes {
   case object bpf extends ReaderType
   case object buffer extends ReaderType
+  case object ept extends ReaderType
+  case object e57 extends ReaderType
   case object faux extends ReaderType
   case object gdal extends ReaderType
   case object geowave extends ReaderType
-  case object greyhound extends ReaderType
+  case object i3s extends ReaderType
   case object ilvis2 extends ReaderType
   case object las extends ReaderType
   case object matlab extends ReaderType
@@ -40,18 +42,21 @@ object ReaderTypes {
   case object ply extends ReaderType
   case object pts extends ReaderType
   case object qfit extends ReaderType
+  case object rdb extends ReaderType
   case object rxp extends ReaderType
   case object sbet extends ReaderType
+  case object slpk extends ReaderType
   case object sqlite extends ReaderType
   case object text extends ReaderType
+  case object tiledb extends ReaderType
   case object tindex extends ReaderType
   case object terrasolid extends ReaderType
   case object icebridge extends ReaderType
 
   lazy val all = List(
-    bpf, buffer, faux, gdal, geowave, greyhound, ilvis2, las, matlab, mbio, mrsid, nitf,
-    numpy, oci, optech, osg, pcd, pgpointcloud, ply, pts, qfit, rxp, sbet, sqlite, text,
-    tindex, terrasolid, icebridge
+    bpf, buffer, ept, faux, gdal, geowave, i3s, ilvis2, las, matlab, mbio, mrsid, nitf,
+    numpy, oci, optech, osg, pcd, pgpointcloud, ply, pts, qfit, rdb, rxp, sbet, slpk, sqlite, text,
+    tiledb, tindex, terrasolid, icebridge
   )
 
   def fromName(name: String): ReaderType =

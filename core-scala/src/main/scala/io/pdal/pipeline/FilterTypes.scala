@@ -28,6 +28,7 @@ object FilterTypes {
   case object cpd extends FilterType
   case object crop extends FilterType
   case object decimation extends FilterType
+  case object delaunay extends FilterType
   case object divider extends FilterType
   case object eigenvalues extends FilterType
   case object estimaterank extends FilterType
@@ -73,7 +74,7 @@ object FilterTypes {
 
   lazy val all = List(
     approximatecoplanar, chipper, cluster, colorinterp, colorization, computerange, crop,
-    cpd, decimation, divider, eigenvalues, estimaterank, ferry, greedyprojection, gridprojection, groupby,
+    cpd, decimation, delaunay, divider, eigenvalues, estimaterank, ferry, greedyprojection, gridprojection, groupby,
     hag, head, hexbin, icp, iqr, kdistance, locate, lof, mad, matlab, merge, mongus, mortonorder, movingleastsquares,
     normal, outlier, overlay, pclblock, pmf, poisson, python, radialdensity, randomize, range, reprojection,
     sample, smrf, sort, splitter, stats, transformation, voxelcenternearestneighbor, voxelcentroidnearestneighbor,

@@ -43,6 +43,37 @@ case class Read(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
+case class BpfRead(
+  filename: String,
+  count: Option[Int] = None,
+  overrideSrs: Option[String] = None,
+  tag: Option[String] = None,
+  `type`: ReaderType = ReaderTypes.bpf
+)
+
+@ConfiguredJsonCodec
+case class EptRead(
+  filename: String,
+  spatialreference: Option[String] = None,
+  bounds: Option[String] = None,
+  resolution: Option[Double] = None,
+  addons: Option[Json] = None,
+  origin: Option[String] = None,
+  threads: Option[Int] = None,
+  tag: Option[String] = None,
+  `type`: ReaderType = ReaderTypes.ept
+)
+
+@ConfiguredJsonCodec
+case class E57Read(
+  filename: String,
+  count: Option[Int] = None,
+  overrideSrs: Option[String] = None,
+  tag: Option[String] = None,
+  `type`: ReaderType = ReaderTypes.e57
+)
+
+@ConfiguredJsonCodec
 case class FauxRead(
   numPoints: Int,
   mode: String, // constant | random | ramp | uniform | normal
@@ -80,18 +111,18 @@ case class GeoWaveRead(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class GreyhoundRead(
-  url: String,
-  bounds: Option[String] = None, // [default: the entire resource]
-  depthBegin: Option[Int] = None, // [default: 0]
-  depthEnd: Option[Int] = None, // [default: 0]
-  tilePath: Option[String] = None,
-  filter: Option[Json] = None,
-  threads: Option[Int] = None, // [default: 4]
-  spatialreference: Option[String] = None,
+case class I3sRead(
+  filename: String,
+  count: Option[Int] = None,
+  overrideSrs: Option[String] = None,
+  dimensions: Option[String] = None,
+  bounds: Option[String] = None,
+  minDensity: Option[Double] = None,
+  maxDensity: Option[Double] = None,
+  threads: Option[Int] = None,
   tag: Option[String] = None,
-  `type`: ReaderType = ReaderTypes.greyhound
-) extends PipelineExpr
+  `type`: ReaderType = ReaderTypes.e57
+)
 
 @ConfiguredJsonCodec
 case class Ilvis2Read(
@@ -207,6 +238,17 @@ case class QfitRead(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
+case class RdbRead(
+  filename: String,
+  count: Option[Int] = None,
+  overrideSrs: Option[String] = None,
+  filter: Option[String] = None,
+  extras: Option[Boolean] = None,
+  tag: Option[String] = None,
+  `type`: ReaderType = ReaderTypes.rdb
+) extends PipelineExpr
+
+@ConfiguredJsonCodec
 case class RxpRead(
   filename: String,
   rdtp: Option[Boolean] = None,
@@ -224,6 +266,19 @@ object SbetRead {
   def apply(filename: String, spatialreference: Option[String] = None, tag: Option[String] = None): Read =
     Read(filename, spatialreference, tag, Some(ReaderTypes.sbet))
 }
+
+@ConfiguredJsonCodec
+case class SlpkRead(
+  filename: String,
+  count: Option[Int] = None,
+  overrideSrs: Option[String] = None,
+  dimensions: Option[String] = None,
+  bounds: Option[String] = None,
+  minDensity: Option[Double] = None,
+  maxDensity: Option[Double] = None,
+  tag: Option[String] = None,
+  `type`: ReaderType = ReaderTypes.slpk
+) extends PipelineExpr
 
 @ConfiguredJsonCodec
 case class SqliteRead(
@@ -268,10 +323,18 @@ object TerrasolidRead {
     Read(filename, spatialreference, tag, Some(ReaderTypes.terrasolid))
 }
 
-object IceBridgeRead {
-  def apply(filename: String, spatialreference: Option[String] = None, tag: Option[String] = None): Read =
-    Read(filename, spatialreference, tag, Some(ReaderTypes.icebridge))
-}
+@ConfiguredJsonCodec
+case class TiledbRead(
+  arrayName: String,
+  configName: Option[String] = None,
+  chunkSize: Option[Int] = None,
+  stats: Option[String] = None,
+  bbox3d: Option[String] = None,
+  count: Option[Int] = None,
+  overrideSrs: Option[String] = None,
+  tag: Option[String] = None,
+  `type`: ReaderType = ReaderTypes.tiledb
+) extends PipelineExpr
 
 @ConfiguredJsonCodec
 case class ApproximateCoplanarFilter(
@@ -342,6 +405,11 @@ case class DecimationFilter(
   offset: Option[Int] = None,
   limit: Option[Int] = None,
   `type`: FilterType = FilterTypes.decimation
+) extends PipelineExpr
+
+@ConfiguredJsonCodec
+case class DelaunayFilter(
+  `type`: FilterType = FilterTypes.delaunay
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
