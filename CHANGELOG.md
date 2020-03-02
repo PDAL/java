@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - **Breaking change** // Rename Scala DSL case classes [#28](https://github.com/PDAL/java/issues/28)
+- **Breaking change** // Renamed dispose method to close [#27](https://github.com/PDAL/java/pull/27)
+- Update Scala DSL up to PDAL 2.0 [#29](https://github.com/PDAL/java/issues/29)
 
 ## [2.0.0] - 2020-01-14
 ### Changed 

@@ -35,7 +35,6 @@ object PipelineExpr {
   implicit def pipelineExprToJson(expr: PipelineExpr): Json = expr.asJson
 }
 
-@ConfiguredJsonCodec
 case class RawExpr(json: Json) extends PipelineExpr
 object RawExpr {
   implicit val rawExprEncoder: Encoder[RawExpr] = Encoder.instance { _.json }
@@ -355,6 +354,13 @@ case class FilterApproximateCoplanar(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
+case class FilterAssign(
+  assignment: Option[String] = None,
+  condition: Option[String] = None,
+  `type`: FilterType = FilterTypes.assign
+) extends PipelineExpr
+
+@ConfiguredJsonCodec
 case class FilterChipper(
   capacity: Option[Int] = None, // [default: 5000]
   `type`: FilterType = FilterTypes.chipper
@@ -394,6 +400,15 @@ case class FilterComputerange(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
+case class FilterCovariancefeatures(
+  knn: Option[Int] = None,
+  threads: Option[Int] = None,
+  featureSet: Option[String] = None,
+  stride: Option[String] = None,
+  `type`: FilterType = FilterTypes.covariancefeatures
+) extends PipelineExpr
+
+@ConfiguredJsonCodec
 case class FilterCpd(
   method: Option[String] = None,
   `type`: FilterType = FilterTypes.cpd
@@ -415,6 +430,14 @@ case class FilterDecimation(
   offset: Option[Int] = None,
   limit: Option[Int] = None,
   `type`: FilterType = FilterTypes.decimation
+) extends PipelineExpr
+
+@ConfiguredJsonCodec
+case class FilterDem(
+   raster: String,
+   limits: String,
+   band: Option[Int] = None,
+  `type`: FilterType = FilterTypes.dem
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
@@ -441,6 +464,14 @@ case class FilterEstimateRank(
   knn: Option[Int] = None,
   thresh: Option[Double] = None,
   `type`: FilterType = FilterTypes.estimaterank
+) extends PipelineExpr
+
+@ConfiguredJsonCodec
+case class FilterElm(
+  cell: Option[Double] = None,
+  `class`: Option[Int] = None,
+  threshold: Option[Double] = None,
+  `type`: FilterType = FilterTypes.elm
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
@@ -483,6 +514,13 @@ case class FilterHexbin(
   threshold: Option[Int] = None,
   precision: Option[Int] = None,
   `type`: FilterType = FilterTypes.hexbin
+) extends PipelineExpr
+
+@ConfiguredJsonCodec
+case class FilterInfo(
+  point: Option[String] = None,
+  query: Option[String] = None,
+  `type`: FilterType = FilterTypes.info
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
@@ -561,6 +599,27 @@ case class FilterMovingLeastSquares(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
+case class FilterMiniball(
+  knn: Option[Int] = None,
+  `type`: FilterType = FilterTypes.miniball
+) extends PipelineExpr
+
+@ConfiguredJsonCodec
+case class FilterNeighborclassifier(
+  candidate: Option[String] = None,
+  domain: Option[String] = None,
+  k: Option[Int] = None,
+  `type`: FilterType = FilterTypes.neighborclassifier
+) extends PipelineExpr
+
+@ConfiguredJsonCodec
+case class FilterNndistance(
+  mode: Option[String] = None,
+  k: Option[Int] = None,
+  `type`: FilterType = FilterTypes.nndistance
+) extends PipelineExpr
+
+@ConfiguredJsonCodec
 case class FilterNormal(
   knn: Option[Int] = None,
   `type`: FilterType = FilterTypes.normal
@@ -591,6 +650,13 @@ case class FilterPclBlock(
   filename: String,
   methods: Option[List[String]] = None,
   `type`: FilterType = FilterTypes.pclblock
+) extends PipelineExpr
+
+@ConfiguredJsonCodec
+case class FilterPlanefit(
+  knn: Option[Int] = None,
+  threads: Option[Int] = None,
+  `type`: FilterType = FilterTypes.planefit
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
@@ -637,6 +703,12 @@ case class FilterRandomize(
 case class FilterRange(
   limits: Option[String] = None,
   `type`: FilterType = FilterTypes.range
+) extends PipelineExpr
+
+@ConfiguredJsonCodec
+case class FilterReciprocity(
+  knn: Option[Int] = None,
+  `type`: FilterType = FilterTypes.reciprocity
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec

@@ -23,7 +23,7 @@ libraryDependencies ++= Seq(
 )
 ```
 
-It's required to have native JNI binary in `java.library.path`:
+If you would like to use your own bindings, it is necessary to set `java.library.path`:
 
 ```scala
 // Mac OS X example with manual JNI installation
@@ -46,9 +46,8 @@ libraryDependencies ++= Seq(
 )
 ```
 
-Scala API covers PDAL 1.8.x but is compatible with PDAL >= 1.4.x, to use any custom DSL
-that is not covered by the current Scala API you can use `RawExpr` type to build `Pipeline 
-Expression`.
+Scala API covers PDAL 2.0.x, to use any custom DSL that is not covered by the 
+current Scala API you can use `RawExpr` type to build `Pipeline Expression`.
 
 ### Code examples
 
@@ -87,12 +86,12 @@ JNI bindings basic usage examples can be found [here](./examples).
 
 ## How to compile
 
-Development purposes (including binaries):
+Development purposes (including binaries) compilation:
   1. Install PDAL (using brew / package managers (unix) / build from sources / etc)     
   2. Build native libs `./sbt native/nativeCompile` (optionally, binaries would be built during tests run)
   3. Run `./sbt core/test` to run PDAL tests
 
-Only Java development purposes:
+Only Java development purposes compilation:
   1. Provide `$LD_LIBRARY_PATH` or `$DYLD_LIBRARY_PATH`
   2. If you don't want to provide global variable you can pass `-Djava.library.path=<path>` into sbt:
     `./sbt -Djava.library.path=<path>`

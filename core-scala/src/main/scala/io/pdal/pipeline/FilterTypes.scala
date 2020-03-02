@@ -20,18 +20,22 @@ sealed trait FilterType extends ExprType { val `type` = "filters" }
 
 object FilterTypes {
   case object approximatecoplanar extends FilterType
+  case object assign extends FilterType
   case object chipper extends FilterType
   case object cluster extends FilterType
   case object colorinterp extends FilterType
   case object colorization extends FilterType
   case object computerange extends FilterType
+  case object covariancefeatures extends FilterType
   case object cpd extends FilterType
   case object crop extends FilterType
   case object decimation extends FilterType
+  case object dem extends FilterType
   case object delaunay extends FilterType
   case object divider extends FilterType
   case object eigenvalues extends FilterType
   case object estimaterank extends FilterType
+  case object elm extends FilterType
   case object ferry extends FilterType
   case object greedyprojection extends FilterType
   case object gridprojection extends FilterType
@@ -39,6 +43,7 @@ object FilterTypes {
   case object hag extends FilterType
   case object head extends FilterType
   case object hexbin extends FilterType
+  case object info extends FilterType
   case object icp extends FilterType
   case object iqr extends FilterType
   case object kdistance extends FilterType
@@ -50,16 +55,21 @@ object FilterTypes {
   case object mongus extends FilterType
   case object mortonorder extends FilterType
   case object movingleastsquares extends FilterType
+  case object miniball extends FilterType
+  case object neighborclassifier extends FilterType
+  case object nndistance extends FilterType
   case object normal extends FilterType
   case object overlay extends FilterType
   case object outlier extends FilterType
   case object pclblock extends FilterType
+  case object planefit extends FilterType
   case object pmf extends FilterType
   case object poisson extends FilterType
   case object python extends FilterType
   case object radialdensity extends FilterType
   case object range extends FilterType
   case object randomize extends FilterType
+  case object reciprocity extends FilterType
   case object reprojection extends FilterType
   case object sample extends FilterType
   case object smrf extends FilterType
@@ -73,12 +83,12 @@ object FilterTypes {
   case object voxelgrid extends FilterType
 
   lazy val all = List(
-    approximatecoplanar, chipper, cluster, colorinterp, colorization, computerange, crop,
-    cpd, decimation, delaunay, divider, eigenvalues, estimaterank, ferry, greedyprojection, gridprojection, groupby,
-    hag, head, hexbin, icp, iqr, kdistance, locate, lof, mad, matlab, merge, mongus, mortonorder, movingleastsquares,
-    normal, outlier, overlay, pclblock, pmf, poisson, python, radialdensity, randomize, range, reprojection,
-    sample, smrf, sort, splitter, stats, transformation, voxelcenternearestneighbor, voxelcentroidnearestneighbor,
-    voxelgrid
+    approximatecoplanar, assign, chipper, cluster, colorinterp, colorization, computerange, covariancefeatures, crop,
+    cpd, decimation, dem, delaunay, divider, eigenvalues, estimaterank, elm, ferry, greedyprojection, gridprojection, groupby,
+    hag, head, hexbin, info, icp, iqr, kdistance, locate, lof, mad, matlab, merge, mongus, mortonorder, movingleastsquares,
+    miniball, neighborclassifier, nndistance, normal, outlier, overlay, pclblock, planefit, pmf, poisson, python, radialdensity,
+    randomize, reciprocity, range, reprojection, sample, smrf, sort, splitter, stats, transformation, voxelcenternearestneighbor,
+    voxelcentroidnearestneighbor, voxelgrid
   )
 
   def fromName(name: String): FilterType =
