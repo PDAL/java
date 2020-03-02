@@ -1,7 +1,7 @@
 name := "pdal-jni"
 
 lazy val commonSettings = Seq(
-  version := "2.1.0" + Environment.versionSuffix,
+  version := "2.1.1" + Environment.versionSuffix,
   scalaVersion := "2.13.1",
   crossScalaVersions := Seq("2.13.1", "2.12.10", "2.11.12"),
   organization := "io.pdal",
@@ -70,6 +70,7 @@ lazy val `core-scala` = project
     Dependencies.scalaTest % Test
   ))
   .dependsOn(core)
+  .dependsOn(Environment.dependOnNative(native % Runtime): _*)
 
 lazy val core = project
   .settings(commonSettings: _*)

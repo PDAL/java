@@ -82,5 +82,16 @@ class PipelineExpressionsSpec extends AnyFunSpec with Matchers with BeforeAndAft
         case Left(e) => throw e
       }
     }
+
+    it("should execute the pipeline built from the Scala DSL") {
+      val expression =
+        ReadLas("./core/src/test/resources/1.2-with-color.las", spatialreference = Some("EPSG:2993")) ~
+        FilterReprojection(outSrs = "EPSG:3857")
+
+      val pipeline = expression.toPipeline
+      pipeline.validate() shouldBe true
+      pipeline.execute()
+      pipeline.close()
+    }
   }
 }

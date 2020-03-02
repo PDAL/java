@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [2.1.1] - 2020-03-02
 ### Added
 - Expose PDAL Mesh API [#27](https://github.com/PDAL/java/pull/27)
 
@@ -76,6 +78,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Moved from the PDAL repo and established own lifecycle.
 
 [Unreleased]: https://github.com/PDAL/java/compare/2.0.0...HEAD
+[2.1.1]: https://github.com/PDAL/java/compare/2.0.0...2.1.1
 [2.0.0]: https://github.com/PDAL/java/compare/1.9.0...2.0.0
 [1.9.0]: https://github.com/PDAL/java/compare/1.8.6...1.9.0
 [1.8.6]: https://github.com/PDAL/java/compare/1.8.5...1.8.6

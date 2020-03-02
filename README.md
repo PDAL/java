@@ -18,8 +18,8 @@ resolvers ++= Seq(
 )
 
 libraryDependencies ++= Seq(
-  "io.pdal" %% "pdal" % "2.1.0", // core library
-  "io.pdal" %  "pdal-native" % "2.1.0" // jni bindings
+  "io.pdal" %% "pdal" % "2.1.1", // core library
+  "io.pdal" %  "pdal-native" % "2.1.1" // jni bindings
 )
 ```
 
@@ -41,8 +41,8 @@ Scala API allows to build pipeline expressions instead of writing a raw JSON.
 
 ```scala
 libraryDependencies ++= Seq(
-  "io.pdal" %% "pdal-scala" % "2.1.0", // scala core library
-  "io.pdal" %  "pdal-native" % "2.1.0" // jni bindings
+  "io.pdal" %% "pdal-scala" % "2.1.1", // scala core library
+  "io.pdal" %  "pdal-native" % "2.1.1" // jni bindings
 )
 ```
 

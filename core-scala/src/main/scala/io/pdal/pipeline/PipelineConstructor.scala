@@ -25,7 +25,7 @@ case class PipelineConstructor(list: List[PipelineExpr]) {
   def ~(e: PipelineExpr): PipelineConstructor = PipelineConstructor(list :+ e)
   def ~(e: Option[PipelineExpr]): PipelineConstructor = PipelineConstructor(e.fold(list)(el => list :+ el))
   def map[B](f: PipelineExpr => B): List[B] = list.map(f)
-  def toPipeline: Pipeline = Pipeline(list.asJson.noSpaces)
+  def toPipeline: Pipeline = Pipeline(this.asJson.noSpaces)
 }
 
 object PipelineConstructor {

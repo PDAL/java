@@ -24,6 +24,6 @@ object Main {
     val pipeline = Pipeline(json)
     pipeline.execute()
     println(s"pipeline.getMetadata(): ${pipeline.getMetadata()}")
-    pipeline.dispose()
+    pipeline.close()
   }
 }
