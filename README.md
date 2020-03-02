@@ -37,7 +37,7 @@ Dependency contains bindings for `x86_64-darwin` and `x86_64-linux`, other versi
 
 ## PDAL-Scala
 
-Scala API to build pipeline expressions instead of writing a raw JSON.
+Scala API allows to build pipeline expressions instead of writing a raw JSON.
 
 ```scala
 libraryDependencies ++= Seq(
