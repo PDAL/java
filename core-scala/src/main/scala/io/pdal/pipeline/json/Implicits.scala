@@ -16,46 +16,14 @@
 
 package io.pdal.pipeline.json
 
-import io.pdal.pipeline._
-
-import io.circe.{Decoder, Encoder, Json, Printer}
+import io.circe.Printer
 import io.circe.generic.extras.Configuration
-import io.circe.syntax._
-import cats.syntax.either._
 
-object Implicits extends Implicits
+object Implicits extends Implicits with Serializable
 
-trait Implicits extends Serializable {
+trait Implicits {
   implicit val customConfig: Configuration =
     Configuration.default.withSnakeCaseMemberNames.withDiscriminator("class_type")
 
   val pipelinePrettyPrinter: Printer = Printer.spaces2.copy(dropNullValues = true)
-
-  implicit def exprTypeEncoder[T <: ExprType]: Encoder[T] = Encoder.instance { _.toString.asJson }
-  implicit def exprTypeDecoder[T <: ExprType]: Decoder[T] = Decoder.decodeString.emap { str =>
-    Either.catchNonFatal(ExprType.fromName(str).asInstanceOf[T]).leftMap(_ => "ExprType")
-  }
-
-  implicit val pipelineConstructorEncoder: Encoder[PipelineConstructor] = Encoder.instance { constructor =>
-    Json.obj(
-      "pipeline" -> constructor
-        .flatMap {
-          _.flatMap {
-            case RawExpr(json) => json.asObject
-            case expr => expr.asJson.asObject
-          }.map {
-            _.remove("class_type") // remove type
-             .filter { case (_, value) => !value.isNull } // cleanup options
-          }
-        }.asJson
-    )
-  }
-  implicit val pipelineConstructorDecoder: Decoder[PipelineConstructor] = Decoder.instance {
-    _.downField("pipeline").as[PipelineConstructor]
-  }
-
-  implicit val rawExprEncoder: Encoder[RawExpr] = Encoder.instance { _.json }
-  implicit val rawExprDecoder: Decoder[RawExpr] = Decoder.decodeJson.emap { json =>
-    Either.catchNonFatal(RawExpr(json)).leftMap(_ => "RawExpr")
-  }
 }

@@ -25,10 +25,10 @@ JNIEXPORT jobject JNICALL Java_io_pdal_PointViewIterator_next
 
 /*
  * Class:     io_pdal_PointViewIterator
- * Method:    dispose
+ * Method:    close
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_io_pdal_PointViewIterator_dispose
+JNIEXPORT void JNICALL Java_io_pdal_PointViewIterator_close
   (JNIEnv *, jobject);
 
 #ifdef __cplusplus

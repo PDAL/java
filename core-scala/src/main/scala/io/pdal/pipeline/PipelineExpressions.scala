@@ -18,21 +18,36 @@ package io.pdal.pipeline
 
 import io.pdal.Pipeline
 
-import io.circe.Json
+import io.circe.{Decoder, Encoder, Json}
+import io.circe.syntax._
 import io.circe.generic.extras.ConfiguredJsonCodec
+import cats.syntax.either._
 
 @ConfiguredJsonCodec
 sealed trait PipelineExpr {
-  def ~(other: PipelineExpr): PipelineConstructor = this :: other :: Nil
-
-  def ~(other: Option[PipelineExpr]): PipelineConstructor =
-    other.fold(this :: Nil)(o => this :: o :: Nil)
-
-  def toPipeline: Pipeline = (this :: Nil).toPipeline
+  def ~(other: PipelineExpr): PipelineConstructor =
+    other match {
+      case ENil => toPipelineConstructor
+      case _    => PipelineConstructor(this :: other :: Nil)
+    }
+  def ~(other: Option[PipelineExpr]): PipelineConstructor = other.fold(toPipelineConstructor)(this ~ _)
+  def toPipelineConstructor: PipelineConstructor = PipelineConstructor(this :: Nil)
+  def toPipeline: Pipeline = toPipelineConstructor.toPipeline
+}
+object PipelineExpr {
+  implicit def pipelineExprToConstructor(expr: PipelineExpr): PipelineConstructor = expr.toPipelineConstructor
+  implicit def pipelineExprToJson(expr: PipelineExpr): Json = expr.asJson
 }
 
-@ConfiguredJsonCodec
+case object ENil extends PipelineExpr
+
 case class RawExpr(json: Json) extends PipelineExpr
+object RawExpr {
+  implicit val rawExprEncoder: Encoder[RawExpr] = Encoder.instance { _.json }
+  implicit val rawExprDecoder: Decoder[RawExpr] = Decoder.decodeJson.emap { json =>
+    Either.catchNonFatal(RawExpr(json)).leftMap(_ => "RawExpr")
+  }
+}
 
 @ConfiguredJsonCodec
 case class Read(
@@ -43,7 +58,38 @@ case class Read(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class FauxRead(
+case class ReadBpf(
+  filename: String,
+  count: Option[Int] = None,
+  overrideSrs: Option[String] = None,
+  tag: Option[String] = None,
+  `type`: ReaderType = ReaderTypes.bpf
+)
+
+@ConfiguredJsonCodec
+case class ReadEpt(
+  filename: String,
+  spatialreference: Option[String] = None,
+  bounds: Option[String] = None,
+  resolution: Option[Double] = None,
+  addons: Option[Json] = None,
+  origin: Option[String] = None,
+  threads: Option[Int] = None,
+  tag: Option[String] = None,
+  `type`: ReaderType = ReaderTypes.ept
+)
+
+@ConfiguredJsonCodec
+case class ReadE57(
+  filename: String,
+  count: Option[Int] = None,
+  overrideSrs: Option[String] = None,
+  tag: Option[String] = None,
+  `type`: ReaderType = ReaderTypes.e57
+)
+
+@ConfiguredJsonCodec
+case class ReadFaux(
   numPoints: Int,
   mode: String, // constant | random | ramp | uniform | normal
   stdevX: Option[Int] = None, // [default: 1]
@@ -58,13 +104,13 @@ case class FauxRead(
   `type`: ReaderType = ReaderTypes.faux
 ) extends PipelineExpr
 
-object GdalRead {
+object ReadGdal {
   def apply(filename: String, spatialreference: Option[String] = None, tag: Option[String] = None): Read =
     Read(filename, spatialreference, tag, Some(ReaderTypes.gdal))
 }
 
 @ConfiguredJsonCodec
-case class GeoWaveRead(
+case class ReadGeoWave(
   zookeeperUrl: String,
   instanceName: String,
   username: String,
@@ -80,21 +126,21 @@ case class GeoWaveRead(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class GreyhoundRead(
-  url: String,
-  bounds: Option[String] = None, // [default: the entire resource]
-  depthBegin: Option[Int] = None, // [default: 0]
-  depthEnd: Option[Int] = None, // [default: 0]
-  tilePath: Option[String] = None,
-  filter: Option[Json] = None,
-  threads: Option[Int] = None, // [default: 4]
-  spatialreference: Option[String] = None,
+case class ReadI3s(
+  filename: String,
+  count: Option[Int] = None,
+  overrideSrs: Option[String] = None,
+  dimensions: Option[String] = None,
+  bounds: Option[String] = None,
+  minDensity: Option[Double] = None,
+  maxDensity: Option[Double] = None,
+  threads: Option[Int] = None,
   tag: Option[String] = None,
-  `type`: ReaderType = ReaderTypes.greyhound
-) extends PipelineExpr
+  `type`: ReaderType = ReaderTypes.i3s
+)
 
 @ConfiguredJsonCodec
-case class Ilvis2Read(
+case class ReadIlvis2(
   filename: String,
   mapping: Option[String] = None,
   metadata: Option[String] = None,
@@ -104,21 +150,21 @@ case class Ilvis2Read(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class MatlabRead(
+case class ReadMatlab(
   filename: String,
   struct: Option[String] = None, // [default: PDAL]
   `type`: ReaderType = ReaderTypes.matlab
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class MbioRead(
+case class ReadMbio(
   filename: String,
   format: String,
   `type`: ReaderType = ReaderTypes.mbio
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class LasRead(
+case class ReadLas(
   filename: String,
   extraDims: Option[String] = None,
   compression: Option[String] = None,
@@ -128,18 +174,18 @@ case class LasRead(
   `type`: ReaderType = ReaderTypes.las
 ) extends PipelineExpr
 
-object MrsidRead {
+object ReadMrsid {
   def apply(filename: String, spatialreference: Option[String] = None, tag: Option[String] = None): Read =
     Read(filename, spatialreference, tag, Some(ReaderTypes.mrsid))
 }
 
-object NitfRead {
+object ReadNitf {
   def apply(filename: String, spatialreference: Option[String] = None, tag: Option[String] = None): Read =
     Read(filename, spatialreference, tag, Some(ReaderTypes.nitf))
 }
 
 @ConfiguredJsonCodec
-case class NumpyRead(
+case class ReadNumpy(
   filename: String,
   dimension: Option[String] = None,
   x: Option[Int] = None,
@@ -150,7 +196,7 @@ case class NumpyRead(
 )
 
 @ConfiguredJsonCodec
-case class OciRead(
+case class ReadOci(
   connection: String,
   query: String,
   xmlSchemaDump: Option[String] = None,
@@ -160,23 +206,23 @@ case class OciRead(
   `type`: ReaderType = ReaderTypes.oci
 ) extends PipelineExpr
 
-object OptechRead {
+object ReadOptech {
   def apply(filename: String, spatialreference: Option[String] = None, tag: Option[String] = None): Read =
     Read(filename, spatialreference, tag, Some(ReaderTypes.optech))
 }
 
-object OsgRead {
+object ReadOsg {
   def apply(filename: String, spatialreference: Option[String] = None, tag: Option[String] = None): Read =
     Read(filename, spatialreference, tag, Some(ReaderTypes.osg))
 }
 
-object PcdRead {
+object ReadPcd {
   def apply(filename: String, spatialreference: Option[String] = None, tag: Option[String] = None): Read =
     Read(filename, spatialreference, tag, Some(ReaderTypes.pcd))
 }
 
 @ConfiguredJsonCodec
-case class PgpointcloudRead(
+case class ReadPgpointcloud(
   connection: String,
   table: String,
   schema: Option[String] = None, // [default: public]
@@ -186,18 +232,18 @@ case class PgpointcloudRead(
   `type`: ReaderType = ReaderTypes.pgpointcloud
 ) extends PipelineExpr
 
-object PlyRead {
+object ReadPly {
   def apply(filename: String, spatialreference: Option[String] = None, tag: Option[String] = None): Read =
     Read(filename, spatialreference, tag, Some(ReaderTypes.ply))
 }
 
-object PtsRead {
+object ReadPts {
   def apply(filename: String, spatialreference: Option[String] = None, tag: Option[String] = None): Read =
     Read(filename, spatialreference, tag, Some(ReaderTypes.pts))
 }
 
 @ConfiguredJsonCodec
-case class QfitRead(
+case class ReadQfit(
   filename: String,
   flipCoordinates: Option[Boolean] = None,
   scaleZ: Option[Double] = None,
@@ -207,7 +253,18 @@ case class QfitRead(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class RxpRead(
+case class ReadRdb(
+  filename: String,
+  count: Option[Int] = None,
+  overrideSrs: Option[String] = None,
+  filter: Option[String] = None,
+  extras: Option[Boolean] = None,
+  tag: Option[String] = None,
+  `type`: ReaderType = ReaderTypes.rdb
+) extends PipelineExpr
+
+@ConfiguredJsonCodec
+case class ReadRxp(
   filename: String,
   rdtp: Option[Boolean] = None,
   syncToPps: Option[Boolean] = None,
@@ -220,13 +277,26 @@ case class RxpRead(
   `type`: ReaderType = ReaderTypes.rxp
 ) extends PipelineExpr
 
-object SbetRead {
+object ReadSbet {
   def apply(filename: String, spatialreference: Option[String] = None, tag: Option[String] = None): Read =
     Read(filename, spatialreference, tag, Some(ReaderTypes.sbet))
 }
 
 @ConfiguredJsonCodec
-case class SqliteRead(
+case class ReadSlpk(
+  filename: String,
+  count: Option[Int] = None,
+  overrideSrs: Option[String] = None,
+  dimensions: Option[String] = None,
+  bounds: Option[String] = None,
+  minDensity: Option[Double] = None,
+  maxDensity: Option[Double] = None,
+  tag: Option[String] = None,
+  `type`: ReaderType = ReaderTypes.slpk
+) extends PipelineExpr
+
+@ConfiguredJsonCodec
+case class ReadSqlite(
   connection: String,
   query: String,
   spatialreference: Option[String] = None,
@@ -235,7 +305,7 @@ case class SqliteRead(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class TextRead(
+case class ReadText(
   filename: String,
   separator: Option[String] = None,
   spatialreference: Option[String] = None,
@@ -246,7 +316,7 @@ case class TextRead(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class TindexRead(
+case class ReadTindex(
   filename: String,
   layerName: Option[String] = None,
   srsColumn: Option[String] = None,
@@ -263,18 +333,26 @@ case class TindexRead(
   `type`: ReaderType = ReaderTypes.tindex
 ) extends PipelineExpr
 
-object TerrasolidRead {
+object ReadTerrasolid {
   def apply(filename: String, spatialreference: Option[String] = None, tag: Option[String] = None): Read =
     Read(filename, spatialreference, tag, Some(ReaderTypes.terrasolid))
 }
 
-object IceBridgeRead {
-  def apply(filename: String, spatialreference: Option[String] = None, tag: Option[String] = None): Read =
-    Read(filename, spatialreference, tag, Some(ReaderTypes.icebridge))
-}
+@ConfiguredJsonCodec
+case class ReadTiledb(
+  arrayName: String,
+  configName: Option[String] = None,
+  chunkSize: Option[Int] = None,
+  stats: Option[String] = None,
+  bbox3d: Option[String] = None,
+  count: Option[Int] = None,
+  overrideSrs: Option[String] = None,
+  tag: Option[String] = None,
+  `type`: ReaderType = ReaderTypes.tiledb
+) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class ApproximateCoplanarFilter(
+case class FilterApproximateCoplanar(
   knn: Option[Int] = None, // [default: 8]
   thresh1: Option[Int] = None, // [default: 25]
   thresh2: Option[Int] = None, // [default: 6]
@@ -282,13 +360,20 @@ case class ApproximateCoplanarFilter(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class ChipperFilter(
+case class FilterAssign(
+  assignment: Option[String] = None,
+  condition: Option[String] = None,
+  `type`: FilterType = FilterTypes.assign
+) extends PipelineExpr
+
+@ConfiguredJsonCodec
+case class FilterChipper(
   capacity: Option[Int] = None, // [default: 5000]
   `type`: FilterType = FilterTypes.chipper
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class ClusterFilter(
+case class FilterCluster(
   minPoints: Option[Int] = None, // [default: 1]
   maxPoints: Option[Int] = None, // [default: UINT64_MAX]
   tolerance: Option[Double] = None, // [default: 1.0]
@@ -296,7 +381,7 @@ case class ClusterFilter(
 )
 
 @ConfiguredJsonCodec
-case class ColorinterpFilter(
+case class FilterColorinterp(
   ramp: Option[String] = None, // [default: pestel_shades]
   dimension: Option[String] = None, // [default: Z]
   minimum: Option[String] = None,
@@ -309,25 +394,34 @@ case class ColorinterpFilter(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class ColorizationFilter(
+case class FilterColorization(
   raster: String,
   dimensions: Option[String] = None,
   `type`: FilterType = FilterTypes.colorization
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class ComputerangeFilter(
+case class FilterComputerange(
   `type`: FilterType = FilterTypes.computerange
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class CpdFilter(
+case class FilterCovariancefeatures(
+  knn: Option[Int] = None,
+  threads: Option[Int] = None,
+  featureSet: Option[String] = None,
+  stride: Option[String] = None,
+  `type`: FilterType = FilterTypes.covariancefeatures
+) extends PipelineExpr
+
+@ConfiguredJsonCodec
+case class FilterCpd(
   method: Option[String] = None,
   `type`: FilterType = FilterTypes.cpd
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class CropFilter(
+case class FilterCrop(
   bounds: Option[String] = None,
   polygon: Option[String] = None,
   outside: Option[String] = None,
@@ -337,7 +431,7 @@ case class CropFilter(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class DecimationFilter(
+case class FilterDecimation(
   step: Option[Int] = None,
   offset: Option[Int] = None,
   limit: Option[Int] = None,
@@ -345,7 +439,20 @@ case class DecimationFilter(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class DividerFilter(
+case class FilterDem(
+   raster: String,
+   limits: String,
+   band: Option[Int] = None,
+  `type`: FilterType = FilterTypes.dem
+) extends PipelineExpr
+
+@ConfiguredJsonCodec
+case class FilterDelaunay(
+  `type`: FilterType = FilterTypes.delaunay
+) extends PipelineExpr
+
+@ConfiguredJsonCodec
+case class FilterDivider(
    mode: Option[String] = None,
    count: Option[Int] = None,
    capacity: Option[Int] = None,
@@ -353,53 +460,61 @@ case class DividerFilter(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class EigenValuesFilter(
+case class FilterEigenValues(
   knn: Option[Int] = None,
   `type`: FilterType = FilterTypes.eigenvalues
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class EstimateRankFilter(
+case class FilterEstimateRank(
   knn: Option[Int] = None,
   thresh: Option[Double] = None,
   `type`: FilterType = FilterTypes.estimaterank
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class FerryFilter(
+case class FilterElm(
+  cell: Option[Double] = None,
+  `class`: Option[Int] = None,
+  threshold: Option[Double] = None,
+  `type`: FilterType = FilterTypes.elm
+) extends PipelineExpr
+
+@ConfiguredJsonCodec
+case class FilterFerry(
   dimensions: String,
   `type`: FilterType = FilterTypes.ferry
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class GreedyProjectionFilter(
+case class FilterGreedyProjection(
   `type`: FilterType = FilterTypes.greedyprojection
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class GridProjectionFilter(
+case class FilterGridProjection(
   `type`: FilterType = FilterTypes.gridprojection
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class GroupByFilter(
+case class FilterGroupBy(
   dimension: String,
   `type`: FilterType = FilterTypes.groupby
 )
 
 @ConfiguredJsonCodec
-case class HagFilter(
+case class FilterHag(
   `type`: FilterType = FilterTypes.hag
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class HeadFilter(
+case class FilterHead(
   count: Option[Int] = None, // [default: 10]
   `type`: FilterType = FilterTypes.head
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class HexbinFilter(
+case class FilterHexbin(
   edgeSize: Option[Int] = None,
   sampleSize: Option[Int] = None,
   threshold: Option[Int] = None,
@@ -408,45 +523,52 @@ case class HexbinFilter(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class IcpFilter(
+case class FilterInfo(
+  point: Option[String] = None,
+  query: Option[String] = None,
+  `type`: FilterType = FilterTypes.info
+) extends PipelineExpr
+
+@ConfiguredJsonCodec
+case class FilterIcp(
   `type`: FilterType = FilterTypes.icp
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class IqrFilter(
+case class FilterIqr(
   dimension: String,
   k: Option[Double] = None,
   `type`: FilterType = FilterTypes.iqr
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class KDistanceFilter(
+case class FilterKDistance(
   k: Option[Int] = None,
   `type`: FilterType = FilterTypes.kdistance
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class LocateFilter(
+case class FilterLocate(
   dimension: String,
   minmax: String,
   `type`: FilterType = FilterTypes.locate
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class LofFilter(
+case class FilterLof(
   minpts: Option[Int] = None,
   `type`: FilterType = FilterTypes.lof
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class MadFilter(
+case class FilterMad(
   dimension: String,
   k: Option[Double] = None,
   `type`: FilterType = FilterTypes.mad
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class MatlabFilter(
+case class FilterMatlab(
   script: String,
   source: String,
   addDimension: Option[String] = None,
@@ -455,14 +577,14 @@ case class MatlabFilter(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class MergeFilter(
+case class FilterMerge(
   inputs: List[String],
   tag: Option[String] = None,
   `type`: FilterType = FilterTypes.merge
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class MongusFilter(
+case class FilterMongus(
   cell: Option[Double] = None,
   classify: Option[Boolean] = None,
   extract: Option[Boolean] = None,
@@ -472,24 +594,45 @@ case class MongusFilter(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class MortonOrderFilter(
+case class FilterMortonOrder(
   reverse: Option[String] = None,
   `type`: FilterType = FilterTypes.mortonorder
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class MovingLeastSquaresFilter(
+case class FilterMovingLeastSquares(
   `type`: FilterType = FilterTypes.movingleastsquares
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class NormalFilter(
+case class FilterMiniball(
+  knn: Option[Int] = None,
+  `type`: FilterType = FilterTypes.miniball
+) extends PipelineExpr
+
+@ConfiguredJsonCodec
+case class FilterNeighborclassifier(
+  candidate: Option[String] = None,
+  domain: Option[String] = None,
+  k: Option[Int] = None,
+  `type`: FilterType = FilterTypes.neighborclassifier
+) extends PipelineExpr
+
+@ConfiguredJsonCodec
+case class FilterNndistance(
+  mode: Option[String] = None,
+  k: Option[Int] = None,
+  `type`: FilterType = FilterTypes.nndistance
+) extends PipelineExpr
+
+@ConfiguredJsonCodec
+case class FilterNormal(
   knn: Option[Int] = None,
   `type`: FilterType = FilterTypes.normal
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class OutlierFilter(
+case class FilterOutlier(
   method: Option[String] = None,
   minK: Option[Int] = None,
   radius: Option[Double] = None,
@@ -499,7 +642,7 @@ case class OutlierFilter(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class OverlayFilter(
+case class FilterOverlay(
   dimension: Option[String] = None, // [default: none]
   datasource: Option[String] = None, // [default: none]
   column: Option[String] = None, // [default: none]
@@ -509,14 +652,21 @@ case class OverlayFilter(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class PclBlockFilter(
+case class FilterPclBlock(
   filename: String,
   methods: Option[List[String]] = None,
   `type`: FilterType = FilterTypes.pclblock
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class PmfFilter(
+case class FilterPlanefit(
+  knn: Option[Int] = None,
+  threads: Option[Int] = None,
+  `type`: FilterType = FilterTypes.planefit
+) extends PipelineExpr
+
+@ConfiguredJsonCodec
+case class FilterPmf(
   maxWindowSize: Option[Int] = None,
   slope: Option[Double] = None,
   maxDistance: Option[Double] = None,
@@ -527,14 +677,14 @@ case class PmfFilter(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class PoissonFilter(
+case class FilterPoisson(
   depth: Option[Int] = None,
   pointWeight: Option[Double] = None,
   `type`: FilterType = FilterTypes.poisson
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class PythonFilter(
+case class FilterPython(
   module: String,
   function: String,
   script: Option[String] = None,
@@ -545,24 +695,30 @@ case class PythonFilter(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class RadialDensityFilter(
+case class FilterRadialDensity(
   radius: Option[Double] = None,
   `type`: FilterType = FilterTypes.radialdensity
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class RandomizeFilter(
+case class FilterRandomize(
   `type`: FilterType = FilterTypes.randomize
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class RangeFilter(
+case class FilterRange(
   limits: Option[String] = None,
   `type`: FilterType = FilterTypes.range
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class ReprojectionFilter(
+case class FilterReciprocity(
+  knn: Option[Int] = None,
+  `type`: FilterType = FilterTypes.reciprocity
+) extends PipelineExpr
+
+@ConfiguredJsonCodec
+case class FilterReprojection(
   outSrs: String,
   inSrs: Option[String] = None,
   tag: Option[String] = None,
@@ -570,13 +726,13 @@ case class ReprojectionFilter(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class SampleFilter(
+case class FilterSample(
   radius: Option[Double] = None,
   `type`: FilterType = FilterTypes.sample
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class SmrfFilter(
+case class FilterSmrf(
   cell: Option[Double] = None,
   classify: Option[Boolean] = None,
   cut: Option[Double] = None,
@@ -588,13 +744,13 @@ case class SmrfFilter(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class SortFilter(
+case class FilterSort(
   dimension: String,
   `type`: FilterType = FilterTypes.sort
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class SplitterFilter(
+case class FilterSplitter(
   length: Option[Int] = None,
   originX: Option[Double] = None,
   originY: Option[Double] = None,
@@ -602,7 +758,7 @@ case class SplitterFilter(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class StatsFilter(
+case class FilterStats(
   dimenstions: Option[String] = None,
   enumerate: Option[String] = None,
   count: Option[Int] = None,
@@ -610,19 +766,19 @@ case class StatsFilter(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class TailFilter(
+case class FilterTail(
   count: Option[Int] = None, // [default: 10]
   `type`: FilterType = FilterTypes.tail
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class TransformationFilter(
+case class FilterTransformation(
   matrix: String,
   `type`: FilterType = FilterTypes.transformation
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class VoxelCenterNearestNeighborFilter(
+case class FilterVoxelCenterNearestNeighbor(
   cell: Option[Double] = None, // [default: 1.0]
   `type`: FilterType = FilterTypes.voxelcenternearestneighbor
 ) extends PipelineExpr
@@ -634,7 +790,7 @@ case class VoxelCentroidNearestNeighbor(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class VoxelGridFilter(
+case class FilterVoxelGrid(
   leafX: Option[Double] = None,
   leafY: Option[Double] = None,
   leafZ: Option[Double] = None,
@@ -648,7 +804,7 @@ case class Write(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class BpfWrite(
+case class WriteBpf(
   filename: String,
   compression: Option[Boolean] = None,
   format: Option[String] = None,
@@ -666,7 +822,7 @@ case class BpfWrite(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class GdalWrite(
+case class WriteGdal(
   filename: String,
   resolution: Int,
   radius: Double,
@@ -679,7 +835,7 @@ case class GdalWrite(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class GeoWaveWrite(
+case class WriteGeoWave(
   zookeeperUrl: String,
   instanceName: String,
   username: String,
@@ -692,7 +848,7 @@ case class GeoWaveWrite(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class LasWrite(
+case class WriteLas(
   filename: String,
   forward: Option[String] = None,
   minorVersion: Option[Int] = None,
@@ -717,14 +873,14 @@ case class LasWrite(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class MatlabWrite(
+case class WriteMatlab(
   filename: String,
   outputDims: Option[String] = None,
   `type`: WriterType = WriterTypes.matlab
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class NitfWrite(
+case class WriteNitf(
   filename: String,
   clevel: Option[String] = None,
   stype: Option[String] = None,
@@ -744,12 +900,12 @@ case class NitfWrite(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class NullWrite(
+case class WriteNull(
   `type`: WriterType = WriterTypes.`null`
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class OciWrite(
+case class WriteOci(
   connection: String,
   is3d: Option[Boolean] = None,
   solid: Option[Boolean] = None,
@@ -786,14 +942,14 @@ case class OciWrite(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class PcdWrite(
+case class WritePcd(
   filename: String,
   compression: Option[Boolean] = None,
   `type`: WriterType = WriterTypes.pcd
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class PgpointcloudWrite(
+case class WritePgpointcloud(
   connection: String,
   table: String,
   schema: Option[String] = None,
@@ -815,14 +971,14 @@ case class PgpointcloudWrite(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class PlyWrite(
+case class WritePly(
   filename: String,
   storageMode: Option[String] = None,
   `type`: WriterType = WriterTypes.ply
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class RialtoWrite(
+case class WriteRialto(
   filename: String,
   maxLevels: Option[Int] = None,
   overwrite: Option[Boolean] = None,
@@ -830,7 +986,7 @@ case class RialtoWrite(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class SqliteWrite(
+case class WriteSqlite(
   filename: String,
   cloudTableName: String,
   blockTableName: String,
@@ -850,7 +1006,7 @@ case class SqliteWrite(
 ) extends PipelineExpr
 
 @ConfiguredJsonCodec
-case class TextWrite(
+case class WriteText(
   filename: String,
   format: Option[String] = None,
   order: Option[String] = None,

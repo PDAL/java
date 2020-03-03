@@ -35,11 +35,14 @@
 #include <vector>
 #include "io_pdal_PointView.h"
 #include "JavaPipeline.hpp"
+#include "JavaTriangularMeshIterator.hpp"
+#include "JavaExceptions.hpp"
 #include "PointViewRawPtr.hpp"
 #include "Accessors.hpp"
 
 using libpdaljava::Pipeline;
 using libpdaljava::PointViewRawPtr;
+using libpdaljava::TriangularMeshIterator;
 
 using pdal::PointView;
 using pdal::PointViewPtr;
@@ -50,6 +53,7 @@ using pdal::PointId;
 using pdal::DimTypeList;
 using pdal::SpatialReference;
 using pdal::DimType;
+using pdal::pdal_error;
 
 /// Converts JavaArray of DimTypes (In Java interpretation DimType is a pair of strings)
 /// into DimTypeList (vector of DimTypes), puts dim size into bufSize
@@ -197,7 +201,31 @@ JNIEXPORT jbyteArray JNICALL Java_io_pdal_PointView_getPackedPoints
     return array;
 }
 
-JNIEXPORT void JNICALL Java_io_pdal_PointView_dispose
+JNIEXPORT jobject JNICALL Java_io_pdal_PointView_getTriangularMesh
+  (JNIEnv *env, jobject obj, jstring name)
+{
+    PointViewRawPtr *pvrp = getHandle<PointViewRawPtr>(env, obj);
+    PointViewPtr pv = pvrp->shared_pointer;
+    std::string cname = std::string(env->GetStringUTFChars(name, 0));
+
+    TriangularMesh *m = pv->mesh(cname);
+    
+    if(m == NULL)
+    {
+        return throwExecutionException(env, "No mesh was generated. Check that the appropriate filter is a part of a PDAL Pipeline.");
+    }
+
+    TriangularMeshIterator *it = new TriangularMeshIterator(m);
+    jclass meshClass = env->FindClass("io/pdal/TriangularMesh");
+    jmethodID meshCtor = env->GetMethodID(meshClass, "<init>", "()V");
+    jobject mi = env->NewObject(meshClass, meshCtor);
+
+    setHandle(env, mi, it);
+
+    return mi;
+}
+
+JNIEXPORT void JNICALL Java_io_pdal_PointView_close
   (JNIEnv *env, jobject obj)
 {
     PointViewRawPtr *pvrp = getHandle<PointViewRawPtr>(env, obj);

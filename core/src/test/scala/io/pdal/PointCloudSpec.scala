@@ -45,18 +45,18 @@ class PointCloudSpec extends TestEnvironmentSpec {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
 
-      packedPoints = pv.getPointCloud
+      packedPoints = pv.getPointCloud()
 
-      pv.dispose()
-      pvi.dispose()
+      pv.close()
+      pvi.close()
     }
 
     it("should have a valid point view size") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
       pv.length should be (packedPoints.length)
-      pv.dispose()
-      pvi.dispose()
+      pv.close()
+      pvi.close()
     }
 
     it("should read a valid (X, Y, Z) data") {
@@ -65,14 +65,14 @@ class PointCloudSpec extends TestEnvironmentSpec {
       pv.getX(0) should be (packedPoints.getX(0))
       pv.getY(0) should be (packedPoints.getY(0))
       pv.getZ(0) should be (packedPoints.getZ(0))
-      pv.dispose()
-      pvi.dispose()
+      pv.close()
+      pvi.close()
     }
 
     it("should read a valid packed data") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
-      val layout = pv.layout
+      val layout = pv.layout()
       val arr = pv.getPackedPoint(0, Array(DimType.X, DimType.Y))
       val (xarr, yarr) = arr.take(layout.dimSize(DimType.X).toInt) -> arr.drop(layout.dimSize(DimType.Y).toInt)
 
@@ -84,33 +84,33 @@ class PointCloudSpec extends TestEnvironmentSpec {
       ByteBuffer.wrap(xmarr).order(ByteOrder.nativeOrder()).getDouble should be (pv.getX(0))
       ByteBuffer.wrap(ymarr).order(ByteOrder.nativeOrder()).getDouble should be (pv.getY(0))
 
-      layout.dispose()
-      pv.dispose()
-      pvi.dispose()
+      layout.close()
+      pv.close()
+      pvi.close()
     }
 
     it("should read the whole packed point and grab only one dim") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
       packedPoints.get(0, DimType.Y).getDouble should be (pv.getY(0))
-      pv.dispose()
-      pvi.dispose()
+      pv.close()
+      pvi.close()
     }
 
     it("should read all packed points and grab only one point out of it") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
-      pv.get(3, pv.getPackedPoints) should be (packedPoints.get(3))
-      pv.dispose()
-      pvi.dispose()
+      pv.get(3, pv.getPackedPoints()) should be (packedPoints.get(3))
+      pv.close()
+      pvi.close()
     }
 
     it("should read a valid value by name") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
       pv.getByte(0, "ReturnNumber") should be (packedPoints.getByte(0, "ReturnNumber"))
-      pv.dispose()
-      pvi.dispose()
+      pv.close()
+      pvi.close()
     }
 
     it("should read correctly data as a packed point") {
@@ -119,49 +119,49 @@ class PointCloudSpec extends TestEnvironmentSpec {
       packedPoints.dimTypes.asScala.foreach { case (_, sdt) =>
         pv.get(0, sdt.dimType) should be (packedPoints.get(0, sdt))
       }
-      pv.dispose()
-      pvi.dispose()
+      pv.close()
+      pvi.close()
     }
 
     it("layout should have a valid number of dims") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
-      pv.layout.dimTypes().length should be (packedPoints.dimTypes.size)
-      pv.dispose()
-      pvi.dispose()
+      pv.layout().dimTypes().length should be (packedPoints.dimTypes.size)
+      pv.close()
+      pvi.close()
     }
 
     it("should find a dim by name") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
       pv.findDimType("Red") should be (packedPoints.findDimType("Red"))
-      pv.dispose()
-      pvi.dispose()
+      pv.close()
+      pvi.close()
     }
 
     it("dim sizes should be of a valid size") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
-      val layout = pv.layout
-      layout.dimTypes().map(pv.layout.dimSize(_)).sum should be (packedPoints.pointSize)
-      layout.dispose()
-      pv.dispose()
-      pvi.dispose()
+      val layout = pv.layout()
+      layout.dimTypes().map(pv.layout().dimSize(_)).sum should be (packedPoints.pointSize)
+      layout.close()
+      pv.close()
+      pvi.close()
     }
 
     it("should read all packed points valid") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
       val length = packedPoints.bytes.length
-      pv.getPackedPoints.length should be (length)
-      pv.dispose()
-      pvi.dispose()
+      pv.getPackedPoints().length should be (length)
+      pv.close()
+      pvi.close()
     }
 
     it("should get correct points and all values") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
-      val length = pv.length
+      val length = pv.length()
       val dimTypes = packedPoints.dimTypes.values().asScala.map(_.dimType)
       for (i <- 0 until length) {
         packedPoints.get(i) should be (pv.getPackedPoint(i))
@@ -172,8 +172,8 @@ class PointCloudSpec extends TestEnvironmentSpec {
           packedPoints.get(i, dt).array() should be (pv.get(i, dt).array())
         }
       }
-      pv.dispose()
-      pvi.dispose()
+      pv.close()
+      pvi.close()
     }
 
     it("should work as expected with csv files") {
@@ -195,7 +195,7 @@ class PointCloudSpec extends TestEnvironmentSpec {
       pipeline.execute()
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
-      val length = pv.length
+      val length = pv.length()
 
       length should be (expected.size)
 
@@ -217,9 +217,9 @@ class PointCloudSpec extends TestEnvironmentSpec {
 
         val pcs = pv.getPointCloud(idx, subsetDT)
 
-        val pcsX = pc.getDouble(idx, "X")
-        val pcsZ = pc.getDouble(idx, "Z")
-        val pcsTest = pc.getDouble(idx, "TEST")
+        val pcsX = pcs.getDouble(idx, "X")
+        val pcsZ = pcs.getDouble(idx, "Z")
+        val pcsTest = pcs.getDouble(idx, "TEST")
 
         x should be(pcX)
         x should be(pvX)
@@ -234,11 +234,9 @@ class PointCloudSpec extends TestEnvironmentSpec {
         test should be(pcsTest)
       }
 
-      pipeline.dispose()
+      pipeline.close()
     }
   }
 
-  override def beforeAll() = {
-    pipeline.execute()
-  }
+  override def beforeAll(): Unit = pipeline.execute()
 }

@@ -1,5 +1,5 @@
 /******************************************************************************
-  * Copyright (c) 2016, hobu Inc.  (info@hobu.co)
+  * Copyright (c) 2020, hobu Inc.  (info@hobu.co)
   *
   * All rights reserved.
   *
@@ -33,51 +33,14 @@
 
 package io.pdal
 
-import org.scalatest.BeforeAndAfterAll
-import org.scalatest.funspec.AnyFunSpec
-import org.scalatest.matchers.should.Matchers
+/** Triangles with PointIds that correspond to PointIds from the original PDAL PointCloud table. */
+case class Triangle(a: Int, b: Int, c: Int) extends Product3[Int, Int, Int] {
+  def _1: Int = a
+  def _2: Int = b
+  def _3: Int = c
+}
 
-trait TestEnvironmentSpec extends AnyFunSpec with Matchers with BeforeAndAfterAll {
-  def getJson(resource: String): String = {
-    val stream = getClass.getResourceAsStream(resource)
-    val lines = scala.io.Source.fromInputStream(stream).getLines
-    val json = lines.mkString(" ")
-    stream.close()
-    json
-  }
-
-  val json: String         = getJson("/las.json")
-  val jsonDelaunay: String = getJson("/las-delaunay.json")
-  val badJson: String      =
-    """
-      |{
-      |  "pipeline": [
-      |    "nofile.las",
-      |    {
-      |        "type": "filters.sort",
-      |        "dimension": "X"
-      |    }
-      |  ]
-      |}
-     """.stripMargin
-
-  val proj4String    = "+proj=lcc +lat_1=43 +lat_2=45.5 +lat_0=41.75 +lon_0=-120.5 +x_0=400000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
-  val proj4StringNew = "+proj=lcc +lat_0=41.75 +lon_0=-120.5 +lat_1=43 +lat_2=45.5 +x_0=400000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
-
-  val pipeline: Pipeline         = Pipeline(json)
-  val pipelineDelaunay: Pipeline = Pipeline(jsonDelaunay)
-
-  val expectedDelaunayPlyTriangles: List[Triangle] = {
-    val stream = getClass.getResourceAsStream("/delaunay.ply")
-    val lines = scala.io.Source.fromInputStream(stream).getLines drop 1088
-    val triangles =
-      lines.map { l =>
-        val List(a, b, c) = l.split(" ").toList.tail.map(_.toInt)
-        Triangle(a, b, c)
-      }.toList
-    stream.close()
-    triangles
-  }
-
-  override def afterAll(): Unit = { pipeline.close(); pipelineDelaunay.close() }
+object Triangle {
+  implicit def tupToTriangle(tup: (Int, Int, Int)): Triangle = Triangle(tup._1, tup._2, tup._3)
+  implicit def triangleToTup(triangle: Triangle): (Int, Int, Int) = (triangle.a, triangle.b, triangle.c)
 }

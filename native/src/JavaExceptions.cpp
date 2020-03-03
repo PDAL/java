@@ -1,5 +1,5 @@
 /******************************************************************************
-* Copyright (c) 2016, hobu Inc.  (info@hobu.co)
+* Copyright (c) 2020, hobu Inc.  (info@hobu.co)
 *
 * All rights reserved.
 *
@@ -31,45 +31,20 @@
 * OF SUCH DAMAGE.
 ****************************************************************************/
 
-#include <stdio.h>
-#include "io_pdal_PointViewIterator.h"
-#include "JavaPipeline.hpp"
-#include "JavaSetIterator.hpp"
-#include "PointViewRawPtr.hpp"
-#include "Accessors.hpp"
+#pragma once
 
-using libpdaljava::PointViewIterator;
-using libpdaljava::PointViewRawPtr;
+#include "JavaExceptions.hpp"
 
-JNIEXPORT jboolean JNICALL Java_io_pdal_PointViewIterator_hasNext
-  (JNIEnv *env, jobject obj)
+jstring throwInitializationException(JNIEnv *env, const char *message)
 {
-    PointViewIterator *it = getHandle<PointViewIterator>(env, obj);
-    return it->hasNext();
+    jclass Exception = env->FindClass("io/pdal/InitializationException");
+    env->ThrowNew(Exception, message);
+    return env->NewStringUTF(message);
 }
 
-JNIEXPORT jobject JNICALL Java_io_pdal_PointViewIterator_next
-  (JNIEnv *env, jobject obj)
+jstring throwExecutionException(JNIEnv *env, const char *message)
 {
-    PointViewIterator *it = getHandle<PointViewIterator>(env, obj);
-
-    PointViewPtr pvptr = it->next();
-
-    jclass jpvClass = env->FindClass("io/pdal/PointView");
-    jmethodID jpvCtor = env->GetMethodID(jpvClass, "<init>", "()V");
-    jobject jpv = env->NewObject(jpvClass, jpvCtor);
-
-    PointViewRawPtr *pvrp = new PointViewRawPtr(pvptr);
-
-    setHandle(env, jpv, pvrp);
-
-    return jpv;
-}
-
-JNIEXPORT void JNICALL Java_io_pdal_PointViewIterator_close
-  (JNIEnv *env, jobject obj)
-{
-    PointViewIterator *it = getHandle<PointViewIterator>(env, obj);
-    setHandle<int>(env, obj, 0);
-    delete it;
+    jclass Exception = env->FindClass("io/pdal/ExecutionException");
+    env->ThrowNew(Exception, message);
+    return env->NewStringUTF(message);
 }

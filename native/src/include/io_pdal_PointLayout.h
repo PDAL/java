@@ -49,10 +49,10 @@ JNIEXPORT jlong JNICALL Java_io_pdal_PointLayout_pointSize
 
 /*
  * Class:     io_pdal_PointLayout
- * Method:    dispose
+ * Method:    close
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_io_pdal_PointLayout_dispose
+JNIEXPORT void JNICALL Java_io_pdal_PointLayout_close
   (JNIEnv *, jobject);
 
 #ifdef __cplusplus

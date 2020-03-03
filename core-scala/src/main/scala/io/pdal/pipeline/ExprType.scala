@@ -16,6 +16,10 @@
 
 package io.pdal.pipeline
 
+import io.circe.{Decoder, Encoder}
+import io.circe.syntax._
+import cats.syntax.either._
+
 import scala.util.Try
 
 trait ExprType {
@@ -26,6 +30,11 @@ trait ExprType {
 }
 
 object ExprType {
+  implicit def exprTypeEncoder[T <: ExprType]: Encoder[T] = Encoder.instance { _.toString.asJson }
+  implicit def exprTypeDecoder[T <: ExprType]: Decoder[T] = Decoder.decodeString.emap { str =>
+    Either.catchNonFatal(ExprType.fromName(str).asInstanceOf[T]).leftMap(_ => "ExprType")
+  }
+
   def fromName(name: String): ExprType =
     Try(FilterTypes.fromName(name))
       .getOrElse(Try(ReaderTypes.fromName(name))

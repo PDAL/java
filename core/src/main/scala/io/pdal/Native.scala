@@ -33,8 +33,8 @@
 
 package io.pdal
 
-trait Native {
+trait Native extends AutoCloseable {
   protected var nativeHandle = 0L // C++ pointer
   def ptr(): Long = nativeHandle
-  def dispose(): Unit
+  def close(): Unit
 }

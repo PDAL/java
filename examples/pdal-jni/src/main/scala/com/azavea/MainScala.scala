@@ -25,10 +25,10 @@ object MainScala {
       |}
     """.stripMargin
 
-  val pipelineExpr = LasRead(
+  val pipelineExpr = ReadLas(
     filename = "data/1.2-with-color.las",
     spatialreference = Some("EPSG:2993")
-  ) ~ ReprojectionFilter(outSrs = "EPSG:3857")
+  ) ~ FilterReprojection(outSrs = "EPSG:3857")
 
   def main(args: Array[String]) = {
     // check that pipelineExpr corresponds to a raw json definition
@@ -42,6 +42,6 @@ object MainScala {
     val pipeline: Pipeline = pipelineExpr.toPipeline
     pipeline.execute()
     println(s"pipeline.getMetadata(): ${pipeline.getMetadata()}")
-    pipeline.dispose()
+    pipeline.close()
   }
 }
