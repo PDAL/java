@@ -22,8 +22,12 @@ import io.circe.{Decoder, Encoder, Json}
 import io.circe.syntax._
 
 case class PipelineConstructor(list: List[PipelineExpr]) {
-  def ~(e: PipelineExpr): PipelineConstructor = PipelineConstructor(list :+ e)
-  def ~(e: Option[PipelineExpr]): PipelineConstructor = PipelineConstructor(e.fold(list)(el => list :+ el))
+  def ~(e: PipelineExpr): PipelineConstructor =
+    e match {
+      case ENil => this
+      case _    => PipelineConstructor(list :+ e)
+    }
+  def ~(e: Option[PipelineExpr]): PipelineConstructor = e.fold(this)(this ~ _)
   def map[B](f: PipelineExpr => B): List[B] = list.map(f)
   def toPipeline: Pipeline = Pipeline(this.asJson.noSpaces)
 }

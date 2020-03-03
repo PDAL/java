@@ -25,8 +25,12 @@ import cats.syntax.either._
 
 @ConfiguredJsonCodec
 sealed trait PipelineExpr {
-  def ~(other: PipelineExpr): PipelineConstructor = PipelineConstructor(this :: other :: Nil)
-  def ~(other: Option[PipelineExpr]): PipelineConstructor = PipelineConstructor(other.fold(this :: Nil)(o => this :: o :: Nil))
+  def ~(other: PipelineExpr): PipelineConstructor =
+    other match {
+      case ENil => toPipelineConstructor
+      case _    => PipelineConstructor(this :: other :: Nil)
+    }
+  def ~(other: Option[PipelineExpr]): PipelineConstructor = other.fold(toPipelineConstructor)(this ~ _)
   def toPipelineConstructor: PipelineConstructor = PipelineConstructor(this :: Nil)
   def toPipeline: Pipeline = toPipelineConstructor.toPipeline
 }
@@ -34,6 +38,8 @@ object PipelineExpr {
   implicit def pipelineExprToConstructor(expr: PipelineExpr): PipelineConstructor = expr.toPipelineConstructor
   implicit def pipelineExprToJson(expr: PipelineExpr): Json = expr.asJson
 }
+
+case object ENil extends PipelineExpr
 
 case class RawExpr(json: Json) extends PipelineExpr
 object RawExpr {

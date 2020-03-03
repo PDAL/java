@@ -83,6 +83,11 @@ class PipelineExpressionsSpec extends AnyFunSpec with Matchers with BeforeAndAft
       }
     }
 
+    it("inductive constructor should work with ENil properly") {
+      (ReadLas("/path/to/las") ~ ENil asJson) shouldBe (ReadLas("/path/to/las").toPipelineConstructor asJson)
+      (ReadLas("/path/to/las") ~ FilterCrop() ~ WriteLas("/path/to/new/las") ~ ENil asJson) shouldBe (ReadLas("/path/to/las") ~ FilterCrop() ~ WriteLas("/path/to/new/las") asJson)
+    }
+
     it("should execute the pipeline built from the Scala DSL") {
       val expression =
         ReadLas("./core/src/test/resources/1.2-with-color.las", spatialreference = Some("EPSG:2993")) ~
