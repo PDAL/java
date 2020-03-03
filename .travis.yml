@@ -1,6 +1,6 @@
 sudo: false
 
-matrix:
+jobs:
   include:
     - os: linux
       jdk: openjdk8
@@ -20,6 +20,7 @@ matrix:
 
     - os: osx
       osx_image: xcode9.3
+      language: scala
       scala:
         - 2.13.1
       compiler:
@@ -31,6 +32,7 @@ matrix:
 
     - os: osx
       osx_image: xcode9.3
+      language: scala
       scala:
         - 2.12.10
       compiler:
