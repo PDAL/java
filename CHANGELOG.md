@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.3] - 2020-03-03
+### Fixed
+- Fix Scala DSL hierarchy [#31](https://github.com/PDAL/java/issues/31)
+
 ## [2.1.2] - 2020-03-02
 ### Added
 - Expose PDAL Mesh API [#27](https://github.com/PDAL/java/pull/27)
