@@ -64,7 +64,7 @@ case class ReadBpf(
   overrideSrs: Option[String] = None,
   tag: Option[String] = None,
   `type`: ReaderType = ReaderTypes.bpf
-)
+) extends PipelineExpr
 
 @ConfiguredJsonCodec
 case class ReadEpt(
@@ -77,7 +77,7 @@ case class ReadEpt(
   threads: Option[Int] = None,
   tag: Option[String] = None,
   `type`: ReaderType = ReaderTypes.ept
-)
+) extends PipelineExpr
 
 @ConfiguredJsonCodec
 case class ReadE57(
@@ -86,7 +86,7 @@ case class ReadE57(
   overrideSrs: Option[String] = None,
   tag: Option[String] = None,
   `type`: ReaderType = ReaderTypes.e57
-)
+) extends PipelineExpr
 
 @ConfiguredJsonCodec
 case class ReadFaux(
@@ -137,7 +137,7 @@ case class ReadI3s(
   threads: Option[Int] = None,
   tag: Option[String] = None,
   `type`: ReaderType = ReaderTypes.i3s
-)
+) extends PipelineExpr
 
 @ConfiguredJsonCodec
 case class ReadIlvis2(
@@ -193,7 +193,7 @@ case class ReadNumpy(
   z: Option[Int] = None,
   assignZ: Option[String] = None,
   `type`: ReaderType = ReaderTypes.numpy
-)
+) extends PipelineExpr
 
 @ConfiguredJsonCodec
 case class ReadOci(
@@ -378,7 +378,7 @@ case class FilterCluster(
   maxPoints: Option[Int] = None, // [default: UINT64_MAX]
   tolerance: Option[Double] = None, // [default: 1.0]
   `type`: FilterType = FilterTypes.cluster
-)
+) extends PipelineExpr
 
 @ConfiguredJsonCodec
 case class FilterColorinterp(
@@ -500,7 +500,7 @@ case class FilterGridProjection(
 case class FilterGroupBy(
   dimension: String,
   `type`: FilterType = FilterTypes.groupby
-)
+) extends PipelineExpr
 
 @ConfiguredJsonCodec
 case class FilterHag(
