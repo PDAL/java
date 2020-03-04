@@ -27,12 +27,11 @@ object Implicits extends Implicits with Serializable
 trait Implicits {
   implicit class withPointCloudMethods(self: PointCloud) {
     def getCoordinate(i: Int) = new Coordinate(self.getX(i), self.getY(i), self.getZ(i))
-
-    def get(idx: Int, dims: SizedDimType*)(implicit d0: DummyImplicit): ByteBuffer =
+    def get(idx: Int, dims: SizedDimType*): ByteBuffer =
       self.get(idx, dims.toArray)
-    def get(idx: Int, dims: DimType*)(implicit d0: DummyImplicit, d1: DummyImplicit): ByteBuffer =
+    def get(idx: Int, dims: DimType*)(implicit d0: DummyImplicit): ByteBuffer =
       self.get(idx, dims.toArray)
-    def get(idx: Int, dims: String*)(implicit d0: DummyImplicit, d1: DummyImplicit, d2: DummyImplicit): ByteBuffer =
+    def get(idx: Int, dims: String*)(implicit d0: DummyImplicit, d1: DummyImplicit): ByteBuffer =
       self.get(idx, dims.toArray)
   }
 
