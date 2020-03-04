@@ -16,13 +16,35 @@
 
 package io.pdal.pipeline
 
-import io.pdal.PointCloud
+import io.pdal._
 import org.locationtech.jts.geom.Coordinate
+
+import java.util
+import java.nio.ByteBuffer
 
 object Implicits extends Implicits with Serializable
 
 trait Implicits {
-  implicit class withPointCloudMethods(pointCloud: PointCloud) {
-    def getCoordinate(i: Int) = new Coordinate(pointCloud.getX(i), pointCloud.getY(i), pointCloud.getZ(i))
+  implicit class withPointCloudMethods(self: PointCloud) {
+    def getCoordinate(i: Int) = new Coordinate(self.getX(i), self.getY(i), self.getZ(i))
+
+    def get(idx: Int, dims: SizedDimType*)(implicit d0: DummyImplicit): ByteBuffer =
+      self.get(idx, dims.toArray)
+    def get(idx: Int, dims: DimType*)(implicit d0: DummyImplicit, d1: DummyImplicit): ByteBuffer =
+      self.get(idx, dims.toArray)
+    def get(idx: Int, dims: String*)(implicit d0: DummyImplicit, d1: DummyImplicit, d2: DummyImplicit): ByteBuffer =
+      self.get(idx, dims.toArray)
+  }
+
+  implicit class withPointViewMethods(self: PointView) {
+    def getPointCloud(dims: DimType*): PointCloud = self.getPointCloud(dims.toArray)
+    def get(idx: Int, packedPoints: Array[Byte], dims: DimType*): Array[Byte] = self.get(idx, packedPoints, dims.toArray)
+    def getPackedPoint(idx: Long, dims: DimType*): Array[Byte] = self.getPackedPoint(idx, dims.toArray)
+    def getPackedPoints(dims: DimType*): Array[Byte] = self.getPackedPoints(dims.toArray)
+  }
+
+  implicit class withPointLayoutMethods(self: PointLayout) {
+    def toSizedDimTypes(dimTypes: DimType*): util.Map[String, SizedDimType] =
+      self.toSizedDimTypes(dimTypes.toArray)
   }
 }

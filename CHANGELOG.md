@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.4] - 2020-03-03
+### Added
+- Add more Scala syntax extensions [#32](https://github.com/PDAL/java/pull/32)
+
 ## [2.1.3] - 2020-03-03
 ### Fixed
 - Fix Scala DSL hierarchy [#31](https://github.com/PDAL/java/issues/31)
