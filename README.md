@@ -1,6 +1,6 @@
 # PDAL Java bindings
 
-[![Build Status](https://api.travis-ci.org/PDAL/java.svg)](http://travis-ci.org/PDAL/java) [![Join the chat at https://gitter.im/PDAL/PDAL](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PDAL/PDAL?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.pdal/pdal/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.pdal/pdal)
+[![Build Status](https://api.travis-ci.org/PDAL/java.svg)](http://travis-ci.org/PDAL/java) [![Join the chat at https://gitter.im/PDAL/PDAL](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PDAL/PDAL?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.pdal/pdal/badge.svg)](https://search.maven.org/search?q=g:io.pdal)
 
 Java bindings to use PDAL on JVM (supports PDAL >= 2.0).
 Mac users can experience some issues with bindings that were build against a different PDAL version,
@@ -18,8 +18,8 @@ resolvers ++= Seq(
 )
 
 libraryDependencies ++= Seq(
-  "io.pdal" %% "pdal" % "2.1.4", // core library
-  "io.pdal" %  "pdal-native" % "2.1.4" // jni bindings
+  "io.pdal" %% "pdal" % "x.x.x", // core library
+  "io.pdal" %  "pdal-native" % "x.x.x" // jni bindings
 )
 ```
 
@@ -41,8 +41,8 @@ Scala API allows to build pipeline expressions instead of writing a raw JSON.
 
 ```scala
 libraryDependencies ++= Seq(
-  "io.pdal" %% "pdal-scala" % "2.1.4", // scala core library
-  "io.pdal" %  "pdal-native" % "2.1.4" // jni bindings
+  "io.pdal" %% "pdal-scala" % "x.x.x", // scala core library
+  "io.pdal" %  "pdal-native" % "x.x.x" // jni bindings
 )
 ```
 
