@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- Move Scala syntax into the pipeline.syntax package [#33](https://github.com/PDAL/java/issues/33)
 
 ## [2.1.4] - 2020-03-03
 ### Added

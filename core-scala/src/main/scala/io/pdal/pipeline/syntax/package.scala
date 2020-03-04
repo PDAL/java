@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 
-package io.pdal
+package io.pdal.pipeline
 
-package object pipeline extends json.Implicits with syntax.Implicits with Serializable
+package object syntax extends Implicits with Serializable
