@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package io.pdal.pipeline
+package io.pdal.pipeline.syntax
 
 import io.pdal._
 import org.locationtech.jts.geom.Coordinate
 
-import java.util
 import java.nio.ByteBuffer
+import java.util
 
 object Implicits extends Implicits with Serializable
 
