@@ -145,6 +145,15 @@ class PointView extends Native {
   def getY(packedPoint: Array[Byte]): Double = getDouble(packedPoint, DimType.Y)
   def getZ(packedPoint: Array[Byte]): Double = getDouble(packedPoint, DimType.Z)
 
+  def getTriangularMesh(): TriangularMesh = getTriangularMesh("")
+
+  def rasterizeTriangularMesh(extent: Array[Double], cols: Int, rows: Int): Array[Double] =
+    rasterizeTriangularMesh(extent, cols, rows, DimType.Z)
+  def rasterizeTriangularMesh(extent: Array[Double], cols: Int, rows: Int, dim: String): Array[Double] =
+    rasterizeTriangularMesh(extent, cols, rows, findDimType(dim))
+  def rasterizeTriangularMesh(extent: Array[Double], cols: Int, rows: Int, dim: DimType): Array[Double] =
+    rasterizeTriangularMesh(extent, cols, rows, dim, "")
+
   @native def layout(): PointLayout
   @native def size(): Int
   @native def empty(): Boolean
@@ -152,7 +161,7 @@ class PointView extends Native {
   @native def getCrsWKT(pretty: Boolean): String
   @native def getPackedPoint(idx: Long, dims: Array[DimType]): Array[Byte]
   @native def getPackedPoints(dims: Array[DimType]): Array[Byte]
-  @native def getTriangularMesh(name: String = ""): TriangularMesh
-  @native def rasterizeTriangularMesh(extent: Array[Double], cols: Int, rows: Int, name: String = ""): Array[Double]
+  @native def getTriangularMesh(name: String): TriangularMesh
+  @native def rasterizeTriangularMesh(extent: Array[Double], cols: Int, rows: Int, dim: DimType, name: String): Array[Double]
   @native def close(): Unit
 }

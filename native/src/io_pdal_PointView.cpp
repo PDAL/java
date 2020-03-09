@@ -229,7 +229,7 @@ JNIEXPORT jobject JNICALL Java_io_pdal_PointView_getTriangularMesh
 }
 
 JNIEXPORT jdoubleArray JNICALL Java_io_pdal_PointView_rasterizeTriangularMesh
-  (JNIEnv *env, jobject obj, jdoubleArray extent, jint cols, jint rows, jstring name)
+  (JNIEnv *env, jobject obj, jdoubleArray extent, jint cols, jint rows, jobject jDimType, jstring name)
 {
     std::string cname = std::string(env->GetStringUTFChars(name, 0));
 
@@ -242,6 +242,14 @@ JNIEXPORT jdoubleArray JNICALL Java_io_pdal_PointView_rasterizeTriangularMesh
         throwExecutionException(env, "No mesh was generated. Check that the appropriate filter is a part of a PDAL Pipeline.");
         return env->NewDoubleArray(0);
     }
+
+    jclass cDimType = env->GetObjectClass(jDimType);
+    jfieldID fid = env->GetFieldID(cDimType, "id", "Ljava/lang/String;");
+    jstring jid = reinterpret_cast<jstring>(env->GetObjectField(jDimType, fid));
+    
+    PointLayoutPtr pl = pv->layout();
+    DimType dimType = pl->findDimType(std::string(env->GetStringUTFChars(jid, 0)));
+    Id dimId = dimType.m_id;
 
     int size = mesh->size();
 
@@ -273,19 +281,19 @@ JNIEXPORT jdoubleArray JNICALL Java_io_pdal_PointView_rasterizeTriangularMesh
 
         double v1x = pv->getFieldAs<double>(Id::X, a);
         double v1y = pv->getFieldAs<double>(Id::Y, a);
-        double v1z = pv->getFieldAs<double>(Id::Z, a);
+        double v1z = pv->getFieldAs<double>(dimId, a);
         double s1x = pv->getFieldAs<double>(Id::X, c);
         double s1y = pv->getFieldAs<double>(Id::Y, c);
 
         double v2x = pv->getFieldAs<double>(Id::X, b);
         double v2y = pv->getFieldAs<double>(Id::Y, b);
-        double v2z = pv->getFieldAs<double>(Id::Z, b);
+        double v2z = pv->getFieldAs<double>(dimId, b);
         double s2x = pv->getFieldAs<double>(Id::X, a);
         double s2y = pv->getFieldAs<double>(Id::Y, a);
 
         double v3x = pv->getFieldAs<double>(Id::X, c);
         double v3y = pv->getFieldAs<double>(Id::Y, c);
-        double v3z = pv->getFieldAs<double>(Id::Z, c);
+        double v3z = pv->getFieldAs<double>(dimId, c);
         double s3x = pv->getFieldAs<double>(Id::X, b);
         double s3y = pv->getFieldAs<double>(Id::Y, b);
 

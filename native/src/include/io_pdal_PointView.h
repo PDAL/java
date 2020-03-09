@@ -74,10 +74,10 @@ JNIEXPORT jobject JNICALL Java_io_pdal_PointView_getTriangularMesh
 /*
  * Class:     io_pdal_PointView
  * Method:    rasterizeTriangularMesh
- * Signature: ([DIILjava/lang/String;)[D
+ * Signature: ([DIILio/pdal/DimType;Ljava/lang/String;)[D
  */
 JNIEXPORT jdoubleArray JNICALL Java_io_pdal_PointView_rasterizeTriangularMesh
-  (JNIEnv *, jobject, jdoubleArray, jint, jint, jstring);
+  (JNIEnv *, jobject, jdoubleArray, jint, jint, jobject, jstring);
 
 /*
  * Class:     io_pdal_PointView
