@@ -33,6 +33,7 @@
 
 #include <stdio.h>
 #include <vector>
+#include <float.h>
 #include "io_pdal_PointView.h"
 #include "JavaPipeline.hpp"
 #include "JavaTriangularMeshIterator.hpp"
@@ -52,6 +53,8 @@ using pdal::Dimension::Id;
 using pdal::PointId;
 using pdal::DimTypeList;
 using pdal::SpatialReference;
+using pdal::TriangularMesh;
+using pdal::Triangle;
 using pdal::DimType;
 using pdal::pdal_error;
 
@@ -223,6 +226,172 @@ JNIEXPORT jobject JNICALL Java_io_pdal_PointView_getTriangularMesh
     setHandle(env, mi, it);
 
     return mi;
+}
+
+JNIEXPORT jdoubleArray JNICALL Java_io_pdal_PointView_rasterizeTriangularMesh
+  (JNIEnv *env, jobject obj, jdoubleArray extent, jint cols, jint rows, jobject jDimType, jstring name)
+{
+    std::string cname = std::string(env->GetStringUTFChars(name, 0));
+
+    PointViewRawPtr *pvrp = getHandle<PointViewRawPtr>(env, obj);
+    PointViewPtr pv = pvrp->shared_pointer;
+    TriangularMesh *mesh = pv->mesh(cname);
+
+    if(mesh == NULL)
+    {
+        throwExecutionException(env, "No mesh was generated. Check that the appropriate filter is a part of a PDAL Pipeline.");
+        return env->NewDoubleArray(0);
+    }
+
+    jclass cDimType = env->GetObjectClass(jDimType);
+    jfieldID fid = env->GetFieldID(cDimType, "id", "Ljava/lang/String;");
+    jstring jid = reinterpret_cast<jstring>(env->GetObjectField(jDimType, fid));
+    
+    PointLayoutPtr pl = pv->layout();
+    DimType dimType = pl->findDimType(std::string(env->GetStringUTFChars(jid, 0)));
+    Id dimId = dimType.m_id;
+
+    int size = mesh->size();
+
+    int length = cols * rows;
+
+    jdouble *ext = env->GetDoubleArrayElements(extent, 0);
+    
+    double exmin = ext[0];
+    double eymin = ext[1];
+    double exmax = ext[2];
+    double eymax = ext[3];
+
+    env->ReleaseDoubleArrayElements(extent, ext, JNI_ABORT);
+
+    double w = (exmax - exmin) / cols;
+    double h = (eymax - eymin) / rows;
+
+    jdoubleArray result = env->NewDoubleArray(length);
+
+    double buffer[length];
+    std::fill(buffer, buffer + sizeof(buffer) / sizeof(double), strtod("NaN", NULL));
+
+    for (int id = 0; id < size; id++)
+    {
+        const Triangle& tri = (*mesh)[id];
+        PointId a = tri.m_a;
+        PointId b = tri.m_b;
+        PointId c = tri.m_c;
+
+        double v1x = pv->getFieldAs<double>(Id::X, a);
+        double v1y = pv->getFieldAs<double>(Id::Y, a);
+        double v1z = pv->getFieldAs<double>(dimId, a);
+        double s1x = pv->getFieldAs<double>(Id::X, c);
+        double s1y = pv->getFieldAs<double>(Id::Y, c);
+
+        double v2x = pv->getFieldAs<double>(Id::X, b);
+        double v2y = pv->getFieldAs<double>(Id::Y, b);
+        double v2z = pv->getFieldAs<double>(dimId, b);
+        double s2x = pv->getFieldAs<double>(Id::X, a);
+        double s2y = pv->getFieldAs<double>(Id::Y, a);
+
+        double v3x = pv->getFieldAs<double>(Id::X, c);
+        double v3y = pv->getFieldAs<double>(Id::Y, c);
+        double v3z = pv->getFieldAs<double>(dimId, c);
+        double s3x = pv->getFieldAs<double>(Id::X, b);
+        double s3y = pv->getFieldAs<double>(Id::Y, b);
+
+        double determinant = (v2y - v3y) * (v1x - v3x) + (v3x - v2x) * (v1y - v3y);
+
+        double ymin = std::min(v1y, std::min(v2y, v3y));
+        double ymax = std::max(v1y, std::max(v2y, v3y));
+
+        double scanrow0 = std::max(std::ceil((ymin - eymin) / h - 0.5), 0.0);
+        double scany = eymin + scanrow0 * h + h / 2.0;
+
+        while (scany < eymax && scany < ymax) 
+        {
+            // get x at y for edge
+            double xmin = -DBL_MAX;
+            double xmax = DBL_MAX;
+
+            if(s1y != v1y) 
+            {
+                double t = (scany - v1y) / (s1y - v1y);
+                double xAtY1 = v1x + t * (s1x - v1x);
+
+                if(v1y < s1y) 
+                {
+                    // Lefty
+                    if(xmin < xAtY1) { xmin = xAtY1; }
+                } 
+                else 
+                {
+                    // Righty
+                    if(xAtY1 < xmax) { xmax = xAtY1; }
+                }
+            }
+
+            if(s2y != v2y) 
+            {
+                double t = (scany - v2y) / (s2y - v2y);
+                double xAtY2 = v2x + t * (s2x - v2x);
+
+                if(v2y < s2y) 
+                {
+                    // Lefty
+                    if(xmin < xAtY2) { xmin = xAtY2; }
+                } 
+                else 
+                {
+                    // Righty
+                    if(xAtY2 < xmax) { xmax = xAtY2; }
+                }
+            }
+
+            if(s3y != v3y) 
+            {
+                double t = (scany - v3y) / (s3y - v3y);
+                double xAtY3 = v3x + t * (s3x - v3x);
+
+                if(v3y < s3y) 
+                {
+                    // Lefty
+                    if(xmin < xAtY3) { xmin = xAtY3; }
+                } 
+                else 
+                {
+                    // Righty
+                    if(xAtY3 < xmax) { xmax = xAtY3; }
+                }
+            }
+
+            double scancol0 = std::max(std::ceil((xmin - exmin) / w - 0.5), 0.0);
+            double scanx = exmin + scancol0 * w + w / 2;
+
+            while (scanx < exmax && scanx < xmax) 
+            {
+                int col = (int)((scanx - exmin) / w);
+                int row = (int)((eymax - scany) / h);
+
+                if(0 <= col && col < cols && 0 <= row && row < rows)
+                {
+
+                    double lambda1 = ((v2y - v3y) * (scanx - v3x) + (v3x - v2x) * (scany - v3y)) / determinant;
+                    double lambda2 = ((v3y - v1y) * (scanx - v3x) + (v1x - v3x) * (scany - v3y)) / determinant;
+                    double lambda3 = 1.0 - lambda1 - lambda2;
+
+                    double z = lambda1 * v1z + lambda2 * v2z + lambda3 * v3z;
+
+                    buffer[row * cols + col] = z;
+                }
+
+                scanx += w;
+            }
+
+            scany += h;
+        }
+    }
+
+    env->SetDoubleArrayRegion(result, 0, length, buffer);
+
+    return result;
 }
 
 JNIEXPORT void JNICALL Java_io_pdal_PointView_close

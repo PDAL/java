@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [2.1.5-RC1] - 2020-03-09
+### Added
+- Add a native mesh rasterization [#36](https://github.com/PDAL/java/pull/36)
+
 ### Changed
 - Move Scala syntax into the pipeline.syntax package [#33](https://github.com/PDAL/java/issues/33)
 
@@ -88,7 +93,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Moved from the PDAL repo and established own lifecycle.
 
-[Unreleased]: https://github.com/PDAL/java/compare/2.1.4...HEAD
+[Unreleased]: https://github.com/PDAL/java/compare/2.1.5-RC1...HEAD
+[2.1.5-RC1]: https://github.com/PDAL/java/compare/2.1.4...2.1.5-RC1
 [2.1.4]: https://github.com/PDAL/java/compare/2.1.3...2.1.4
 [2.1.3]: https://github.com/PDAL/java/compare/2.1.2...2.1.3
 [2.1.2]: https://github.com/PDAL/java/compare/2.0.0...2.1.2

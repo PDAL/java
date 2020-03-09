@@ -242,5 +242,33 @@ class PipelineSpec extends TestEnvironmentSpec {
       pv.close()
       pvi.close()
     }
+
+    it("should rasterize mesh") {
+      val pvi = pipelineDelaunay.getPointViews()
+      val pv = pvi.next()
+
+      val raster = pv.rasterizeTriangularMesh(Array(635619.85, 848899.7, 638982.55, 853535.43), 100, 100)
+
+      val (mi, ma) = {
+        val sorted = raster.filter(!_.isNaN).sorted
+        sorted.head -> sorted.last
+      }
+
+      mi shouldBe 406.915 +- 1e-3
+      ma shouldBe 582.022 +- 1e-3
+
+      pv.close()
+      pvi.close()
+    }
+
+    it("should not rasterize mesh if it was not generated") {
+      val pvi = pipeline.getPointViews()
+      val pv = pvi.next()
+
+      intercept[ExecutionException] { pv.rasterizeTriangularMesh(Array(), 0, 0) }
+
+      pv.close()
+      pvi.close()
+    }
   }
 }
