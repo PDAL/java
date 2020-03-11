@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.5-RC2] - 2020-03-11
+
+### Changed
+- Allocate rasterized buffer on heap [#37](https://github.com/PDAL/java/pull/37)
+
 ## [2.1.5-RC1] - 2020-03-09
 ### Added
 - Add a native mesh rasterization [#36](https://github.com/PDAL/java/pull/36)
@@ -93,7 +98,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Moved from the PDAL repo and established own lifecycle.
 
-[Unreleased]: https://github.com/PDAL/java/compare/2.1.5-RC1...HEAD
+[Unreleased]: https://github.com/PDAL/java/compare/2.1.5-RC2...HEAD
+[2.1.5-RC2]: https://github.com/PDAL/java/compare/2.1.5-RC1...2.1.5-RC2
 [2.1.5-RC1]: https://github.com/PDAL/java/compare/2.1.4...2.1.5-RC1
 [2.1.4]: https://github.com/PDAL/java/compare/2.1.3...2.1.4
 [2.1.3]: https://github.com/PDAL/java/compare/2.1.2...2.1.3

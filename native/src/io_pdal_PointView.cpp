@@ -64,8 +64,10 @@ using pdal::pdal_error;
 /// \param[in] dims      JavaArray of DimTypes
 /// \param[in] bufSize   Dims sum size
 /// \param[in] dimTypes  Vector of DimTypes
-void convertDimTypeJavaArrayToVector(JNIEnv *env, jobjectArray dims, std::size_t *pointSize, DimTypeList *dimTypes, PointLayoutPtr pl) {
-    for (jint i = 0; i < env->GetArrayLength(dims); i++) {
+void convertDimTypeJavaArrayToVector(JNIEnv *env, jobjectArray dims, std::size_t *pointSize, DimTypeList *dimTypes, PointLayoutPtr pl) 
+{
+    for (jint i = 0; i < env->GetArrayLength(dims); i++) 
+    {
         jobject jDimType = reinterpret_cast<jobject>(env->GetObjectArrayElement(dims, i));
         jclass cDimType = env->GetObjectClass(jDimType);
         jfieldID fid = env->GetFieldID(cDimType, "id", "Ljava/lang/String;");
@@ -192,7 +194,8 @@ JNIEXPORT jbyteArray JNICALL Java_io_pdal_PointView_getPackedPoints
     std::size_t bufSize = pointSize * pv->size();
     char *buf = new char[bufSize];
 
-    for (PointId idx = 0; idx < pv->size(); idx++) {
+    for (PointId idx = 0; idx < pv->size(); idx++) 
+    {
         appendPackedPoint(pv, dimTypes, idx, pointSize, buf);
     }
 
@@ -269,8 +272,8 @@ JNIEXPORT jdoubleArray JNICALL Java_io_pdal_PointView_rasterizeTriangularMesh
 
     jdoubleArray result = env->NewDoubleArray(length);
 
-    double buffer[length];
-    std::fill(buffer, buffer + sizeof(buffer) / sizeof(double), strtod("NaN", NULL));
+    double *buffer = new double[length];
+    std::fill(buffer, buffer + length, strtod("NaN", NULL));
 
     for (int id = 0; id < size; id++)
     {
@@ -390,6 +393,8 @@ JNIEXPORT jdoubleArray JNICALL Java_io_pdal_PointView_rasterizeTriangularMesh
     }
 
     env->SetDoubleArrayRegion(result, 0, length, buffer);
+
+    delete[] buffer;
 
     return result;
 }
