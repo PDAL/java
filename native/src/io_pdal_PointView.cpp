@@ -231,6 +231,8 @@ JNIEXPORT jobject JNICALL Java_io_pdal_PointView_getTriangularMesh
     return mi;
 }
 
+// A rasterizer port from GeoTrellis, see:
+// https://github.com/geotrellis/geotrellis-pointcloud/blob/837545f67818ce252e315b13a327a74821dc0594/pointcloud/src/main/scala/geotrellis/pointcloud/raster/rasterize/triangles/PDALTrianglesRasterizer.scala#L33-L153
 JNIEXPORT jdoubleArray JNICALL Java_io_pdal_PointView_rasterizeTriangularMesh
   (JNIEnv *env, jobject obj, jdoubleArray extent, jint cols, jint rows, jobject jDimType, jstring name)
 {
