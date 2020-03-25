@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Update filter.stats [#39](https://github.com/PDAL/java/pull/39)
+
 ## [2.1.5-RC3] - 2020-03-13
 ### Fixed 
 - Fix mesh rasterizer [#38](https://github.com/PDAL/java/pull/38)
