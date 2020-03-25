@@ -8,6 +8,8 @@ so try to use a consistent PDAL version.
 
 It is released independently from PDAL itself as of PDAL 1.7.
 
+See [https://pdal.io/java.html](https://pdal.io/java.html) for more info.
+
 ## Using PDAL JNI with SBT
 
 ```scala
@@ -129,3 +131,16 @@ PDAL_DEPEND_ON_NATIVE=false ./sbt -Djava.library.path=<path>
   ```cmake
   set(CMAKE_CXX_FLAGS "-L<path to dynamic libs> -std=c++11")
   ```
+
+## How to release
+
+All the instructions related to the local / maven release process are documented in the [HOWTORELEASE.txt](./HOWTORELEASE.txt) file.
+
+For the local publish it is possible to use the following commands:
+
+* `scripts/publish-local.sh` - to publish Scala 2.13 artifacts
+* `scripts/publish-local-212.sh` - to publish Scala 2.12 artifacts
+* `scripts/publish-local-211.sh` - to publish Scala 2.11 artifacts
+* `scripts/publish-local-native.sh` - to compile and publish artifact with native binaries
+
+For the additional information checkout the [HOWTORELEASE.txt](./HOWTORELEASE.txt) file and the [scripts](./scripts) directory.
