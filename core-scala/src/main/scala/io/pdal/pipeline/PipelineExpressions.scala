@@ -759,9 +759,11 @@ case class FilterSplitter(
 
 @ConfiguredJsonCodec
 case class FilterStats(
-  dimenstions: Option[String] = None,
+  dimensions: Option[String] = None,
   enumerate: Option[String] = None,
   count: Option[Int] = None,
+  global: Option[String] = None,
+  advanced: Option[Boolean] = None,
   `type`: FilterType = FilterTypes.stats
 ) extends PipelineExpr
 
