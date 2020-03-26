@@ -10,7 +10,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         scala: [2.13.1, 2.12.10]
-    
+
     container:
       image: daunnc/pdal-debian:2.0.1
       env:
@@ -25,24 +25,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Cache ivy2
+      - name: Cache SBT ivy cache
         uses: actions/cache@v1
         with:
           path: ~/.ivy2/cache
-          key: ${{ runner.os }}-sbt-ivy-cache-${{ hashFiles('**/build.sbt') }}  
+          key: ${{ runner.os }}-sbt-ivy-cache-${{ hashFiles('**/build.sbt') }}
 
-      - name: Cache coursier
+      - name: Cache SBT coursier cache
         uses: actions/cache@v1
         with:
           path: ~/.cache
-          key: ${{ runner.os }}-sbt-coursier-cache-${{ hashFiles('**/build.sbt') }}  
-    
-       - name: Cache SBT
-         uses: actions/cache@v1
-         with:
-           path: ~/.sbt
-           key: ${{ runner.os }}-sbt-${{ hashFiles('**/build.sbt') }}  
-      
+          key: ${{ runner.os }}-sbt-coursier-cache-${{ hashFiles('**/build.sbt') }}
+
+      - name: Cache SBT
+        uses: actions/cache@v1
+        with:
+          path: ~/.sbt
+          key: ${{ runner.os }}-sbt-${{ hashFiles('**/build.sbt') }}
+
       - name: Test
         run: |
           ./sbt ++$SCALA_VERSION "project core" test
@@ -58,39 +58,39 @@ jobs:
       matrix:
         os: [macos-latest]
         scala: [2.13.1, 2.12.10]
-  
+
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    - name: Cache ivy2
-      uses: actions/cache@v1
-      with:
+      - name: Cache SBT ivy cache
+        uses: actions/cache@v1
+        with:
           path: ~/.ivy2/cache
-          key: ${{ runner.os }}-sbt-ivy-cache-${{ hashFiles('**/build.sbt') }}  
+          key: ${{ runner.os }}-sbt-ivy-cache-${{ hashFiles('**/build.sbt') }}
 
-    - name: Cache coursier
-      uses: actions/cache@v1
-      with:
-        path: ~/.coursier
-        key: ${{ runner.os }}-sbt-coursier-cache-${{ hashFiles('**/build.sbt') }}  
-    
-     - name: Cache SBT
-       uses: actions/cache@v1
-       with:
-         path: ~/.sbt
-         key: ${{ runner.os }}-sbt-${{ hashFiles('**/build.sbt') }}  
+      - name: Cache SBT coursier cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.coursier
+          key: ${{ runner.os }}-sbt-coursier-cache-${{ hashFiles('**/build.sbt') }}
 
-    - name: Install PDAL
-      run: |
-        brew update
-        brew install pdal || true
-        
-    - name: Test
-      run: |
-        ./sbt ++$SCALA_VERSION "project core" test
-        ./sbt ++$SCALA_VERSION "project core-scala" test 
-        cd examples/pdal-jni
-        ./sbt "runMain com.azavea.Main"
-        ./sbt "runMain com.azavea.MainScala"
+      - name: Cache SBT
+        uses: actions/cache@v1
+        with:
+          path: ~/.sbt
+          key: ${{ runner.os }}-sbt-${{ hashFiles('**/build.sbt') }}
+
+      - name: Install PDAL
+        run: |
+          brew update
+          brew install pdal || true
+
+      - name: Test
+        run: |
+          ./sbt ++$SCALA_VERSION "project core" test
+          ./sbt ++$SCALA_VERSION "project core-scala" test 
+          cd examples/pdal-jni
+          ./sbt "runMain com.azavea.Main"
+          ./sbt "runMain com.azavea.MainScala"
 
