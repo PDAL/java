@@ -1,6 +1,6 @@
 # PDAL Java bindings
 
-[![Build Status](https://api.travis-ci.org/PDAL/java.svg)](http://travis-ci.org/PDAL/java) [![Join the chat at https://gitter.im/PDAL/PDAL](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PDAL/PDAL?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.pdal/pdal/badge.svg)](https://search.maven.org/search?q=g:io.pdal)
+![PDAL Java CI](https://github.com/PDAL/java/workflows/PDAL%20Java%20CI/badge.svg) [![Join the chat at https://gitter.im/PDAL/PDAL](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PDAL/PDAL?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.pdal/pdal/badge.svg)](https://search.maven.org/search?q=g:io.pdal)
 
 Java bindings to use PDAL on JVM (supports PDAL >= 2.0).
 Mac users can experience some issues with bindings that were build against a different PDAL version,

@@ -1,0 +1,101 @@
+name: PDAL Java CI
+
+on: [push, pull_request]
+
+jobs:
+  linux:
+    runs-on: ${{matrix.os}}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        scala: [2.13.1, 2.12.10]
+
+    container:
+      image: daunnc/pdal-debian:2.0.1
+      env:
+        SCALA_VERSION: ${{matrix.scala}}
+      volumes:
+        - ~/.ivy2:/root/.ivy2 
+        - ~/.sbt:/root/.sbt
+        - ~/.cache:/root/.cache
+        - $PWD:/pdal-java
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Cache SBT ivy cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.ivy2/cache
+          key: ${{ runner.os }}-sbt-ivy-cache-${{ hashFiles('**/build.sbt') }}
+
+      - name: Cache SBT coursier cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.cache
+          key: ${{ runner.os }}-sbt-coursier-cache-${{ hashFiles('**/build.sbt') }}
+
+      - name: Cache SBT
+        uses: actions/cache@v1
+        with:
+          path: ~/.sbt
+          key: ${{ runner.os }}-sbt-${{ hashFiles('**/build.sbt') }}
+
+      - name: Test
+        run: |
+          ./sbt ++$SCALA_VERSION "project core" test
+          ./sbt ++$SCALA_VERSION "project core-scala" test 
+          cd examples/pdal-jni
+          ./sbt ++$SCALA_VERSION "runMain com.azavea.Main"
+          ./sbt ++$SCALA_VERSION "runMain com.azavea.MainScala"
+
+  macos:
+    runs-on: ${{matrix.os}}
+
+    strategy:
+      matrix:
+        os: [macos-latest]
+        scala: [2.13.1, 2.12.10]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Cache SBT ivy cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.ivy2/cache
+          key: ${{ runner.os }}-sbt-ivy-cache-${{ hashFiles('**/build.sbt') }}
+
+      - name: Cache SBT coursier cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.coursier
+          key: ${{ runner.os }}-sbt-coursier-cache-${{ hashFiles('**/build.sbt') }}
+
+      - name: Cache SBT
+        uses: actions/cache@v1
+        with:
+          path: ~/.sbt
+          key: ${{ runner.os }}-sbt-${{ hashFiles('**/build.sbt') }}
+
+      - name: Cache Homebrew
+        uses: actions/cache@v1
+        with:
+          path: ~/Library/Caches/Homebrew
+          key: ${{ runner.os }}-homebrew
+
+      - name: Install PDAL
+        run: |
+          brew update
+          brew install pdal || true
+
+      - name: Test
+        run: |
+          ./sbt ++${{matrix.scala}} "project core" test
+          ./sbt ++${{matrix.scala}} "project core-scala" test 
+          cd examples/pdal-jni
+          ./sbt ++${{matrix.scala}} "runMain com.azavea.Main"
+          ./sbt ++${{matrix.scala}} "runMain com.azavea.MainScala"
