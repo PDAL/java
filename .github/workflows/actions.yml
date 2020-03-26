@@ -1,0 +1,66 @@
+name: PDAL Java CI
+
+# on:
+#   push:
+#     branches: [master]
+#   pull_request:
+#     branches: [master]
+
+on: [push, pull_request]
+
+jobs:
+  linux:
+    runs-on: ${{matrix.os}}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        scala: [2.13.1, 2.12.10]
+    
+    container:
+      image: daunnc/pdal-debian:2.0.1
+      env:
+        SCALA_VERSION: ${{matrix.scala}}
+      volumes:
+        - $HOME/.ivy2:/root/.ivy2 
+        - $HOME/.sbt:/root/.sbt
+        - $HOME/.coursier:/root/.coursier
+        - $PWD:/pdal-java
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      
+      - name: Test
+        run: |
+          ./sbt ++$SCALA_VERSION "project core" test
+          ./sbt ++$SCALA_VERSION "project core-scala" test 
+          cd examples/pdal-jni
+          ./sbt "runMain com.azavea.Main"
+          ./sbt "runMain com.azavea.MainScala"
+
+  macos:
+    runs-on: ${{matrix.os}}
+
+    strategy:
+      matrix:
+        os: [macos-latest]
+        scala: [2.13.1, 2.12.10]
+  
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+
+    - name: Install PDAL
+      run: |
+        brew update
+        brew install pdal
+        
+    - name: Test
+      run: |
+        ./sbt ++$SCALA_VERSION "project core" test
+        ./sbt ++$SCALA_VERSION "project core-scala" test 
+        cd examples/pdal-jni
+        ./sbt "runMain com.azavea.Main"
+        ./sbt "runMain com.azavea.MainScala"
+
