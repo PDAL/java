@@ -48,8 +48,8 @@ jobs:
           ./sbt ++$SCALA_VERSION "project core" test
           ./sbt ++$SCALA_VERSION "project core-scala" test 
           cd examples/pdal-jni
-          ./sbt "runMain com.azavea.Main"
-          ./sbt "runMain com.azavea.MainScala"
+          ./sbt ++$SCALA_VERSION "runMain com.azavea.Main"
+          ./sbt ++$SCALA_VERSION "runMain com.azavea.MainScala"
 
   macos:
     runs-on: ${{matrix.os}}
@@ -94,9 +94,9 @@ jobs:
 
       - name: Test
         run: |
-          ./sbt ++$SCALA_VERSION "project core" test
-          ./sbt ++$SCALA_VERSION "project core-scala" test 
+          ./sbt ++${{matrix.scala}} "project core" test
+          ./sbt ++${{matrix.scala}} "project core-scala" test 
           cd examples/pdal-jni
-          ./sbt "runMain com.azavea.Main"
-          ./sbt "runMain com.azavea.MainScala"
+          ./sbt ++${{matrix.scala}} "runMain com.azavea.Main"
+          ./sbt ++${{matrix.scala}} "runMain com.azavea.MainScala"
 
