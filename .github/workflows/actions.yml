@@ -13,13 +13,6 @@ jobs:
 
     container:
       image: daunnc/pdal-debian:2.0.1
-      env:
-        SCALA_VERSION: ${{matrix.scala}}
-      volumes:
-        - ~/.ivy2:/root/.ivy2 
-        - ~/.sbt:/root/.sbt
-        - ~/.cache:/root/.cache
-        - $PWD:/pdal-java
     
     steps:
       - name: Checkout
@@ -45,11 +38,11 @@ jobs:
 
       - name: Test
         run: |
-          ./sbt ++$SCALA_VERSION "project core" test
-          ./sbt ++$SCALA_VERSION "project core-scala" test 
+          ./sbt ++${{matrix.scala}} "project core" test
+          ./sbt ++${{matrix.scala}} "project core-scala" test 
           cd examples/pdal-jni
-          ./sbt ++$SCALA_VERSION "runMain com.azavea.Main"
-          ./sbt ++$SCALA_VERSION "runMain com.azavea.MainScala"
+          ./sbt ++${{matrix.scala}} "runMain com.azavea.Main"
+          ./sbt ++${{matrix.scala}} "runMain com.azavea.MainScala"
 
   macos:
     runs-on: ${{matrix.os}}
