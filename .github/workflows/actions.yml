@@ -16,9 +16,9 @@ jobs:
       env:
         SCALA_VERSION: ${{matrix.scala}}
       volumes:
-        - $HOME/.ivy2:/root/.ivy2 
-        - $HOME/.sbt:/root/.sbt
-        - $HOME/.coursier:/root/.coursier
+        - ~/.ivy2:/root/.ivy2 
+        - ~/.sbt:/root/.sbt
+        - ~/.coursier:/root/.coursier
         - $PWD:/pdal-java
     
     steps:
@@ -80,6 +80,12 @@ jobs:
         with:
           path: ~/.sbt
           key: ${{ runner.os }}-sbt-${{ hashFiles('**/build.sbt') }}
+
+      - name: Cache Homebrew
+        uses: actions/cache@v1
+        with:
+          path: ~/Library/Caches/Homebrew
+          key: ${{ runner.os }}-homebrew
 
       - name: Install PDAL
         run: |
