@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.6] - 2020-05-16
+### Changed
+- Make prebuilt JNI binaries conda compatible [#42](https://github.com/PDAL/java/issues/42)
+
 ## [2.1.5] - 2020-05-16
 ### Changed
 - Update filter.stats [#39](https://github.com/PDAL/java/pull/39)
@@ -106,7 +110,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Moved from the PDAL repo and established own lifecycle.
 
-[Unreleased]: https://github.com/PDAL/java/compare/2.1.5...HEAD
+[Unreleased]: https://github.com/PDAL/java/compare/2.1.6...HEAD
+[2.1.6]: https://github.com/PDAL/java/compare/2.1.5...2.1.6
 [2.1.5]: https://github.com/PDAL/java/compare/2.1.5-RC3...2.1.5
 [2.1.5-RC3]: https://github.com/PDAL/java/compare/2.1.5-RC2...2.1.5-RC3
 [2.1.5-RC2]: https://github.com/PDAL/java/compare/2.1.5-RC1...2.1.5-RC2
