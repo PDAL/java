@@ -2,12 +2,12 @@ name := "pdal-jni"
 
 lazy val commonSettings = Seq(
   version := "2.1.5" + Environment.versionSuffix,
-  scalaVersion := "2.13.1",
-  crossScalaVersions := Seq("2.13.1", "2.12.10", "2.11.12"),
+  scalaVersion := "2.13.2",
+  crossScalaVersions := Seq("2.13.2", "2.12.10", "2.11.12"),
   organization := "io.pdal",
   description := "PDAL JNI bindings",
   licenses := Seq("BSD" -> url("https://github.com/PDAL/PDAL/blob/master/LICENSE.txt")),
-  homepage := Some(url("http://www.pdal.io")),
+  homepage := Some(url("https://www.pdal.io")),
   publishMavenStyle := true,
   pomIncludeRepository := { _ => false },
   scalacOptions ++= Seq(
@@ -43,7 +43,7 @@ lazy val commonSettings = Seq(
         <developer>
           <id>pomadchin</id>
           <name>Grigory Pomadchin</name>
-          <url>http://github.com/pomadchin/</url>
+          <url>https://github.com/pomadchin/</url>
         </developer>
       </developers>
     ),
