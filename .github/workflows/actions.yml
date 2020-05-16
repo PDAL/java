@@ -9,10 +9,10 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        scala: [2.13.1, 2.12.10]
+        scala: [2.13.2, 2.12.10]
 
     container:
-      image: daunnc/pdal-debian:2.0.1
+      image: daunnc/pdal-debian:2.1.0
     
     steps:
       - name: Checkout
@@ -50,7 +50,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest]
-        scala: [2.13.1, 2.12.10]
+        scala: [2.13.2, 2.12.10]
 
     steps:
       - name: Checkout

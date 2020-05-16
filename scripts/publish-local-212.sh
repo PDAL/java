@@ -16,6 +16,8 @@ done
 
 export PDAL_VERSION_SUFFIX=${PDAL_VERSION_SUFFIX-"-SNAPSHOT"}
 
-PDAL_DEPEND_ON_NATIVE=false ./sbt "-212" "project core" publishLocal
-PDAL_DEPEND_ON_NATIVE=false ./sbt "-212" "project core-scala" publishLocal
+PDAL_DEPEND_ON_NATIVE=false ./sbt "-212" \
+  "project core" publishLocal \
+  "project core-scala" publishLocal
+
 ./sbt "-212" "project native" publishLocal

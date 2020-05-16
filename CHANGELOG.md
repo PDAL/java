@@ -6,8 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.5] - 2020-05-16
 ### Changed
 - Update filter.stats [#39](https://github.com/PDAL/java/pull/39)
+- Build JNI binaries against PDAL 2.1.0 [#43](https://github.com/PDAL/java/issues/43)
 
 ## [2.1.5-RC3] - 2020-03-13
 ### Fixed 
@@ -104,7 +106,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Moved from the PDAL repo and established own lifecycle.
 
-[Unreleased]: https://github.com/PDAL/java/compare/2.1.5-RC3...HEAD
+[Unreleased]: https://github.com/PDAL/java/compare/2.1.5...HEAD
+[2.1.5]: https://github.com/PDAL/java/compare/2.1.5-RC3...2.1.5
 [2.1.5-RC3]: https://github.com/PDAL/java/compare/2.1.5-RC2...2.1.5-RC3
 [2.1.5-RC2]: https://github.com/PDAL/java/compare/2.1.5-RC1...2.1.5-RC2
 [2.1.5-RC1]: https://github.com/PDAL/java/compare/2.1.4...2.1.5-RC1

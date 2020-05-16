@@ -22,7 +22,7 @@ docker run -it --rm \
   -v $HOME/.ivy2:/root/.ivy2 \
   -v $HOME/.sbt:/root/.sbt \
   -v $HOME/.coursier/cache:/root/.cache/coursier \
- daunnc/pdal-debian:2.0.1 bash -c "cd ./pdal-java; ./scripts/pack-native.sh --suffix=${PDAL_VERSION_SUFFIX}"
+ daunnc/pdal-debian:2.1.0 bash -c "cd ./pdal-java; ./scripts/pack-native.sh --suffix=${PDAL_VERSION_SUFFIX}"
 
 # docker run -it --rm \
 #   -v $PWD:/workdir \
