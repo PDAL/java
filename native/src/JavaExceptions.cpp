@@ -31,8 +31,6 @@
 * OF SUCH DAMAGE.
 ****************************************************************************/
 
-#pragma once
-
 #include "JavaExceptions.hpp"
 
 jstring throwInitializationException(JNIEnv *env, const char *message)

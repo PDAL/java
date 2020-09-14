@@ -1,7 +1,7 @@
 name := "pdal-jni"
 version := "0.1.0-SNAPSHOT"
-scalaVersion := "2.13.2"
-crossScalaVersions := Seq("2.13.2", "2.12.10", "2.11.12")
+scalaVersion := "2.13.3"
+crossScalaVersions := Seq("2.13.3", "2.12.10", "2.11.12")
 organization := "com.azavea"
 scalacOptions ++= Seq(
   "-deprecation",
@@ -27,5 +27,5 @@ libraryDependencies ++= Seq(
   "io.pdal" %% "pdal"        % pdalVersion,
   "io.pdal" %% "pdal-scala"  % pdalVersion,
   "io.pdal" %  "pdal-native" % pdalVersion,
-  "org.scalatest" %% "scalatest" % "3.1.1" % Test
+  "org.scalatest" %% "scalatest" % "3.2.2" % Test
 )
