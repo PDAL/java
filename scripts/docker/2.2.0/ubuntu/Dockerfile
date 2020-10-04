@@ -1,4 +1,4 @@
-FROM pdal/pdal:2.2
+FROM daunnc/pdal:2.2.0
 LABEL Grigory Pomadchin <daunnc@gmail.com>
 
 RUN set -ex && \
