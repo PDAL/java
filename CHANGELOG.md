@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.2.0] - 2020-10-04
+### Changed
+- Build JNI binaries against PDAL 2.2.0 [#47](https://github.com/PDAL/java/pull/47)
+
 ## [2.1.6] - 2020-05-16
 ### Changed
 - Make prebuilt JNI binaries conda compatible [#42](https://github.com/PDAL/java/issues/42)
