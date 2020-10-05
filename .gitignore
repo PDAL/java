@@ -35,9 +35,12 @@ README.html
 
 # VSCode files
 .vscode
+.history
 
 # Metals
 .metals
+.bloop
+metals.sbt
 
 # Test data files #
 

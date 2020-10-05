@@ -1,5 +1,5 @@
 -J-Xmx2G
--J-Xss512M
+-J-Xss4M
 -Djava.awt.headless=true
 -Dsun.io.serialization.extendedDebugInfo=true
 -Dsbt.color=always

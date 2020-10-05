@@ -1,9 +1,9 @@
 name := "pdal-jni"
 
 lazy val commonSettings = Seq(
-  version := "2.1.7" + Environment.versionSuffix,
-  scalaVersion := "2.13.2",
-  crossScalaVersions := Seq("2.13.2", "2.12.10", "2.11.12"),
+  version := "2.2.0" + Environment.versionSuffix,
+  scalaVersion := "2.13.3",
+  crossScalaVersions := Seq("2.13.3", "2.12.12", "2.11.12"),
   organization := "io.pdal",
   description := "PDAL JNI bindings",
   licenses := Seq("BSD" -> url("https://github.com/PDAL/PDAL/blob/master/LICENSE.txt")),

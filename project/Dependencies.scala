@@ -20,7 +20,7 @@ object Dependencies {
     }
 
   def circe(module: String) = Def.setting {
-    "io.circe" %% s"circe-$module" % ver("0.11.2", "0.12.2").value
+    "io.circe" %% s"circe-$module" % ver("0.11.2", "0.13.0").value
   }
 
   lazy val macroSettings: Seq[Setting[_]] = Seq(
@@ -34,21 +34,16 @@ object Dependencies {
   lazy val licenseSettings: Seq[Setting[_]] = Seq(
     headerLicense := Some(HeaderLicense.ALv2(java.time.Year.now.getValue.toString, "Azavea")),
     headerMappings := Map(
-      FileType.scala -> CommentStyle.cStyleBlockComment.copy(commentCreator = new CommentCreator() {
-        val Pattern = "(?s).*?(\\d{4}(-\\d{4})?).*".r
-        def findYear(header: String): Option[String] = header match {
-          case Pattern(years, _) => Some(years)
-          case _                 => None
-        }
-        def apply(text: String, existingText: Option[String]): String = {
+      FileType.scala -> CommentStyle.cStyleBlockComment.copy(
+        commentCreator = { (text, existingText) => {
           // preserve year of old headers
           val newText = CommentStyle.cStyleBlockComment.commentCreator.apply(text, existingText)
           existingText.flatMap(_ => existingText.map(_.trim)).getOrElse(newText)
-        }
-      })
+        } }
+      )
     )
   )
 
   val jtsCore   = "org.locationtech.jts" % "jts-core"  % "1.16.1"
-  val scalaTest = "org.scalatest"       %% "scalatest" % "3.1.1"
+  val scalaTest = "org.scalatest"       %% "scalatest" % "3.2.2"
 }

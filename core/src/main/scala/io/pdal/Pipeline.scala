@@ -50,7 +50,7 @@ class Pipeline(val json: String) extends Native {
   @native def getLog(): String
 }
 
-@nativeLoader("pdaljni.2.1")
+@nativeLoader("pdaljni.2.2")
 object Pipeline {
   def apply(json: String): Pipeline = { val p = new Pipeline(json); p.initialize(); p }
 }
