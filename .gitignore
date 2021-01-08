@@ -34,13 +34,19 @@ README.html
 *.sublime-workspace
 
 # VSCode files
+
 .vscode
 .history
 
 # Metals
+
 .metals
 .bloop
 metals.sbt
+
+# SBT
+
+.bsp
 
 # Test data files #
 
