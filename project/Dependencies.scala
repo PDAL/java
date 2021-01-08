@@ -45,5 +45,5 @@ object Dependencies {
   )
 
   val jtsCore   = "org.locationtech.jts" % "jts-core"  % "1.16.1"
-  val scalaTest = "org.scalatest"       %% "scalatest" % "3.2.2"
+  val scalaTest = "org.scalatest"       %% "scalatest" % "3.2.3"
 }

@@ -169,7 +169,7 @@ class PipelineSpec extends TestEnvironmentSpec {
     it("should read crs correct") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
-      pv.getCrsProj4 should (be (proj4String) or be(proj4StringNew))
+      pv.getCrsProj4 should (be (proj4String) or be(proj4StringMac))
       pv.close()
       pvi.close()
     }
