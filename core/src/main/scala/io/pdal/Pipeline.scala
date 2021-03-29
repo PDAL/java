@@ -33,7 +33,7 @@
 
 package io.pdal
 
-import ch.jodersky.jni.nativeLoader
+import com.github.sbt.jni.nativeLoader
 
 class Pipeline(val json: String) extends Native {
   Pipeline // reference the object so that the nativeLoader will load the JNI native libraries
