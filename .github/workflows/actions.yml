@@ -5,6 +5,9 @@ on: [push, pull_request]
 jobs:
   linux:
     runs-on: ${{matrix.os}}
+    # allows CI PR runs only from external repos
+    # in other cases push event is used to run it
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != 'PDAL/java'
 
     strategy:
       matrix:
@@ -46,6 +49,9 @@ jobs:
 
   macos:
     runs-on: ${{matrix.os}}
+    # allows CI PR runs only from external repos
+    # in other cases push event is used to run it
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != 'PDAL/java'
 
     strategy:
       matrix:
