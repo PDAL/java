@@ -1,9 +1,10 @@
 name := "pdal-jni"
 
+val scalaVersions = Seq("3.0.1", "2.13.6", "2.12.14")
+
 lazy val commonSettings = Seq(
-  version := "2.2.1" + Environment.versionSuffix,
-  scalaVersion := "2.13.6",
-  crossScalaVersions := Seq("2.13.6", "2.12.14", "2.11.12"),
+  scalaVersion := scalaVersions.head,
+  crossScalaVersions := scalaVersions,
   organization := "io.pdal",
   description := "PDAL JNI bindings",
   licenses := Seq("BSD" -> url("https://github.com/PDAL/PDAL/blob/master/LICENSE.txt")),
@@ -20,35 +21,20 @@ lazy val commonSettings = Seq(
     "-language:existentials",
     "-feature"
   ),
-  assembly / test := {},
   shellPrompt := { s => Project.extract(s).currentProject.id + " > " },
   commands ++= Seq(
     Commands.processJavastyleCommand("publish"),
     Commands.processJavastyleCommand("publishSigned")
   ),
   Test / publishArtifact := false,
-  publishTo := {
-    val nexus = "https://oss.sonatype.org/"
-    if (isSnapshot.value)
-      Some("snapshots" at nexus + "content/repositories/snapshots")
-    else
-      Some("releases"  at nexus + "service/local/staging/deploy/maven2")
-  },
-  pomExtra := (
-    <scm>
-      <url>git@github.com:PDAL/PDAL.git</url>
-      <connection>scm:git:git@github.com:PDAL/PDAL.git</connection>
-    </scm>
-      <developers>
-        <developer>
-          <id>pomadchin</id>
-          <name>Grigory Pomadchin</name>
-          <url>https://github.com/pomadchin/</url>
-        </developer>
-      </developers>
-    ),
-  Global / PgpKeys.useGpg := true,
-  Global / PgpKeys.gpgCommand := "gpg"
+  developers := List(
+    Developer(
+      "pomadchin",
+      "Grigory Pomadchin",
+      "@pomadchin",
+      url("https://github.com/pomadchin")
+    )
+  )
 )
 
 lazy val root = (project in file("."))
@@ -59,16 +45,22 @@ lazy val `core-scala` = project
   .settings(commonSettings: _*)
   .settings(Dependencies.macroSettings)
   .settings(Dependencies.licenseSettings)
+  .settings(
+    scalaVersion := "2.13.6",
+    crossScalaVersions := Seq("2.13.6", "2.12.14")
+  )
   .settings(name := "pdal-scala")
   .settings(javah / target := (native / nativeCompile / sourceDirectory).value / "include")
-  .settings(libraryDependencies ++= Seq(
-    Dependencies.circe("core").value,
-    Dependencies.circe("generic").value,
-    Dependencies.circe("generic-extras").value,
-    Dependencies.circe("parser").value,
-    Dependencies.jtsCore,
-    Dependencies.scalaTest % Test
-  ))
+  .settings(
+    libraryDependencies ++= Seq(
+      Dependencies.circe("core"),
+      Dependencies.circe("generic"),
+      Dependencies.circe("generic-extras"),
+      Dependencies.circe("parser"),
+      Dependencies.jtsCore,
+      Dependencies.scalaTest % Test
+    )
+  )
   .dependsOn(core)
   .dependsOn(Environment.dependOnNative(native % Runtime): _*)
 
@@ -76,6 +68,7 @@ lazy val core = project
   .settings(commonSettings: _*)
   .settings(name := "pdal")
   .settings(javah / target := (native / nativeCompile / sourceDirectory).value / "include")
+  .settings(sbtJniCoreScope := Compile)
   .settings(libraryDependencies += Dependencies.scalaTest % Test)
   .dependsOn(Environment.dependOnNative(native % Runtime): _*)
 

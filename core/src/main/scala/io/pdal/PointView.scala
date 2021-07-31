@@ -1,35 +1,26 @@
-/******************************************************************************
-  * Copyright (c) 2016, hobu Inc.  (info@hobu.co)
-  *
-  * All rights reserved.
-  *
-  * Redistribution and use in source and binary forms, with or without
-  * modification, are permitted provided that the following
-  * conditions are met:
-  *
-  *     * Redistributions of source code must retain the above copyright
-  *       notice, this list of conditions and the following disclaimer.
-  *     * Redistributions in binary form must reproduce the above copyright
-  *       notice, this list of conditions and the following disclaimer in
-  *       the documentation and/or other materials provided
-  *       with the distribution.
-  *     * Neither the name of Hobu, Inc. nor the names of its
-  *       contributors may be used to endorse or promote products derived
-  *       from this software without specific prior written permission.
-  *
-  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-  * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-  * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
-  * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
-  * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
-  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
-  * OF SUCH DAMAGE.
-  ****************************************************************************/
+/**
+ * **************************************************************************** Copyright (c) 2016, hobu Inc.
+ * (info@hobu.co)
+ *
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
+ * following conditions are met:
+ *
+ * * Redistributions of source code must retain the above copyright notice, this list of conditions and the following
+ * disclaimer. * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and
+ * the following disclaimer in the documentation and/or other materials provided with the distribution. * Neither the
+ * name of Hobu, Inc. nor the names of its contributors may be used to endorse or promote products derived from this
+ * software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
 package io.pdal
 
@@ -39,14 +30,14 @@ class PointView extends Native {
   def getPointCloud(idx: Long): PointCloud = getPointCloud(idx, layout().dimTypes())
   def getPointCloud(idx: Long, dims: Array[DimType]): PointCloud =
     PointCloud(
-      bytes    = getPackedPoint(idx, dims),
+      bytes = getPackedPoint(idx, dims),
       dimTypes = layout().toSizedDimTypes(dims)
     )
 
   def getPointCloud(): PointCloud = getPointCloud(layout().dimTypes())
   def getPointCloud(dims: Array[DimType]): PointCloud =
     PointCloud(
-      bytes    = getPackedPoints(dims),
+      bytes = getPackedPoints(dims),
       dimTypes = layout().toSizedDimTypes(dims)
     )
 
@@ -57,15 +48,15 @@ class PointView extends Native {
   def getCrsWKT(): String = getCrsWKT(pretty = false)
 
   /**
-    * Reads a packed point by point id from a set of packed points.
-    */
+   * Reads a packed point by point id from a set of packed points.
+   */
   def get(idx: Int, packedPoints: Array[Byte]): Array[Byte] = get(idx, packedPoints, layout().dimTypes())
   def get(idx: Int, packedPoints: Array[Byte], dims: Array[DimType]): Array[Byte] = {
     val pointSize = dims.map(layout().dimSize(_)).sum.toInt
     val from = idx * pointSize
     val result = new Array[Byte](pointSize)
     var j = 0
-    while(j < pointSize) {
+    while (j < pointSize) {
       result(j) = packedPoints(from + j)
       j += 1
     }
@@ -73,14 +64,14 @@ class PointView extends Native {
   }
 
   /**
-    * Reads dim from a packed point, point should contain all layout dims.
-    */
+   * Reads dim from a packed point, point should contain all layout dims.
+   */
   def get(packedPoint: Array[Byte], dim: DimType): ByteBuffer = {
     val from = layout().dimPackedOffset(dim).toInt
     val dimSize = layout().dimSize(dim).toInt
     val result = new Array[Byte](dimSize)
     var j = 0
-    while(j < dimSize) {
+    while (j < dimSize) {
       result(j) = packedPoint(from + j)
       j += 1
     }
@@ -109,8 +100,8 @@ class PointView extends Native {
   def getByte(packedPoint: Array[Byte], dim: DimType): Byte = get(packedPoint, dim).get()
 
   /**
-    * One dimension read; for multiple dims custom logic required.
-    */
+   * One dimension read; for multiple dims custom logic required.
+   */
 
   def getDouble(idx: Int, dim: String): Double = getDouble(idx, findDimType(dim))
   def getDouble(idx: Int, dim: DimType): Double = get(idx, dim).getDouble
@@ -162,6 +153,11 @@ class PointView extends Native {
   @native def getPackedPoint(idx: Long, dims: Array[DimType]): Array[Byte]
   @native def getPackedPoints(dims: Array[DimType]): Array[Byte]
   @native def getTriangularMesh(name: String): TriangularMesh
-  @native def rasterizeTriangularMesh(extent: Array[Double], cols: Int, rows: Int, dim: DimType, name: String): Array[Double]
+  @native def rasterizeTriangularMesh(extent: Array[Double],
+                                      cols: Int,
+                                      rows: Int,
+                                      dim: DimType,
+                                      name: String
+  ): Array[Double]
   @native def close(): Unit
 }

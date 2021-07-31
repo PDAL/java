@@ -36,13 +36,15 @@ object PipelineConstructor {
   implicit val pipelineConstructorEncoder: Encoder[PipelineConstructor] = Encoder.instance { constructor =>
     Json.obj(
       "pipeline" -> constructor.list.flatMap {
-        _.list.flatMap {
-          case RawExpr(json) => json.asObject
-          case expr => expr.asJson.asObject
-        }.map {
-          _.remove("class_type") // remove type
-            .filter { case (_, value) => !value.isNull } // cleanup options
-        }
+        _.list
+          .flatMap {
+            case RawExpr(json) => json.asObject
+            case expr          => expr.asJson.asObject
+          }
+          .map {
+            _.remove("class_type") // remove type
+              .filter { case (_, value) => !value.isNull } // cleanup options
+          }
       }.asJson
     )
   }

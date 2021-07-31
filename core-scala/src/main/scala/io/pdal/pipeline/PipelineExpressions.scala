@@ -440,9 +440,9 @@ case class FilterDecimation(
 
 @ConfiguredJsonCodec
 case class FilterDem(
-   raster: String,
-   limits: String,
-   band: Option[Int] = None,
+  raster: String,
+  limits: String,
+  band: Option[Int] = None,
   `type`: FilterType = FilterTypes.dem
 ) extends PipelineExpr
 
@@ -453,9 +453,9 @@ case class FilterDelaunay(
 
 @ConfiguredJsonCodec
 case class FilterDivider(
-   mode: Option[String] = None,
-   count: Option[Int] = None,
-   capacity: Option[Int] = None,
+  mode: Option[String] = None,
+  count: Option[Int] = None,
+  capacity: Option[Int] = None,
   `type`: FilterType = FilterTypes.divider
 ) extends PipelineExpr
 

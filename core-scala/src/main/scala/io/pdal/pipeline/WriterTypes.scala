@@ -38,8 +38,22 @@ object WriterTypes {
   case object text extends WriterType
 
   lazy val all = List(
-    bpf, gdal, geowave, las, matlab, nitf, oci, optech,
-    pcd, pgpointcloud, pclvisualizer, ply, rialto, sbet, sqlite, text
+    bpf,
+    gdal,
+    geowave,
+    las,
+    matlab,
+    nitf,
+    oci,
+    optech,
+    pcd,
+    pgpointcloud,
+    pclvisualizer,
+    ply,
+    rialto,
+    sbet,
+    sqlite,
+    text
   )
 
   def fromName(name: String): WriterType =

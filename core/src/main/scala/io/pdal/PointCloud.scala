@@ -1,35 +1,26 @@
-/******************************************************************************
-  * Copyright (c) 2016, hobu Inc.  (info@hobu.co)
-  *
-  * All rights reserved.
-  *
-  * Redistribution and use in source and binary forms, with or without
-  * modification, are permitted provided that the following
-  * conditions are met:
-  *
-  *     * Redistributions of source code must retain the above copyright
-  *       notice, this list of conditions and the following disclaimer.
-  *     * Redistributions in binary form must reproduce the above copyright
-  *       notice, this list of conditions and the following disclaimer in
-  *       the documentation and/or other materials provided
-  *       with the distribution.
-  *     * Neither the name of Hobu, Inc. nor the names of its
-  *       contributors may be used to endorse or promote products derived
-  *       from this software without specific prior written permission.
-  *
-  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-  * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-  * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
-  * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
-  * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
-  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
-  * OF SUCH DAMAGE.
-  ****************************************************************************/
+/**
+ * **************************************************************************** Copyright (c) 2016, hobu Inc.
+ * (info@hobu.co)
+ *
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
+ * following conditions are met:
+ *
+ * * Redistributions of source code must retain the above copyright notice, this list of conditions and the following
+ * disclaimer. * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and
+ * the following disclaimer in the documentation and/or other materials provided with the distribution. * Neither the
+ * name of Hobu, Inc. nor the names of its contributors may be used to endorse or promote products derived from this
+ * software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
 package io.pdal
 
@@ -39,9 +30,9 @@ import java.util
 import scala.collection.JavaConverters._
 
 /**
-  * PointCloud abstraction to work with packed point(s) in JVM memory.
-  * SizedDimType contains size and offset for a particular packed point with the current set of dims.
-  **/
+ * PointCloud abstraction to work with packed point(s) in JVM memory. SizedDimType contains size and offset for a
+ * particular packed point with the current set of dims.
+ */
 case class PointCloud(bytes: Array[Byte], dimTypes: util.Map[String, SizedDimType]) {
   val pointSize: Int = dimTypes.values.asScala.map(_.size).sum.toInt
   val length: Int = bytes.length / pointSize
@@ -54,15 +45,15 @@ case class PointCloud(bytes: Array[Byte], dimTypes: util.Map[String, SizedDimTyp
   def findSizedDimType(dim: String): SizedDimType = dimTypes.asScala(dim)
 
   /**
-    * Reads a packed point by point id from a set of packed points.
-    */
+   * Reads a packed point by point id from a set of packed points.
+   */
   def get(i: Int): Array[Byte] = {
     if (isPoint) bytes
     else {
       val from = i * pointSize
       val result = new Array[Byte](pointSize)
       var j = 0
-      while(j < pointSize) {
+      while (j < pointSize) {
         result(j) = bytes(from + j)
         j += 1
       }
@@ -104,22 +95,23 @@ case class PointCloud(bytes: Array[Byte], dimTypes: util.Map[String, SizedDimTyp
 
   def get(idx: Int, dims: Array[SizedDimType]): ByteBuffer = get(idx, dims.map(_.dimType.id))
   def get(idx: Int, dims: Array[DimType]): ByteBuffer = get(idx, dims.map(_.id))
-  def get(idx: Int, dims: Array[String]): ByteBuffer = ByteBuffer.wrap(get(get(idx), dims)).order(ByteOrder.nativeOrder())
+  def get(idx: Int, dims: Array[String]): ByteBuffer =
+    ByteBuffer.wrap(get(get(idx), dims)).order(ByteOrder.nativeOrder())
 
   def getX(idx: Int): Double = getDouble(idx, DimType.Id.X)
   def getY(idx: Int): Double = getDouble(idx, DimType.Id.Y)
   def getZ(idx: Int): Double = getDouble(idx, DimType.Id.Z)
 
   /**
-    * Reads dim from a packed point.
-    */
+   * Reads dim from a packed point.
+   */
   def get(packedPoint: Array[Byte], dim: String): Array[Byte] = {
     val sdt = dimTypes.asScala(dim)
     val from = sdt.offset.toInt
     val dimSize = sdt.size.toInt
     val result = new Array[Byte](dimSize)
     var j = 0
-    while(j < dimSize) {
+    while (j < dimSize) {
       result(j) = packedPoint(from + j)
       j += 1
     }
@@ -127,8 +119,8 @@ case class PointCloud(bytes: Array[Byte], dimTypes: util.Map[String, SizedDimTyp
   }
 
   /**
-    * Reads dims from a packed point.
-    */
+   * Reads dims from a packed point.
+   */
   private def get(packedPoint: Array[Byte], dims: Array[String]): Array[Byte] =
     dims.map(get(bytes, _)).fold(Array[Byte]())(_ ++ _)
 }

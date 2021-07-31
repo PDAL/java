@@ -37,7 +37,8 @@ trait Implicits {
 
   implicit class withPointViewMethods(self: PointView) {
     def getPointCloud(dims: DimType*): PointCloud = self.getPointCloud(dims.toArray)
-    def get(idx: Int, packedPoints: Array[Byte], dims: DimType*): Array[Byte] = self.get(idx, packedPoints, dims.toArray)
+    def get(idx: Int, packedPoints: Array[Byte], dims: DimType*): Array[Byte] =
+      self.get(idx, packedPoints, dims.toArray)
     def getPackedPoint(idx: Long, dims: DimType*): Array[Byte] = self.getPackedPoint(idx, dims.toArray)
     def getPackedPoints(dims: DimType*): Array[Byte] = self.getPackedPoints(dims.toArray)
   }

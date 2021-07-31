@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  pull_request:
+    branches: ['**']
+  push:
+    branches: ['**']
+    tags: [v*]
+  release:
+    types: [published]
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != 'PDAL/java'
+
+    container:
+      image: daunnc/pdal-ubuntu:2.3.0
+    
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: coursier/cache-action@v6
+
+      - name: Test
+        run: |
+          ./sbt ++${{matrix.scala}} "project core" +test && \
+          ./sbt ++${{matrix.scala}} "project core-scala" +test
+
+  macos:
+    runs-on: macos-latest
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != 'PDAL/java'
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: coursier/cache-action@v6
+
+      - name: Cache Homebrew
+        uses: actions/cache@v2
+        with:
+          path: ~/Library/Caches/Homebrew
+          key: ${{ runner.os }}-homebrew
+
+      - name: Install PDAL
+        run: |
+          brew update
+          brew install pdal || true
+
+      - name: Test
+        run: |
+          ./sbt ++${{matrix.scala}} "project core" +test && \
+          ./sbt ++${{matrix.scala}} "project core-scala" +test
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: [linux, macos]
+    if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
+    env: 
+      CI_SONATYPE_RELEASE: ""
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: coursier/cache-action@v6
+
+      - name: Release
+        run: ./sbt ci-release
+        env:
+          PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+        if: ${{ env.SONATYPE_PASSWORD != '' && env.SONATYPE_USERNAME != '' }}

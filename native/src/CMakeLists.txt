@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.0)
+cmake_minimum_required(VERSION 3.12)
 
 set(ignoreMe "${SBT}") # sbt-jni defines -DSBT
 set(MAKE_COLOR_MAKEFILE ON)
@@ -9,7 +9,7 @@ set(MAKE_COLOR_MAKEFILE ON)
 
 project (pdaljni)
 set(PROJECT_VERSION_MAJOR 2)
-set(PROJECT_VERSION_MINOR 2)
+set(PROJECT_VERSION_MINOR 3)
 set(PROJECT_VERSION_PATCH 0)
 
 set(PDAL_LIB_NAME pdalcpp)
