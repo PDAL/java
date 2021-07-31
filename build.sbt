@@ -9,6 +9,7 @@ lazy val commonSettings = Seq(
   description := "PDAL JNI bindings",
   licenses := Seq("BSD" -> url("https://github.com/PDAL/PDAL/blob/master/LICENSE.txt")),
   homepage := Some(url("https://www.pdal.io")),
+  versionScheme := Some("semver-spec"),
   publishMavenStyle := true,
   pomIncludeRepository := { _ => false },
   scalacOptions ++= Seq(
@@ -39,7 +40,7 @@ lazy val commonSettings = Seq(
 
 lazy val root = (project in file("."))
   .settings(commonSettings: _*)
-  .settings(addCommandAlias("test-all", ";+core/test;+core-scala/test"))
+  .settings(publish := {}, publishLocal := {}, addCommandAlias("test-all", ";+core/test;+core-scala/test"))
   .aggregate(`core-scala`, core, native)
 
 lazy val `core-scala` = project

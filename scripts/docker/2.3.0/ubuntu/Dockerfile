@@ -12,7 +12,7 @@ RUN set -ex && \
 ENV JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk-amd6
 RUN update-alternatives --set java `update-alternatives --list java | grep java-8`
 
-RUN apt-get -y install bash gcc g++ cmake wget
+RUN apt-get -y install bash gcc g++ cmake wget unzip gpg
 
 RUN ln -s /opt/conda/envs/pdal/include/pdal /usr/include/pdal && \
     ln -s /usr/include /usr/lib/include && \
