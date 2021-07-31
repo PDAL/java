@@ -24,7 +24,7 @@ jobs:
       - name: Test
         run: ./sbt test-all
 
-      - name: Prepare Linux Native package
+      - name: Prepare Linux native package
         run: ./sbt native/package
 
       - uses: actions/upload-artifact@v2
@@ -55,9 +55,9 @@ jobs:
       - name: Test
         run: ./sbt test-all
 
-      - name: Prepare MacOS Native package
+      - name: Prepare MacOS native package
         run: ./sbt native/package
-      
+
       - uses: actions/upload-artifact@v2
         with:
           name: macos
@@ -66,7 +66,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     needs: [linux, macos]
-    if: github.event_name != 'pull_request'
+    # if: github.event_name != 'pull_request'
     env: 
       CI_SONATYPE_RELEASE: ""
 
@@ -75,6 +75,39 @@ jobs:
         with:
           fetch-depth: 0
       - uses: coursier/cache-action@v6
+      - uses: olafurpg/setup-scala@v11
+        with:
+          java-version: adopt@1.8
+
+      - name: Package native libraries
+        run: ./sbt native/package
+
+      - name: Extract native jar name
+        shell: bash
+        run: |
+          cd native/target && \
+          NATIVE_JAR_NAME=(./*.jar) && \
+          rm -f $NATIVE_JAR_NAME && \
+          echo "NATIVE_JAR_NAME=$NATIVE_JAR_NAME" >> $GITHUB_ENV
+      
+      - uses: actions/download-artifact@v2
+        with:
+          name: linux
+          path: native/target/linux.jar
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: macos
+          path: native/target/macos.jar
+
+      - name: Combine native jars
+        run: |
+          NATIVE_JAR_NAME=${{ env.NATIVE_JAR_NAME }} && \
+          mkdir tmp && \
+          (cd tmp; unzip -uo ../linux.jar) && \
+          (cd tmp; unzip -uo ../macos.jar) && \
+          jar -cvf $NATIVE_JAR_NAME -C tmp . && \
+          rm -r tmp
 
       - name: Release
         run: ./sbt ci-release
