@@ -22,12 +22,15 @@ jobs:
       - uses: coursier/cache-action@v6
 
       - name: Test
-        run: ./sbt ";project core;+test;project core-scala;+test"
+        run: ./sbt test-all
 
-      # - name: Prepare Linux Native package
-        # run: |
-        #   ./sbt ++${{matrix.scala}} "project core" +test && \
-         #  ./sbt ++${{matrix.scala}} "project core-scala" +test
+      - name: Prepare Linux Native package
+        run: ./sbt native/package
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: linux
+          path: native/target/*.jar
 
   macos:
     runs-on: macos-latest
@@ -50,7 +53,15 @@ jobs:
           brew install pdal || true
 
       - name: Test
-        run: ./sbt ";project core;+test;project core-scala;+test"
+        run: ./sbt test-all
+
+      - name: Prepare MacOS Native package
+        run: ./sbt native/package
+      
+      - uses: actions/upload-artifact@v2
+        with:
+          name: macos
+          path: native/target/*.jar
 
   publish:
     runs-on: ubuntu-latest

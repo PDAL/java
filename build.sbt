@@ -39,16 +39,14 @@ lazy val commonSettings = Seq(
 
 lazy val root = (project in file("."))
   .settings(commonSettings: _*)
+  .settings(addCommandAlias("test-all", ";+core/test;+core-scala/test"))
   .aggregate(`core-scala`, core, native)
 
 lazy val `core-scala` = project
   .settings(commonSettings: _*)
   .settings(Dependencies.macroSettings)
   .settings(Dependencies.licenseSettings)
-  .settings(
-    scalaVersion := "2.13.6",
-    crossScalaVersions := Seq("2.13.6", "2.12.14")
-  )
+  .settings(scalaVersion := "2.13.6", crossScalaVersions := Seq("2.13.6", "2.12.14"))
   .settings(name := "pdal-scala")
   .settings(javah / target := (native / nativeCompile / sourceDirectory).value / "include")
   .settings(
