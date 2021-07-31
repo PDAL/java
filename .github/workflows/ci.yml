@@ -22,9 +22,12 @@ jobs:
       - uses: coursier/cache-action@v6
 
       - name: Test
-        run: |
-          ./sbt ++${{matrix.scala}} "project core" +test && \
-          ./sbt ++${{matrix.scala}} "project core-scala" +test
+        run: ./sbt ";project core;+test;project core-scala;+test"
+
+      # - name: Prepare Linux Native package
+        # run: |
+        #   ./sbt ++${{matrix.scala}} "project core" +test && \
+         #  ./sbt ++${{matrix.scala}} "project core-scala" +test
 
   macos:
     runs-on: macos-latest
@@ -47,9 +50,7 @@ jobs:
           brew install pdal || true
 
       - name: Test
-        run: |
-          ./sbt ++${{matrix.scala}} "project core" +test && \
-          ./sbt ++${{matrix.scala}} "project core-scala" +test
+        run: ./sbt ";project core;+test;project core-scala;+test"
 
   publish:
     runs-on: ubuntu-latest
