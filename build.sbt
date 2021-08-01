@@ -10,8 +10,6 @@ lazy val commonSettings = Seq(
   licenses := Seq("BSD" -> url("https://github.com/PDAL/PDAL/blob/master/LICENSE.txt")),
   homepage := Some(url("https://www.pdal.io")),
   versionScheme := Some("semver-spec"),
-  publishMavenStyle := true,
-  pomIncludeRepository := { _ => false },
   scalacOptions ++= Seq(
     "-deprecation",
     "-unchecked",
