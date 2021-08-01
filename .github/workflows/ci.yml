@@ -69,7 +69,7 @@ jobs:
     needs: [linux, macos]
     container:
       image: daunnc/pdal-ubuntu:2.3.0
-    # if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request'
     env: 
       PDAL_DEPEND_ON_NATIVE: "false"
 
