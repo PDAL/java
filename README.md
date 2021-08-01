@@ -19,9 +19,10 @@ resolvers ++= Seq(
   Resolver.sonatypeRepo("snapshots") // for snaphots
 )
 
+// `<latest version>` refers to the version indicated by the badge above
 libraryDependencies ++= Seq(
-  "io.pdal" %% "pdal" % "x.x.x", // core library
-  "io.pdal" %  "pdal-native" % "x.x.x" // jni bindings
+  "io.pdal" %% "pdal" % "<latest version>", // core library
+  "io.pdal" %  "pdal-native" % "<latest version>" // jni bindings
 )
 ```
 
@@ -37,14 +38,15 @@ javaOptions += "-Djava.library.path=/usr/local/lib"
 You can use `pdal-native` dep in case you don't have installed JNI bindings and to avoid steps described above.
 Dependency contains bindings for `x86_64-darwin` and `x86_64-linux`, other versions are not supported yet.
 
-## PDAL-Scala
+## PDAL-Scala (Scala 2.x)
 
 Scala API allows to build pipeline expressions instead of writing a raw JSON.
 
 ```scala
+// `<latest version>` refers to the version indicated by the badge above
 libraryDependencies ++= Seq(
-  "io.pdal" %% "pdal-scala" % "x.x.x", // scala core library
-  "io.pdal" %  "pdal-native" % "x.x.x" // jni bindings
+  "io.pdal" %% "pdal-scala" % "<latest version>", // scala core library
+  "io.pdal" %  "pdal-native" % "<latest version>" // jni bindings
 )
 ```
 
@@ -132,15 +134,13 @@ PDAL_DEPEND_ON_NATIVE=false ./sbt -Djava.library.path=<path>
   set(CMAKE_CXX_FLAGS "-L<path to dynamic libs> -std=c++11")
   ```
 
-## How to release
+## How to release (outdated)
 
 All the instructions related to the local / maven release process are documented in the [HOWTORELEASE.txt](./HOWTORELEASE.txt) file.
 
 For the local publish it is possible to use the following commands:
 
-* `scripts/publish-local.sh` - to publish Scala 2.13 artifacts
-* `scripts/publish-local-212.sh` - to publish Scala 2.12 artifacts
-* `scripts/publish-local-211.sh` - to publish Scala 2.11 artifacts
+* `scripts/publish-local.sh` - to publish Scala artifacts
 * `scripts/publish-local-native.sh` - to compile and publish artifact with native binaries
 
 For the additional information checkout the [HOWTORELEASE.txt](./HOWTORELEASE.txt) file and the [scripts](./scripts) directory.
