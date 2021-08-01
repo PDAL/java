@@ -33,6 +33,5 @@ object Environment {
   def dependOnNative(native: ClasspathDependency) =
     if (pdalDependOnNative == "true") Seq(native) else Seq.empty
 
-  lazy val versionSuffix = either("PDAL_VERSION_SUFFIX", "-SNAPSHOT")
   lazy val pdalDependOnNative = either("PDAL_DEPEND_ON_NATIVE", "true")
 }
