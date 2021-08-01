@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.0] - 2021-08-01
+## Added
+- PDAL 2.3.0 [#57](https://github.com/pdal/java/pull/57) (@pomadchin)
+
 ## [2.2.0] - 2020-10-04
 ### Changed
 - Build JNI binaries against PDAL 2.2.0 [#47](https://github.com/PDAL/java/pull/47)
@@ -114,7 +118,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Moved from the PDAL repo and established own lifecycle.
 
-[Unreleased]: https://github.com/PDAL/java/compare/v2.2.0...HEAD
+[Unreleased]: https://github.com/PDAL/java/compare/v2.3.0...HEAD
+[2.3.0]: https://github.com/PDAL/java/compare/v2.2.0...v2.3.0
 [2.2.0]: https://github.com/PDAL/java/compare/v2.1.6...v2.2.0
 [2.1.6]: https://github.com/PDAL/java/compare/v2.1.5...v2.1.6
 [2.1.5]: https://github.com/PDAL/java/compare/v2.1.5-RC3...v2.1.5
