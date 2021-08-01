@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.1] - 2021-08-01
+## Added
+* Fix the release to include MacOS native binaries.
+
 ## [2.3.0] - 2021-08-01
 ### Added
 - PDAL 2.3.0 [#57](https://github.com/pdal/java/pull/57) (@pomadchin)
@@ -118,7 +122,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Moved from the PDAL repo and established own lifecycle.
 
-[Unreleased]: https://github.com/PDAL/java/compare/v2.3.0...HEAD
+[Unreleased]: https://github.com/PDAL/java/compare/v2.3.1...HEAD
+[2.3.1]: https://github.com/PDAL/java/compare/v2.3.0...v2.3.1
 [2.3.0]: https://github.com/PDAL/java/compare/v2.2.0...v2.3.0
 [2.2.0]: https://github.com/PDAL/java/compare/v2.1.6...v2.2.0
 [2.1.6]: https://github.com/PDAL/java/compare/v2.1.5...v2.1.6
