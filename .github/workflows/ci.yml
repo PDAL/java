@@ -62,7 +62,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: macos
-          path: native/target/native/x86_64-darwin/bin
+          path: native/target/native/x86_64-darwin
 
   publish:
     runs-on: ubuntu-latest
@@ -72,6 +72,7 @@ jobs:
     if: github.event_name != 'pull_request'
     env: 
       PDAL_DEPEND_ON_NATIVE: "false"
+      CI_SONATYPE_RELEASE: ""
 
     steps:
       - uses: actions/checkout@v2
@@ -85,7 +86,7 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: macos
-          path: native/target/native/x86_64-darwin/bin
+          path: native/target/native/x86_64-darwin
 
       - name: Release
         run: sbt ci-release
