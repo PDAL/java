@@ -47,13 +47,13 @@ jobs:
       - name: Test
         run: ./sbt test-all
 
-      - name: Build MacOS native package
+      - name: Build native package
         run: ./sbt native/package
 
       - uses: actions/upload-artifact@v2
         with:
           name: macos
-          path: native/target/*.jar
+          path: native/target/native/x86_64-darwin/bin
 
   publish:
     runs-on: ubuntu-latest
@@ -70,28 +70,10 @@ jobs:
           fetch-depth: 0
       - uses: coursier/cache-action@v6
 
-      - name: Build Linux native package
-        run: |
-          ./sbt native/package && \
-          VERSION=`./sbt -no-colors 'native/version' | tac | grep -m 1 '[^[:blank:]]' | cut -d ' ' -f2` && \
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-
       - uses: actions/download-artifact@v2
         with:
           name: macos
-          path: native/target
-
-      - name: Merge native jars
-        shell: bash
-        run: |
-          cd native/target && \
-          mkdir tmp && \
-          LINUX_JAR_NAME=(*x86_64-linux*.jar) && \
-          MACOS_JAR_NAME=(*x86_64-darwin*.jar) && \
-          (cd tmp && unzip -uo ../$LINUX_JAR_NAME) && \
-          (cd tmp && unzip -uo ../$MACOS_JAR_NAME) && \
-          jar -cvf pdal-native-${{ env.VERSION }} -C tmp . && \
-          rm -r tmp
+          path: native/target/native/x86_64-darwin/bin
 
       - name: Release
         run: |

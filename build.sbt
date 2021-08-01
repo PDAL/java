@@ -23,10 +23,6 @@ lazy val commonSettings = Seq(
     "-feature"
   ),
   shellPrompt := { s => Project.extract(s).currentProject.id + " > " },
-  commands ++= Seq(
-    Commands.processJavastyleCommand("publish"),
-    Commands.processJavastyleCommand("publishSigned")
-  ),
   Test / publishArtifact := false,
   developers := List(
     Developer(
@@ -76,6 +72,12 @@ lazy val native = project
   .settings(crossPaths := false)
   .settings(name := "pdal-native")
   .settings(nativeCompile / sourceDirectory := sourceDirectory.value)
+  .settings(
+    Compile / unmanagedPlatformDependentNativeDirectories := Seq(
+      "x86_64-linux" -> target.value / "native/x86_64-linux/bin/",
+      "x86_64-darwin" -> target.value / "native/x86_64-darwin/bin/"
+    )
+  )
   .settings(artifactName := { (sv: ScalaVersion, module: ModuleID, artifact: Artifact) =>
     artifact.name + "-" + nativePlatform.value + "-" + module.revision + "." + artifact.extension
   })

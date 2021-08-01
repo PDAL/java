@@ -37,6 +37,6 @@ object Dependencies {
 
   def circe(module: String) = "io.circe" %% s"circe-$module" % "0.14.1"
 
-  val jtsCore = "org.locationtech.jts" % "jts-core" % "1.16.1"
-  val scalaTest = "org.scalatest" %% "scalatest" % "3.2.9"
+  val jtsCore   = "org.locationtech.jts" % "jts-core"  % "1.16.1"
+  val scalaTest = "org.scalatest"       %% "scalatest" % "3.2.9"
 }

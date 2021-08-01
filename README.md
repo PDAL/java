@@ -1,6 +1,6 @@
 # PDAL Java bindings
 
-[![CI](https://github.com/PDAL/java/workflows/CI/badge.svg)](https://github.com/PDAL/java/actions) [![Join the chat at https://gitter.im/PDAL/PDAL](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PDAL/PDAL?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.pdal/pdal/badge.svg)](https://search.maven.org/search?q=g:io.pdal)
+[![CI](https://github.com/PDAL/java/workflows/CI/badge.svg)](https://github.com/PDAL/java/actions) [![Join the chat at https://gitter.im/PDAL/PDAL](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PDAL/PDAL?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Maven Central](https://img.shields.io/maven-central/v/io.pdal/pdal_2.13)](https://search.maven.org/search?q=g:io.pdal) [![Snapshots](https://img.shields.io/nexus/s/https/oss.sonatype.org/io.pdal/pdal_2.13)](https://oss.sonatype.org/content/repositories/snapshots/io/pdal/)
 
 Java bindings to use PDAL on JVM (supports PDAL >= 2.0).
 Mac users can experience some issues with bindings that were build against a different PDAL version,
