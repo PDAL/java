@@ -36,7 +36,12 @@ lazy val commonSettings = Seq(
 
 lazy val root = (project in file("."))
   .settings(commonSettings: _*)
-  .settings(publish := {}, publishLocal := {}, addCommandAlias("test-all", ";+core/test;+core-scala/test"))
+  .settings(
+    scalaVersion := scalaVersions.head,
+    crossScalaVersions := Nil,
+    publish := {},
+    publishLocal := {}
+  )
   .aggregate(`core-scala`, core, native)
 
 lazy val `core-scala` = project

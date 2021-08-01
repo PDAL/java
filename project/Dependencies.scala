@@ -4,6 +4,12 @@ import sbt.Keys._
 import de.heikoseeberger.sbtheader.{CommentCreator, CommentStyle, FileType}
 import de.heikoseeberger.sbtheader.HeaderPlugin.autoImport.{headerLicense, headerMappings, HeaderLicense}
 
+object Version {
+  val jts = "1.16.1"
+  val scalaTest = "3.2.9"
+  val circe = "0.14.1"
+}
+
 object Dependencies {
   def priorTo213(scalaVersion: String): Boolean =
     CrossVersion.partialVersion(scalaVersion) match {
@@ -35,8 +41,8 @@ object Dependencies {
     )
   )
 
-  def circe(module: String) = "io.circe" %% s"circe-$module" % "0.14.1"
+  def circe(module: String) = "io.circe" %% s"circe-$module" % Version.circe
 
-  val jtsCore   = "org.locationtech.jts" % "jts-core"  % "1.16.1"
-  val scalaTest = "org.scalatest"       %% "scalatest" % "3.2.9"
+  val jtsCore = "org.locationtech.jts" % "jts-core" % Version.jts
+  val scalaTest = "org.scalatest" %% "scalatest" % Version.scalaTest
 }

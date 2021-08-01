@@ -20,9 +20,15 @@ jobs:
         with:
           fetch-depth: 0
       - uses: coursier/cache-action@v6
+      - uses: olafurpg/setup-scala@v11
+        with:
+          java-version: adopt@1.8
 
-      - name: Test
-        run: ./sbt test-all
+      - name: Check formatting
+        run: sbt scalafmtCheckAll
+
+      - name: Build project
+        run: sbt +test
 
   macos:
     runs-on: macos-latest
@@ -32,6 +38,9 @@ jobs:
         with:
           fetch-depth: 0
       - uses: coursier/cache-action@v6
+      - uses: olafurpg/setup-scala@v11
+        with:
+          java-version: adopt@1.8
 
       - name: Cache Homebrew
         uses: actions/cache@v2
@@ -44,11 +53,11 @@ jobs:
           brew update && \
           brew install pdal || true
 
-      - name: Test
-        run: ./sbt test-all
+      - name: Check formatting
+        run: sbt scalafmtCheckAll
 
-      - name: Build native package
-        run: ./sbt native/package
+      - name: Build project
+        run: sbt +test
 
       - uses: actions/upload-artifact@v2
         with:
@@ -69,6 +78,9 @@ jobs:
         with:
           fetch-depth: 0
       - uses: coursier/cache-action@v6
+      - uses: olafurpg/setup-scala@v11
+        with:
+          java-version: adopt@1.8
 
       - uses: actions/download-artifact@v2
         with:
@@ -76,10 +88,7 @@ jobs:
           path: native/target/native/x86_64-darwin/bin
 
       - name: Release
-        run: |
-          ./sbt "project core" ci-release && \
-          ./sbt "project core-scala" ci-release && \
-          ./sbt "project native" ci-release
+        run: sbt ci-release
         env:
           PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
           PGP_SECRET: ${{ secrets.PGP_SECRET }}
