@@ -134,7 +134,7 @@ PDAL_DEPEND_ON_NATIVE=false ./sbt -Djava.library.path=<path>
   set(CMAKE_CXX_FLAGS "-L<path to dynamic libs> -std=c++11")
   ```
 
-## How to release (outdated)
+## How to release
 
 All the instructions related to the local / maven release process are documented in the [HOWTORELEASE.txt](./HOWTORELEASE.txt) file.
 
