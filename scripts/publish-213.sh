@@ -28,6 +28,6 @@ if ${SIGNED}; then
     COMMAND=publishSigned
 fi
 
-PDAL_DEPEND_ON_NATIVE=false ./sbt "-211" \
+PDAL_DEPEND_ON_NATIVE=false ./sbt "-213" \
   "project core" ${COMMAND} \
   "project core-scala" ${COMMAND}

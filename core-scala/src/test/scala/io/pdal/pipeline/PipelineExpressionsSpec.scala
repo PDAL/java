@@ -45,13 +45,12 @@ class PipelineExpressionsSpec extends AnyFunSpec with Matchers with BeforeAndAft
           |}
         """.stripMargin
 
-
       val pc = ReadLas("/path/to/las") ~ FilterCrop() ~ WriteLas("/path/to/new/las")
       val pipelineJson = pc.asJson
 
       parse(expected) match {
         case Right(r) => pipelineJson shouldBe r
-        case Left(e) => throw e
+        case Left(e)  => throw e
       }
     }
 
@@ -75,23 +74,26 @@ class PipelineExpressionsSpec extends AnyFunSpec with Matchers with BeforeAndAft
           |}
         """.stripMargin
 
-      val pipelineJson = ReadLas("/path/to/las") ~ RawExpr(Map("type" -> "filters.crop").asJson) ~ WriteLas("/path/to/new/las") asJson
+      val pipelineJson =
+        ReadLas("/path/to/las") ~ RawExpr(Map("type" -> "filters.crop").asJson) ~ WriteLas("/path/to/new/las") asJson
 
       parse(expected) match {
         case Right(r) => pipelineJson shouldBe r
-        case Left(e) => throw e
+        case Left(e)  => throw e
       }
     }
 
     it("inductive constructor should work with ENil properly") {
       (ReadLas("/path/to/las") ~ ENil asJson) shouldBe (ReadLas("/path/to/las").toPipelineConstructor asJson)
-      (ReadLas("/path/to/las") ~ FilterCrop() ~ WriteLas("/path/to/new/las") ~ ENil asJson) shouldBe (ReadLas("/path/to/las") ~ FilterCrop() ~ WriteLas("/path/to/new/las") asJson)
+      (ReadLas("/path/to/las") ~ FilterCrop() ~ WriteLas("/path/to/new/las") ~ ENil asJson) shouldBe (ReadLas(
+        "/path/to/las"
+      ) ~ FilterCrop() ~ WriteLas("/path/to/new/las") asJson)
     }
 
     it("should execute the pipeline built from the Scala DSL") {
       val expression =
         ReadLas("./core/src/test/resources/1.2-with-color.las", spatialreference = Some("EPSG:2993")) ~
-        FilterReprojection(outSrs = "EPSG:3857")
+          FilterReprojection(outSrs = "EPSG:3857")
 
       val pipeline = expression.toPipeline
       pipeline.validate() shouldBe true

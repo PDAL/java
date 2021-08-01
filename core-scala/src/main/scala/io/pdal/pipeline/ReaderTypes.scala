@@ -54,9 +54,38 @@ object ReaderTypes {
   case object icebridge extends ReaderType
 
   lazy val all = List(
-    bpf, buffer, ept, faux, gdal, geowave, i3s, ilvis2, las, matlab, mbio, mrsid, nitf,
-    numpy, oci, optech, osg, pcd, pgpointcloud, ply, pts, qfit, rdb, rxp, sbet, slpk, sqlite, text,
-    tiledb, tindex, terrasolid, icebridge
+    bpf,
+    buffer,
+    ept,
+    faux,
+    gdal,
+    geowave,
+    i3s,
+    ilvis2,
+    las,
+    matlab,
+    mbio,
+    mrsid,
+    nitf,
+    numpy,
+    oci,
+    optech,
+    osg,
+    pcd,
+    pgpointcloud,
+    ply,
+    pts,
+    qfit,
+    rdb,
+    rxp,
+    sbet,
+    slpk,
+    sqlite,
+    text,
+    tiledb,
+    tindex,
+    terrasolid,
+    icebridge
   )
 
   def fromName(name: String): ReaderType =
