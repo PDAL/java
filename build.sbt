@@ -18,7 +18,8 @@ lazy val commonSettings = Seq(
     "-language:higherKinds",
     "-language:postfixOps",
     "-language:existentials",
-    "-feature"
+    "-feature",
+    "-target:jvm-1.8"
   ),
   shellPrompt := { s => Project.extract(s).currentProject.id + " > " },
   Test / publishArtifact := false,
