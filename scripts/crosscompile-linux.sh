@@ -6,4 +6,4 @@ docker run -it --rm \
   -v $HOME/.ivy2:/root/.ivy2 \
   -v $HOME/.sbt:/root/.sbt \
   -v $HOME/.coursier/cache:/root/.cache/coursier \
- daunnc/pdal-ubuntu:2.4.0 bash -c "cd ./pdal-java; ./sbt native/compile"
+ daunnc/pdal-ubuntu:2.4.3 bash -c "cd ./pdal-java; ./sbt native/compile"

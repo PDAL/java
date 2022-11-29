@@ -14,8 +14,6 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        java: [8]
-        distribution: [temurin]
         image: ['daunnc/pdal-ubuntu:2.4.3']
     runs-on: ${{ matrix.os }}
     container:
@@ -26,16 +24,12 @@ jobs:
         with:
           fetch-depth: 0
       - uses: coursier/cache-action@v6
-      - uses: actions/setup-java@v3
-        with:
-          distribution: ${{ matrix.distribution }}
-          java-version: ${{ matrix.java }}
 
       - name: Check formatting
-        run: sbt scalafmtCheckAll
+        run: ./sbt scalafmtCheckAll
 
       - name: Build project
-        run: sbt +test
+        run: ./sbt +test
 
   macos:
     strategy:
@@ -81,8 +75,6 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        java: [8]
-        distribution: [temurin]
         image: ['daunnc/pdal-ubuntu:2.4.3']
     runs-on: ${{ matrix.os }}
     needs: [linux, macos]
@@ -98,10 +90,6 @@ jobs:
         with:
           fetch-depth: 0
       - uses: coursier/cache-action@v6
-      - uses: actions/setup-java@v3
-        with:
-          distribution: ${{ matrix.distribution }}
-          java-version: ${{ matrix.java }}
 
       - uses: actions/download-artifact@v3
         with:
@@ -109,7 +97,7 @@ jobs:
           path: native/target/native/x86_64-darwin/bin
 
       - name: Release
-        run: sbt ci-release
+        run: ./sbt ci-release
         env:
           PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
           PGP_SECRET: ${{ secrets.PGP_SECRET }}
