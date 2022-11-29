@@ -5,9 +5,9 @@ import de.heikoseeberger.sbtheader.{CommentCreator, CommentStyle, FileType}
 import de.heikoseeberger.sbtheader.HeaderPlugin.autoImport.{headerLicense, headerMappings, HeaderLicense}
 
 object Version {
-  val jts = "1.16.1"
-  val scalaTest = "3.2.9"
-  val circe = "0.14.1"
+  val jts = "1.19.0"
+  val scalaTest = "3.2.14"
+  val circe = "0.14.3"
 }
 
 object Dependencies {
