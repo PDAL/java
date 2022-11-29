@@ -10,11 +10,15 @@ RUN set -ex && \
 ENV JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk-amd6
 RUN update-alternatives --set java `update-alternatives --list java | grep java-8`
 
-RUN apt-get -y install bash gcc g++ cmake wget unzip gpg
+RUN apt-get -y install bash gcc g++ cmake wget unzip gpg software-properties-common
 
-RUN ln -s /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /opt/conda/lib/libstdc++.so.6 && \ 
-    ln -s /opt/conda/envs/pdal/include/pdal /usr/include/pdal && \
+RUN ln -s /opt/conda/envs/pdal/include/pdal /usr/include/pdal && \
     ln -s /usr/include /usr/lib/include && \
     ln -s /opt/conda/envs/pdal/lib /usr/lib/lib && \
     ln -s /opt/conda/envs/pdal/share/* /usr/share/* || true && \
     ln -s /opt/conda/envs/pdal/lib/* /usr/lib/* || true
+
+# upd g++
+RUN add-apt-repository -y ppa:ubuntu-toolchain-r/test
+# strings /usr/lib/x86_64-linux-gnu/libstdc++.so.6 | grep GLIBCXX
+RUN apt update -y && apt install -y g++-11
