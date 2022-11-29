@@ -12,7 +12,8 @@ RUN update-alternatives --set java `update-alternatives --list java | grep java-
 
 RUN apt-get -y install bash gcc g++ cmake wget unzip gpg
 
-RUN ln -s /opt/conda/envs/pdal/include/pdal /usr/include/pdal && \
+RUN ln -s /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /opt/conda/lib/libstdc++.so.6 && \ 
+    ln -s /opt/conda/envs/pdal/include/pdal /usr/include/pdal && \
     ln -s /usr/include /usr/lib/include && \
     ln -s /opt/conda/envs/pdal/lib /usr/lib/lib && \
     ln -s /opt/conda/envs/pdal/share/* /usr/share/* || true && \
