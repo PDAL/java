@@ -22,7 +22,7 @@ if (APPLE)
 endif ()
 
 if (NOT PDAL_BUILD)
-    set(CMAKE_CXX_FLAGS "-std=c++11")
+    set(CMAKE_CXX_FLAGS "-std=c++14")
 endif()
 
 # Setup JNI
