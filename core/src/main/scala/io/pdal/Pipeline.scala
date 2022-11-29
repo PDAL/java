@@ -41,6 +41,6 @@ class Pipeline(val json: String) extends Native {
   @native def getLog(): String
 }
 
-object Pipeline extends NativeLoader("pdaljni.2.3") {
+object Pipeline extends NativeLoader("pdaljni.2.4") {
   def apply(json: String): Pipeline = { val p = new Pipeline(json); p.initialize(); p }
 }
