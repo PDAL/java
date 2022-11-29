@@ -1,7 +1,12 @@
+val scala212 = "2.12.17"
+val scala213 = "2.13.10"
+val scala3   = "3.2.1"
+val scalaVersions = Seq(scala3, scala213, scala212)
+
 name := "pdal-jni"
 version := "0.1.0-SNAPSHOT"
-scalaVersion := "2.13.6"
-crossScalaVersions := Seq("2.13.6", "2.12.14")
+scalaVersion := scala213
+crossScalaVersions := Seq(scala3, scala213, scala212)
 organization := "com.azavea"
 scalacOptions ++= Seq(
   "-deprecation",
@@ -14,18 +19,15 @@ scalacOptions ++= Seq(
   "-feature"
 )
 
-resolvers ++= Seq(
-  Resolver.sonatypeRepo("releases"),
-  Resolver.sonatypeRepo("snapshots")
- )
+resolvers ++= Resolver.sonatypeOssRepos("releases") ++ Resolver.sonatypeOssRepos("snapshots")
 
 fork := true
 
-val pdalVersion = "2.3.0"
+val pdalVersion = "2.4.0"
 
 libraryDependencies ++= Seq(
   "io.pdal" %% "pdal"        % pdalVersion,
   "io.pdal" %% "pdal-scala"  % pdalVersion,
   "io.pdal" %  "pdal-native" % pdalVersion,
-  "org.scalatest" %% "scalatest" % "3.2.9" % Test
+  "org.scalatest" %% "scalatest" % "3.2.14" % Test
 )
