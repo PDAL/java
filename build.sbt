@@ -1,6 +1,9 @@
 name := "pdal-jni"
 
-val scalaVersions = Seq("3.0.1", "2.13.6", "2.12.14")
+val scala212 = "2.12.17"
+val scala213 = "2.13.10"
+val scala3   = "3.2.1"
+val scalaVersions = Seq(scala3, scala213, scala212)
 
 lazy val commonSettings = Seq(
   scalaVersion := scalaVersions.head,
@@ -47,7 +50,7 @@ lazy val `core-scala` = project
   .settings(commonSettings: _*)
   .settings(Dependencies.macroSettings)
   .settings(Dependencies.licenseSettings)
-  .settings(scalaVersion := "2.13.6", crossScalaVersions := Seq("2.13.6", "2.12.14"))
+  .settings(scalaVersion := scala213, crossScalaVersions := Seq(scala213, scala212))
   .settings(name := "pdal-scala")
   .settings(javah / target := (native / nativeCompile / sourceDirectory).value / "include")
   .settings(
@@ -78,8 +81,9 @@ lazy val native = project
   .settings(nativeCompile / sourceDirectory := sourceDirectory.value)
   .settings(
     Compile / unmanagedPlatformDependentNativeDirectories := Seq(
-      "x86_64-linux" -> target.value / "native/x86_64-linux/bin/",
-      "x86_64-darwin" -> target.value / "native/x86_64-darwin/bin/"
+      "x86_64-linux"  -> target.value / "native/x86_64-linux/bin/",
+      "x86_64-darwin" -> target.value / "native/x86_64-darwin/bin/",
+      "arm64-darwin"  -> target.value / "native/arm64-darwin/bin/"
     )
   )
   .settings(artifactName := { (sv: ScalaVersion, module: ModuleID, artifact: Artifact) =>

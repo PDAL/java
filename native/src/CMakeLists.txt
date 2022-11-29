@@ -9,7 +9,7 @@ set(MAKE_COLOR_MAKEFILE ON)
 
 project (pdaljni)
 set(PROJECT_VERSION_MAJOR 2)
-set(PROJECT_VERSION_MINOR 3)
+set(PROJECT_VERSION_MINOR 4)
 set(PROJECT_VERSION_PATCH 0)
 
 set(PDAL_LIB_NAME pdalcpp)
@@ -22,7 +22,7 @@ if (APPLE)
 endif ()
 
 if (NOT PDAL_BUILD)
-    set(CMAKE_CXX_FLAGS "-std=c++11")
+    set(CMAKE_CXX_FLAGS "-std=c++14")
 endif()
 
 # Setup JNI

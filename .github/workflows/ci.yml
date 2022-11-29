@@ -11,36 +11,43 @@ on:
 
 jobs:
   linux:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        image: ['daunnc/pdal-ubuntu:2.4.3']
+    runs-on: ${{ matrix.os }}
     container:
-      image: daunnc/pdal-ubuntu:2.3.0
+      image: ${{ matrix.image }}
     
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - uses: coursier/cache-action@v6
-      - uses: olafurpg/setup-scala@v13
-        with:
-          java-version: adopt@1.8
 
       - name: Check formatting
-        run: sbt scalafmtCheckAll
+        run: ./sbt scalafmtCheckAll
 
       - name: Build project
-        run: sbt +test
+        run: ./sbt +test
 
   macos:
-    runs-on: macos-latest
+    strategy:
+      matrix:
+        os: [macos-latest]
+        java: [8]
+        distribution: [temurin]
+    runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - uses: coursier/cache-action@v6
-      - uses: olafurpg/setup-scala@v13
+      - uses: actions/setup-java@v3
         with:
-          java-version: adopt@1.8
+          distribution: ${{ matrix.distribution }}
+          java-version: ${{ matrix.java }}
 
       - name: Cache Homebrew
         uses: actions/cache@v2
@@ -59,37 +66,38 @@ jobs:
       - name: Build project
         run: sbt +test
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: macos
           path: native/target/native/x86_64-darwin/bin
 
   publish:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        image: ['daunnc/pdal-ubuntu:2.4.3']
+    runs-on: ${{ matrix.os }}
     needs: [linux, macos]
     container:
-      image: daunnc/pdal-ubuntu:2.3.0
+      image: ${{ matrix.image }}
     if: github.event_name != 'pull_request'
     env: 
       PDAL_DEPEND_ON_NATIVE: "false"
       CI_CLEAN: ""
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - uses: coursier/cache-action@v6
-      - uses: olafurpg/setup-scala@v13
-        with:
-          java-version: adopt@1.8
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: macos
           path: native/target/native/x86_64-darwin/bin
 
       - name: Release
-        run: sbt ci-release
+        run: ./sbt ci-release
         env:
           PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
           PGP_SECRET: ${{ secrets.PGP_SECRET }}
