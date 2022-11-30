@@ -13,11 +13,10 @@ See [https://pdal.io/java.html](https://pdal.io/java.html) for more info.
 ## Using PDAL JNI with SBT
 
 ```scala
-// pdal is published to maven central, but you can use following repos in addition
-resolvers ++= Seq(
-  Resolver.sonatypeRepo("releases"),
-  Resolver.sonatypeRepo("snapshots") // for snaphots
-)
+// pdal is published to maven central, but you can use the following repos in addition
+resolvers ++= 
+  Resolver.sonatypeOssRepos("releases") ++ 
+  Resolver.sonatypeOssRepos("snapshots") // for snaphots
 
 // `<latest version>` refers to the version indicated by the badge above
 libraryDependencies ++= Seq(
