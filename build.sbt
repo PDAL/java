@@ -71,7 +71,11 @@ lazy val core = project
   .settings(name := "pdal")
   .settings(javah / target := (native / nativeCompile / sourceDirectory).value / "include")
   .settings(sbtJniCoreScope := Compile)
-  .settings(libraryDependencies += Dependencies.scalaTest % Test)
+  .settings(libraryDependencies ++= Seq(
+    Dependencies.scalaTest % Test,
+    Dependencies.circe("parser") % Test
+  )
+  )
   .dependsOn(Environment.dependOnNative(native % Runtime): _*)
 
 lazy val native = project

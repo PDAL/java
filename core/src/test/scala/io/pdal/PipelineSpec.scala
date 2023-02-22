@@ -24,6 +24,7 @@
 
 package io.pdal
 
+import io.circe.parser
 import java.nio.{ByteBuffer, ByteOrder}
 
 import scala.collection.JavaConverters._
@@ -34,7 +35,7 @@ class PipelineSpec extends TestEnvironmentSpec {
       val badPipeline = Pipeline(badJson)
       badPipeline.validate() should be(false)
       badPipeline.close()
-      (badPipeline.ptr() should be(0))
+      badPipeline.ptr() should be(0)
     }
 
     it("should validate json") {
@@ -160,7 +161,7 @@ class PipelineSpec extends TestEnvironmentSpec {
     it("should read crs correct") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
-      pv.getCrsProj4() should (be(proj4String).or(be(proj4StringMac)))
+      pv.getCrsProj4() should be(proj4String).or(be(proj4StringMac))
       pv.close()
       pvi.close()
     }
@@ -171,6 +172,14 @@ class PipelineSpec extends TestEnvironmentSpec {
 
     it("should fail with ExecutionException when the input json is invalid") {
       intercept[InitializationException] { Pipeline("{") }
+    }
+
+    it("should get pipeline") {
+      parser.parse(pipeline.getPipeline()) shouldBe parser.parse(jsonExpected)
+    }
+
+    it("should get schema") {
+      parser.parse(pipeline.getSchema()) shouldBe parser.parse(schema)
     }
 
     it("should extract mesh in iterative fashion") {

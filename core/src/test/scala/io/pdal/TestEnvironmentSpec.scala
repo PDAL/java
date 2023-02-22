@@ -38,6 +38,7 @@ trait TestEnvironmentSpec extends AnyFunSpec with Matchers with BeforeAndAfterAl
   }
 
   val json: String = getJson("/las.json")
+  val jsonExpected: String = getJson("/las-expected.json")
   val jsonDelaunay: String = getJson("/las-delaunay.json")
   val badJson: String =
     """
@@ -51,6 +52,8 @@ trait TestEnvironmentSpec extends AnyFunSpec with Matchers with BeforeAndAfterAl
       |  ]
       |}
      """.stripMargin
+
+  val schema: String = getJson("/schema.json")
 
   val proj4String =
     "+proj=lcc +lat_0=41.75 +lon_0=-120.5 +lat_1=43 +lat_2=45.5 +x_0=400000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"

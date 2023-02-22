@@ -1,0 +1,10 @@
+{
+  "pipeline": [
+    {
+      "filename": "core/src/test/resources/1.2-with-color.las",
+      "spatialreference": "EPSG:2993",
+      "tag": "readers_las1",
+      "type": "readers.las"
+    }
+  ]
+}
