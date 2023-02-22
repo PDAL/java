@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        image: ['daunnc/pdal-ubuntu:2.4.3']
+        image: ['daunnc/pdal-ubuntu:2.5.1']
     runs-on: ${{ matrix.os }}
     container:
       image: ${{ matrix.image }}
@@ -88,7 +88,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        image: ['daunnc/pdal-ubuntu:2.4.3']
+        image: ['daunnc/pdal-ubuntu:2.5.1']
     runs-on: ${{ matrix.os }}
     needs: [linux, macos]
     container:
