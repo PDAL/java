@@ -43,6 +43,12 @@ using pdal::point_count_t;
 namespace libpdaljava
 {
 
+void CountPointTable::reset()
+{
+    for (pdal::PointId idx = 0; idx < numPoints(); idx++)
+    FixedPointTable::reset();
+}
+
 PipelineExecutor::PipelineExecutor(std::string const& json, int level)
 {
     setLogLevel(level);
@@ -56,8 +62,6 @@ PipelineExecutor::PipelineExecutor(std::string const& json, int level)
     m_manager.readPipeline(strm);
 
 }
-
-// m_logLevel(pdal::LogLevel::Error)
 
 bool PipelineExecutor::validate()
 {
@@ -74,13 +78,13 @@ pdal::point_count_t PipelineExecutor::execute()
     return count;
 }
 
-// point_count_t PipelineExecutor::executeStream(point_count_t streamLimit)
-// {
-//     CountPointTable table(streamLimit);
-//     m_manager.executeStream(table);
-//     m_executed = true;
-//     return table.count();
-// }
+point_count_t PipelineExecutor::executeStream(point_count_t streamLimit)
+{
+    CountPointTable table(streamLimit);
+    m_manager.executeStream(table);
+    m_executed = true;
+    return table.count();
+}
 
 const PointViewSet& PipelineExecutor::views() const
 {

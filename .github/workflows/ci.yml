@@ -43,7 +43,7 @@ jobs:
         os: [macos-latest]
         java: [8]
         distribution: [temurin]
-        pdal: [2.4.3]
+        pdal: [2.5.0]
     runs-on: ${{ matrix.os }}
 
     steps:

@@ -74,8 +74,7 @@ lazy val core = project
   .settings(libraryDependencies ++= Seq(
     Dependencies.scalaTest % Test,
     Dependencies.circe("parser") % Test
-  )
-  )
+  ))
   .dependsOn(Environment.dependOnNative(native % Runtime): _*)
 
 lazy val native = project

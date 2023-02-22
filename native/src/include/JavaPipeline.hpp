@@ -62,7 +62,7 @@ public:
 
     bool validate();
     point_count_t execute();
-    // point_count_t executeStream(point_count_t streamLimit);
+    point_count_t executeStream(point_count_t streamLimit);
 
     const pdal::PointViewSet& views() const;
     std::string getPipeline() const;
