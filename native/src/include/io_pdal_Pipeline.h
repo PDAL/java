@@ -8,81 +8,97 @@
 extern "C" {
 #endif
 /*
- * Class:     io_pdal_Pipeline
- * Method:    initialize
- * Signature: ()V
+ * Class:      io_pdal_Pipeline
+ * Method:     initialize
+ * Signature:  ()V
  */
 JNIEXPORT void JNICALL Java_io_pdal_Pipeline_initialize
   (JNIEnv *, jobject);
 
 /*
- * Class:     io_pdal_Pipeline
- * Method:    execute
- * Signature: ()V
+ * Class:      io_pdal_Pipeline
+ * Method:     execute
+ * Signature:  ()V
  */
 JNIEXPORT void JNICALL Java_io_pdal_Pipeline_execute
   (JNIEnv *, jobject);
 
 /*
- * Class:     io_pdal_Pipeline
- * Method:    getPointViews
- * Signature: ()Lio/pdal/PointViewIterator;
+ * Class:      io_pdal_Pipeline
+ * Method:     getPointViews
+ * Signature:  ()Lio/pdal/PointViewIterator;
  */
 JNIEXPORT jobject JNICALL Java_io_pdal_Pipeline_getPointViews
   (JNIEnv *, jobject);
 
 /*
- * Class:     io_pdal_Pipeline
- * Method:    close
- * Signature: ()V
+ * Class:      io_pdal_Pipeline
+ * Method:     close
+ * Signature:  ()V
  */
 JNIEXPORT void JNICALL Java_io_pdal_Pipeline_close
   (JNIEnv *, jobject);
 
 /*
- * Class:     io_pdal_Pipeline
- * Method:    getMetadata
- * Signature: ()Ljava/lang/String;
+ * Class:      io_pdal_Pipeline
+ * Method:     getSrsWKT2
+ * Signature:  ()Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_io_pdal_Pipeline_getSrsWKT2
+  (JNIEnv *, jobject);
+
+/*
+ * Class:      io_pdal_Pipeline
+ * Method:     getPipeline
+ * Signature:  ()Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_io_pdal_Pipeline_getPipeline
+  (JNIEnv *, jobject);
+
+/*
+ * Class:      io_pdal_Pipeline
+ * Method:     getMetadata
+ * Signature:  ()Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_io_pdal_Pipeline_getMetadata
   (JNIEnv *, jobject);
 
 /*
- * Class:     io_pdal_Pipeline
- * Method:    getSchema
- * Signature: ()Ljava/lang/String;
+ * Class:      io_pdal_Pipeline
+ * Method:     getSchema
+ * Signature:  ()Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_io_pdal_Pipeline_getSchema
   (JNIEnv *, jobject);
 
 /*
- * Class:     io_pdal_Pipeline
- * Method:    validate
- * Signature: ()Z
+ * Class:      io_pdal_Pipeline
+ * Method:     validate
+ * Signature:  ()Z
  */
 JNIEXPORT jboolean JNICALL Java_io_pdal_Pipeline_validate
   (JNIEnv *, jobject);
 
 /*
- * Class:     io_pdal_Pipeline
- * Method:    setLogLevel
- * Signature: (I)V
+ * Class:      io_pdal_Pipeline
+ * Method:     setLogLevel
+ * Signature:  (I)V
  */
 JNIEXPORT void JNICALL Java_io_pdal_Pipeline_setLogLevel
   (JNIEnv *, jobject, jint);
 
 /*
- * Class:     io_pdal_Pipeline
- * Method:    getLogLevel
- * Signature: ()I
+ * Class:      io_pdal_Pipeline
+ * Method:     getLogLevel
+ * Signature:  ()I
  */
 JNIEXPORT jint JNICALL Java_io_pdal_Pipeline_getLogLevel
   (JNIEnv *, jobject);
 
 /*
- * Class:     io_pdal_Pipeline
- * Method:    getLog
- * Signature: ()Ljava/lang/String;
+ * Class:      io_pdal_Pipeline
+ * Method:     getLog
+ * Signature:  ()Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_io_pdal_Pipeline_getLog
   (JNIEnv *, jobject);

@@ -165,18 +165,12 @@ class PipelineSpec extends TestEnvironmentSpec {
       pvi.close()
     }
 
-    it("should fail with InitializationException") {
+    it("should fail with InitializationException when the input json is null") {
       intercept[InitializationException] { Pipeline(null) }
     }
 
-    it("should fail with ExecutionException") {
-      val pipeline = Pipeline("{")
-      intercept[ExecutionException] { pipeline.execute() }
-      intercept[ExecutionException] { pipeline.getPointViews() }
-      intercept[ExecutionException] { pipeline.getMetadata() }
-      intercept[ExecutionException] { pipeline.getSchema() }
-
-      pipeline.close()
+    it("should fail with ExecutionException when the input json is invalid") {
+      intercept[InitializationException] { Pipeline("{") }
     }
 
     it("should extract mesh in iterative fashion") {

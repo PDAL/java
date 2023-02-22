@@ -41,7 +41,7 @@
 #include "PointViewRawPtr.hpp"
 #include "Accessors.hpp"
 
-using libpdaljava::Pipeline;
+using libpdaljava::PipelineExecutor;
 using libpdaljava::PointViewRawPtr;
 using libpdaljava::TriangularMeshIterator;
 

@@ -26,13 +26,15 @@ package io.pdal
 
 import com.github.sbt.jni.syntax.NativeLoader
 
-class Pipeline(val json: String) extends Native {
+class Pipeline(val json: String, val logLevel: Int) extends Native {
   Pipeline // reference the object so that the nativeLoader will load the JNI native libraries
 
   @native def initialize(): Unit
   @native def execute(): Unit
   @native def getPointViews(): PointViewIterator
   @native def close(): Unit
+  @native def getSrsWKT2(): String
+  @native def getPipeline(): String
   @native def getMetadata(): String
   @native def getSchema(): String
   @native def validate(): Boolean
@@ -42,5 +44,5 @@ class Pipeline(val json: String) extends Native {
 }
 
 object Pipeline extends NativeLoader("pdaljni.2.5") {
-  def apply(json: String): Pipeline = { val p = new Pipeline(json); p.initialize(); p }
+  def apply(json: String, logLevel: Int = 0): Pipeline = { val p = new Pipeline(json, logLevel); p.initialize(); p }
 }
