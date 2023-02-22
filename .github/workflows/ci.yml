@@ -43,6 +43,7 @@ jobs:
         os: [macos-latest]
         java: [8]
         distribution: [temurin]
+        pdal: [2.4.3]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -61,10 +62,16 @@ jobs:
           path: ~/Library/Caches/Homebrew
           key: ${{ runner.os }}-homebrew
 
-      - name: Install PDAL
+      - name: Homebrew update & tap PDAL ${{ matrix.pdal }}
         run: |
           brew update && \
-          brew install pdal || true
+          brew tap-new $USER/local-pdal && \
+          brew extract --version=${{ matrix.pdal }} pdal $USER/local-pdal
+
+      - name: Install PDAL
+        run: |
+          brew update
+          brew install pdal@${{ matrix.pdal }} || true
 
       - name: Check formatting
         run: sbt scalafmtCheckAll
