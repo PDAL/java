@@ -175,11 +175,15 @@ class PipelineSpec extends TestEnvironmentSpec {
     }
 
     it("should get pipeline") {
-      parser.parse(pipeline.getPipeline()) shouldBe parser.parse(jsonExpected)
+      parser.parse(pipeline.getPipeline()) shouldBe jsonExpectedJson
     }
 
     it("should get schema") {
-      parser.parse(pipeline.getSchema()) shouldBe parser.parse(schema)
+      parser.parse(pipeline.getSchema()) shouldBe schemaJson
+    }
+
+    it("should get metadata") {
+      parser.parse(pipeline.getMetadata()) shouldBe metadataJson
     }
 
     it("should extract mesh in iterative fashion") {
