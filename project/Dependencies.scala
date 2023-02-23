@@ -1,7 +1,7 @@
 import sbt._
 import sbt.Keys._
 
-import de.heikoseeberger.sbtheader.{CommentCreator, CommentStyle, FileType}
+import de.heikoseeberger.sbtheader.{CommentStyle, FileType}
 import de.heikoseeberger.sbtheader.HeaderPlugin.autoImport.{headerLicense, headerMappings, HeaderLicense}
 
 object Version {
