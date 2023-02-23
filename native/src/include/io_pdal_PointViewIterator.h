@@ -8,25 +8,25 @@
 extern "C" {
 #endif
 /*
- * Class:     io_pdal_PointViewIterator
- * Method:    hasNext
- * Signature: ()Z
+ * Class:      io_pdal_PointViewIterator
+ * Method:     hasNext
+ * Signature:  ()Z
  */
 JNIEXPORT jboolean JNICALL Java_io_pdal_PointViewIterator_hasNext
   (JNIEnv *, jobject);
 
 /*
- * Class:     io_pdal_PointViewIterator
- * Method:    next
- * Signature: ()Lio/pdal/PointView;
+ * Class:      io_pdal_PointViewIterator
+ * Method:     next
+ * Signature:  ()Lio/pdal/PointView;
  */
-JNIEXPORT jobject JNICALL Java_io_pdal_PointViewIterator_next
+JNIEXPORT jobject JNICALL Java_io_pdal_PointViewIterator_next__
   (JNIEnv *, jobject);
 
 /*
- * Class:     io_pdal_PointViewIterator
- * Method:    close
- * Signature: ()V
+ * Class:      io_pdal_PointViewIterator
+ * Method:     close
+ * Signature:  ()V
  */
 JNIEXPORT void JNICALL Java_io_pdal_PointViewIterator_close
   (JNIEnv *, jobject);

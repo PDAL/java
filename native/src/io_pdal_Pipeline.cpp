@@ -42,7 +42,7 @@
 #include "JavaExceptions.hpp"
 #include "Accessors.hpp"
 
-using libpdaljava::Pipeline;
+using libpdaljava::PipelineExecutor;
 using libpdaljava::PointViewIterator;
 
 using pdal::PointViewSet;
@@ -57,10 +57,12 @@ JNIEXPORT void JNICALL Java_io_pdal_Pipeline_initialize
   (JNIEnv *env, jobject obj)
 {
     jclass c = env->GetObjectClass(obj);
-    jfieldID fid = env->GetFieldID(c, "json", "Ljava/lang/String;");
-    jstring jstr = reinterpret_cast<jstring>(env->GetObjectField(obj, fid));
+    jfieldID fidJson = env->GetFieldID(c, "json", "Ljava/lang/String;");
+    jfieldID fidLogLevel = env->GetFieldID(c, "logLevel", "I");
+    jstring json = reinterpret_cast<jstring>(env->GetObjectField(obj, fidJson));
+    jint logLevel = env->GetIntField(obj, fidLogLevel);
 
-    if(jstr == NULL)
+    if(json == NULL)
     {
         throwInitializationException(env, "Null string passed into the Pipeline constructor.");
     }
@@ -68,7 +70,7 @@ JNIEXPORT void JNICALL Java_io_pdal_Pipeline_initialize
     {
         try
         {
-            setHandle(env, obj, new Pipeline(std::string(env->GetStringUTFChars(jstr, 0))));
+            setHandle(env, obj, new PipelineExecutor(std::string(env->GetStringUTFChars(json, 0)), logLevel));
         }
         catch (const pdal_error &pe)
         {
@@ -80,7 +82,7 @@ JNIEXPORT void JNICALL Java_io_pdal_Pipeline_initialize
 JNIEXPORT void JNICALL Java_io_pdal_Pipeline_close
   (JNIEnv *env, jobject obj)
 {
-    Pipeline *p = getHandle<Pipeline>(env, obj);
+    PipelineExecutor *p = getHandle<PipelineExecutor>(env, obj);
     setHandle<int>(env, obj, 0);
     delete p;
 }
@@ -88,7 +90,7 @@ JNIEXPORT void JNICALL Java_io_pdal_Pipeline_close
 JNIEXPORT void JNICALL Java_io_pdal_Pipeline_execute
   (JNIEnv *env, jobject obj)
 {
-    Pipeline *p = getHandle<Pipeline>(env, obj);
+    PipelineExecutor *p = getHandle<PipelineExecutor>(env, obj);
     try
     {
         std::lock_guard<std::mutex> lock (execute_mutex);
@@ -100,12 +102,41 @@ JNIEXPORT void JNICALL Java_io_pdal_Pipeline_execute
     }
 }
 
+JNIEXPORT jstring JNICALL Java_io_pdal_Pipeline_getSrsWKT2
+  (JNIEnv *env, jobject obj)
+{
+    try
+    {
+        PipelineExecutor *p = getHandle<PipelineExecutor>(env, obj);
+        return env->NewStringUTF(p->getSrsWKT2().c_str());
+    }
+    catch(const pdal_error &pe)
+    {
+        return throwExecutionException(env, pe.what());
+    }
+}
+
+JNIEXPORT jstring JNICALL Java_io_pdal_Pipeline_getPipeline
+  (JNIEnv *env, jobject obj)
+{
+    try
+    {
+        PipelineExecutor *p = getHandle<PipelineExecutor>(env, obj);
+        return env->NewStringUTF(p->getPipeline().c_str());
+    }
+    catch(const pdal_error &pe)
+    {
+        return throwExecutionException(env, pe.what());
+    }
+}
+
+
 JNIEXPORT jstring JNICALL Java_io_pdal_Pipeline_getMetadata
   (JNIEnv *env, jobject obj)
 {
     try
     {
-        Pipeline *p = getHandle<Pipeline>(env, obj);
+        PipelineExecutor *p = getHandle<PipelineExecutor>(env, obj);
         return env->NewStringUTF(p->getMetadata().c_str());
     }
     catch(const pdal_error &pe)
@@ -119,7 +150,7 @@ JNIEXPORT jstring JNICALL Java_io_pdal_Pipeline_getSchema
 {
     try
     {
-        Pipeline *p = getHandle<Pipeline>(env, obj);
+        PipelineExecutor *p = getHandle<PipelineExecutor>(env, obj);
         return env->NewStringUTF(p->getSchema().c_str());
     }
     catch(const pdal_error &pe)
@@ -131,7 +162,7 @@ JNIEXPORT jstring JNICALL Java_io_pdal_Pipeline_getSchema
 JNIEXPORT jboolean JNICALL Java_io_pdal_Pipeline_validate
   (JNIEnv *env, jobject obj)
 {
-    Pipeline *p = getHandle<Pipeline>(env, obj);
+    PipelineExecutor *p = getHandle<PipelineExecutor>(env, obj);
     bool result;
     try
     {
@@ -149,21 +180,21 @@ JNIEXPORT jboolean JNICALL Java_io_pdal_Pipeline_validate
 JNIEXPORT void JNICALL Java_io_pdal_Pipeline_setLogLevel
   (JNIEnv *env, jobject obj, jint i)
 {
-    Pipeline *p = getHandle<Pipeline>(env, obj);
+    PipelineExecutor *p = getHandle<PipelineExecutor>(env, obj);
     p->setLogLevel(i);
 }
 
 JNIEXPORT jint JNICALL Java_io_pdal_Pipeline_getLogLevel
   (JNIEnv *env, jobject obj)
 {
-    Pipeline *p = getHandle<Pipeline>(env, obj);
+    PipelineExecutor *p = getHandle<PipelineExecutor>(env, obj);
     return p->getLogLevel();
 }
 
 JNIEXPORT jstring JNICALL Java_io_pdal_Pipeline_getLog
   (JNIEnv *env, jobject obj)
 {
-    Pipeline *p = getHandle<Pipeline>(env, obj);
+    PipelineExecutor *p = getHandle<PipelineExecutor>(env, obj);
     return env->NewStringUTF(p->getLog().c_str());
 }
 
@@ -172,8 +203,8 @@ JNIEXPORT jobject JNICALL Java_io_pdal_Pipeline_getPointViews
 {
     try
     {
-        Pipeline *p = getHandle<Pipeline>(env, obj);
-        PointViewSet pvset = p->getPointViews();
+        PipelineExecutor *p = getHandle<PipelineExecutor>(env, obj);
+        PointViewSet pvset = p->views();
 
         jclass pviClass = env->FindClass("io/pdal/PointViewIterator");
         jmethodID pviCtor = env->GetMethodID(pviClass, "<init>", "()V");

@@ -37,47 +37,126 @@
 #endif
 
 using pdal::PointViewSet;
+using pdal::point_count_t;
 
 namespace libpdaljava
 {
 
-Pipeline::Pipeline(std::string const& json)
-    : m_executor(json)
+void CountPointTable::reset()
 {
+    for (pdal::PointId idx = 0; idx < numPoints(); idx++)
+    FixedPointTable::reset();
+}
+
+PipelineExecutor::PipelineExecutor(std::string const& json, int level)
+{
+    setLogLevel(level);
+
+    pdal::LogPtr log(pdal::Log::makeLog("javapipeline", &m_logStream));
+    log->setLevel(m_logLevel);
+    m_manager.setLog(log);
+
+    std::stringstream strm;
+    strm << json;
+    m_manager.readPipeline(strm);
 
 }
 
-Pipeline::~Pipeline()
+bool PipelineExecutor::validate()
 {
+    m_manager.prepare();
+
+    return true;
 }
 
-void Pipeline::setLogLevel(int level)
-{
-    m_executor.setLogLevel(level);
-}
-
-int Pipeline::getLogLevel() const
-{
-    return static_cast<int>(m_executor.getLogLevel());
-}
-
-int64_t Pipeline::execute()
+pdal::point_count_t PipelineExecutor::execute()
 {
 
-    int64_t count = m_executor.execute();
+    pdal::point_count_t count = m_manager.execute();
+    m_executed = true;
     return count;
 }
 
-bool Pipeline::validate()
+point_count_t PipelineExecutor::executeStream(point_count_t streamLimit)
 {
-    return m_executor.validate();
+    CountPointTable table(streamLimit);
+    m_manager.executeStream(table);
+    m_executed = true;
+    return table.count();
 }
 
-PointViewSet Pipeline::getPointViews() const
+const PointViewSet& PipelineExecutor::views() const
 {
-    if (!m_executor.executed())
-        throw java_error("call execute() before fetching arrays");
+    if (!m_executed)
+        throw java_error("Pipeline has not been executed!");
 
-    return m_executor.getManagerConst().views();
+    return m_manager.views();
 }
+
+std::string PipelineExecutor::getSrsWKT2() const
+{
+    std::string output("");
+    pdal::PointTableRef pointTable = m_manager.pointTable();
+
+    pdal::SpatialReference srs = pointTable.spatialReference();
+    output = srs.getWKT();
+
+    return output;
+}
+
+std::string PipelineExecutor::getPipeline() const
+{
+    std::stringstream strm;
+    pdal::PipelineWriter::writePipeline(m_manager.getStage(), strm);
+    return strm.str();
+}
+
+
+std::string PipelineExecutor::getMetadata() const
+{
+    if (!m_executed)
+        throw java_error("Pipeline has not been executed!");
+
+    std::stringstream strm;
+    pdal::MetadataNode root = m_manager.getMetadata().clone("metadata");
+    pdal::Utils::toJSON(root, strm);
+    return strm.str();
+}
+
+
+std::string PipelineExecutor::getSchema() const
+{
+    if (!m_executed)
+        throw java_error("Pipeline has not been executed!");
+
+    std::stringstream strm;
+    pdal::MetadataNode root = pointTable().layout()->toMetadata().clone("schema");
+    pdal::Utils::toJSON(root, strm);
+    return strm.str();
+}
+
+void PipelineExecutor::setLogStream(std::ostream& strm)
+{
+
+    pdal::LogPtr log(pdal::Log::makeLog("javapipeline", &strm));
+    log->setLevel(m_logLevel);
+    m_manager.setLog(log);
+}
+
+
+void PipelineExecutor::setLogLevel(int level)
+{
+    if (level < 0 || level > 8)
+        throw java_error("log level must be between 0 and 8!");
+
+    m_logLevel = static_cast<pdal::LogLevel>(level);
+    setLogStream(m_logStream);
+}
+
+
+int PipelineExecutor::getLogLevel() const
+{
+    return static_cast<int>(m_logLevel);
+}
+
 } //namespace libpdaljava

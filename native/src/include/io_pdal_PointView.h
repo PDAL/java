@@ -8,81 +8,81 @@
 extern "C" {
 #endif
 /*
- * Class:     io_pdal_PointView
- * Method:    layout
- * Signature: ()Lio/pdal/PointLayout;
+ * Class:      io_pdal_PointView
+ * Method:     layout
+ * Signature:  ()Lio/pdal/PointLayout;
  */
 JNIEXPORT jobject JNICALL Java_io_pdal_PointView_layout
   (JNIEnv *, jobject);
 
 /*
- * Class:     io_pdal_PointView
- * Method:    size
- * Signature: ()I
+ * Class:      io_pdal_PointView
+ * Method:     size
+ * Signature:  ()I
  */
 JNIEXPORT jint JNICALL Java_io_pdal_PointView_size
   (JNIEnv *, jobject);
 
 /*
- * Class:     io_pdal_PointView
- * Method:    empty
- * Signature: ()Z
+ * Class:      io_pdal_PointView
+ * Method:     empty
+ * Signature:  ()Z
  */
 JNIEXPORT jboolean JNICALL Java_io_pdal_PointView_empty
   (JNIEnv *, jobject);
 
 /*
- * Class:     io_pdal_PointView
- * Method:    getCrsProj4
- * Signature: ()Ljava/lang/String;
+ * Class:      io_pdal_PointView
+ * Method:     getCrsProj4
+ * Signature:  ()Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_io_pdal_PointView_getCrsProj4
   (JNIEnv *, jobject);
 
 /*
- * Class:     io_pdal_PointView
- * Method:    getCrsWKT
- * Signature: (Z)Ljava/lang/String;
+ * Class:      io_pdal_PointView
+ * Method:     getCrsWKT
+ * Signature:  (Z)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_io_pdal_PointView_getCrsWKT
+JNIEXPORT jstring JNICALL Java_io_pdal_PointView_getCrsWKT__Z
   (JNIEnv *, jobject, jboolean);
 
 /*
- * Class:     io_pdal_PointView
- * Method:    getPackedPoint
- * Signature: (J[Lio/pdal/DimType;)[B
+ * Class:      io_pdal_PointView
+ * Method:     getPackedPoint
+ * Signature:  (J[Lio/pdal/DimType;)[B
  */
-JNIEXPORT jbyteArray JNICALL Java_io_pdal_PointView_getPackedPoint
+JNIEXPORT jbyteArray JNICALL Java_io_pdal_PointView_getPackedPoint__J_3Lio_pdal_DimType_2
   (JNIEnv *, jobject, jlong, jobjectArray);
 
 /*
- * Class:     io_pdal_PointView
- * Method:    getPackedPoints
- * Signature: ([Lio/pdal/DimType;)[B
+ * Class:      io_pdal_PointView
+ * Method:     getPackedPoints
+ * Signature:  ([Lio/pdal/DimType;)[B
  */
-JNIEXPORT jbyteArray JNICALL Java_io_pdal_PointView_getPackedPoints
+JNIEXPORT jbyteArray JNICALL Java_io_pdal_PointView_getPackedPoints___3Lio_pdal_DimType_2
   (JNIEnv *, jobject, jobjectArray);
 
 /*
- * Class:     io_pdal_PointView
- * Method:    getTriangularMesh
- * Signature: (Ljava/lang/String;)Lio/pdal/TriangularMesh;
+ * Class:      io_pdal_PointView
+ * Method:     getTriangularMesh
+ * Signature:  (Ljava/lang/String;)Lio/pdal/TriangularMesh;
  */
-JNIEXPORT jobject JNICALL Java_io_pdal_PointView_getTriangularMesh
+JNIEXPORT jobject JNICALL Java_io_pdal_PointView_getTriangularMesh__Ljava_lang_String_2
   (JNIEnv *, jobject, jstring);
 
 /*
- * Class:     io_pdal_PointView
- * Method:    rasterizeTriangularMesh
- * Signature: ([DIILio/pdal/DimType;Ljava/lang/String;)[D
+ * Class:      io_pdal_PointView
+ * Method:     rasterizeTriangularMesh
+ * Signature:  ([DIILio/pdal/DimType;Ljava/lang/String;)[D
  */
-JNIEXPORT jdoubleArray JNICALL Java_io_pdal_PointView_rasterizeTriangularMesh
+JNIEXPORT jdoubleArray JNICALL Java_io_pdal_PointView_rasterizeTriangularMesh___3DIILio_pdal_DimType_2Ljava_lang_String_2
   (JNIEnv *, jobject, jdoubleArray, jint, jint, jobject, jstring);
 
 /*
- * Class:     io_pdal_PointView
- * Method:    close
- * Signature: ()V
+ * Class:      io_pdal_PointView
+ * Method:     close
+ * Signature:  ()V
  */
 JNIEXPORT void JNICALL Java_io_pdal_PointView_close
   (JNIEnv *, jobject);

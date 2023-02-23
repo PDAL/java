@@ -8,49 +8,49 @@
 extern "C" {
 #endif
 /*
- * Class:     io_pdal_PointLayout
- * Method:    dimTypes
- * Signature: ()[Lio/pdal/DimType;
+ * Class:      io_pdal_PointLayout
+ * Method:     dimTypes
+ * Signature:  ()[Lio/pdal/DimType;
  */
 JNIEXPORT jobjectArray JNICALL Java_io_pdal_PointLayout_dimTypes
   (JNIEnv *, jobject);
 
 /*
- * Class:     io_pdal_PointLayout
- * Method:    findDimType
- * Signature: (Ljava/lang/String;)Lio/pdal/DimType;
+ * Class:      io_pdal_PointLayout
+ * Method:     findDimType
+ * Signature:  (Ljava/lang/String;)Lio/pdal/DimType;
  */
 JNIEXPORT jobject JNICALL Java_io_pdal_PointLayout_findDimType
   (JNIEnv *, jobject, jstring);
 
 /*
- * Class:     io_pdal_PointLayout
- * Method:    dimSize
- * Signature: (Ljava/lang/String;)J
+ * Class:      io_pdal_PointLayout
+ * Method:     dimSize
+ * Signature:  (Ljava/lang/String;)J
  */
-JNIEXPORT jlong JNICALL Java_io_pdal_PointLayout_dimSize
+JNIEXPORT jlong JNICALL Java_io_pdal_PointLayout_dimSize__Ljava_lang_String_2
   (JNIEnv *, jobject, jstring);
 
 /*
- * Class:     io_pdal_PointLayout
- * Method:    dimPackedOffset
- * Signature: (Ljava/lang/String;)J
+ * Class:      io_pdal_PointLayout
+ * Method:     dimPackedOffset
+ * Signature:  (Ljava/lang/String;)J
  */
-JNIEXPORT jlong JNICALL Java_io_pdal_PointLayout_dimPackedOffset
+JNIEXPORT jlong JNICALL Java_io_pdal_PointLayout_dimPackedOffset__Ljava_lang_String_2
   (JNIEnv *, jobject, jstring);
 
 /*
- * Class:     io_pdal_PointLayout
- * Method:    pointSize
- * Signature: ()J
+ * Class:      io_pdal_PointLayout
+ * Method:     pointSize
+ * Signature:  ()J
  */
 JNIEXPORT jlong JNICALL Java_io_pdal_PointLayout_pointSize
   (JNIEnv *, jobject);
 
 /*
- * Class:     io_pdal_PointLayout
- * Method:    close
- * Signature: ()V
+ * Class:      io_pdal_PointLayout
+ * Method:     close
+ * Signature:  ()V
  */
 JNIEXPORT void JNICALL Java_io_pdal_PointLayout_close
   (JNIEnv *, jobject);

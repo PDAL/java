@@ -24,6 +24,7 @@
 
 package io.pdal
 
+import io.circe.parser
 import java.nio.{ByteBuffer, ByteOrder}
 
 import scala.collection.JavaConverters._
@@ -34,7 +35,7 @@ class PipelineSpec extends TestEnvironmentSpec {
       val badPipeline = Pipeline(badJson)
       badPipeline.validate() should be(false)
       badPipeline.close()
-      (badPipeline.ptr() should be(0))
+      badPipeline.ptr() should be(0)
     }
 
     it("should validate json") {
@@ -160,23 +161,29 @@ class PipelineSpec extends TestEnvironmentSpec {
     it("should read crs correct") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
-      pv.getCrsProj4() should (be(proj4String).or(be(proj4StringMac)))
+      pv.getCrsProj4() should be(proj4String).or(be(proj4StringMac))
       pv.close()
       pvi.close()
     }
 
-    it("should fail with InitializationException") {
+    it("should fail with InitializationException when the input json is null") {
       intercept[InitializationException] { Pipeline(null) }
     }
 
-    it("should fail with ExecutionException") {
-      val pipeline = Pipeline("{")
-      intercept[ExecutionException] { pipeline.execute() }
-      intercept[ExecutionException] { pipeline.getPointViews() }
-      intercept[ExecutionException] { pipeline.getMetadata() }
-      intercept[ExecutionException] { pipeline.getSchema() }
+    it("should fail with ExecutionException when the input json is invalid") {
+      intercept[InitializationException] { Pipeline("{") }
+    }
 
-      pipeline.close()
+    it("should get pipeline") {
+      parser.parse(pipeline.getPipeline()) shouldBe jsonExpectedJson
+    }
+
+    it("should get schema") {
+      parser.parse(pipeline.getSchema()) shouldBe schemaJson
+    }
+
+    it("should get metadata") {
+      parser.parse(pipeline.getMetadata()) shouldBe metadataJson
     }
 
     it("should extract mesh in iterative fashion") {
