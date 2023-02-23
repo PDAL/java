@@ -69,9 +69,7 @@ jobs:
           brew extract --version=${{ matrix.pdal }} pdal $USER/local-pdal
 
       - name: Install PDAL
-        run: |
-          brew update
-          brew install pdal@${{ matrix.pdal }} || true
+        run: brew install pdal@${{ matrix.pdal }} || true
 
       - name: Check formatting
         run: sbt scalafmtCheckAll

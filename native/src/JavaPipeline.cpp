@@ -35,7 +35,6 @@
 #ifdef PDAL_HAVE_LIBXML2
 #include <pdal/XMLSchema.hpp>
 #endif
-#include <pdal/util/Utils.hpp>
 
 using pdal::PointViewSet;
 using pdal::point_count_t;
@@ -53,7 +52,7 @@ PipelineExecutor::PipelineExecutor(std::string const& json, int level)
 {
     setLogLevel(level);
 
-    pdal::LogPtr log(pdal::Log::makeLog("pypipeline", &m_logStream));
+    pdal::LogPtr log(pdal::Log::makeLog("javapipeline", &m_logStream));
     log->setLevel(m_logLevel);
     m_manager.setLog(log);
 
@@ -139,7 +138,7 @@ std::string PipelineExecutor::getSchema() const
 void PipelineExecutor::setLogStream(std::ostream& strm)
 {
 
-    pdal::LogPtr log(pdal::Log::makeLog("pypipeline", &strm));
+    pdal::LogPtr log(pdal::Log::makeLog("javapipeline", &strm));
     log->setLevel(m_logLevel);
     m_manager.setLog(log);
 }
