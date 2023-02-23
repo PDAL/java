@@ -24,7 +24,6 @@ lazy val commonSettings = Seq(
     "-feature",
     "-target:jvm-1.8"
   ),
-  javacOptions ++= Seq("-source", "1.8", "-target", "1.8"),
   shellPrompt := { s => Project.extract(s).currentProject.id + " > " },
   Test / publishArtifact := false,
   developers := List(
