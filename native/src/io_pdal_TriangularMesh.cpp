@@ -71,7 +71,7 @@ JNIEXPORT jboolean JNICALL Java_io_pdal_TriangularMesh_hasNext
     return it->hasNext();
 }
 
-JNIEXPORT jobject JNICALL Java_io_pdal_TriangularMesh_next
+JNIEXPORT jobject JNICALL Java_io_pdal_TriangularMesh_next__
   (JNIEnv *env, jobject obj)
 {
     TriangularMeshIterator *it = getHandle<TriangularMeshIterator>(env, obj);

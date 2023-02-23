@@ -135,7 +135,7 @@ JNIEXPORT jstring JNICALL Java_io_pdal_PointView_getCrsProj4
     return env->NewStringUTF(pv->spatialReference().getProj4().c_str());
 }
 
-JNIEXPORT jstring JNICALL Java_io_pdal_PointView_getCrsWKT
+JNIEXPORT jstring JNICALL Java_io_pdal_PointView_getCrsWKT__Z
   (JNIEnv *env, jobject obj, jboolean pretty)
 {
     PointViewRawPtr *pvrp = getHandle<PointViewRawPtr>(env, obj);
@@ -148,7 +148,7 @@ JNIEXPORT jstring JNICALL Java_io_pdal_PointView_getCrsWKT
     return env->NewStringUTF(wkt.c_str());
 }
 
-JNIEXPORT jbyteArray JNICALL Java_io_pdal_PointView_getPackedPoint
+JNIEXPORT jbyteArray JNICALL Java_io_pdal_PointView_getPackedPoint__J_3Lio_pdal_DimType_2
   (JNIEnv *env, jobject obj, jlong idx, jobjectArray dims)
 {
     PointViewRawPtr *pvrp = getHandle<PointViewRawPtr>(env, obj);
@@ -175,7 +175,7 @@ JNIEXPORT jbyteArray JNICALL Java_io_pdal_PointView_getPackedPoint
     return array;
 }
 
-JNIEXPORT jbyteArray JNICALL Java_io_pdal_PointView_getPackedPoints
+JNIEXPORT jbyteArray JNICALL Java_io_pdal_PointView_getPackedPoints___3Lio_pdal_DimType_2
   (JNIEnv *env, jobject obj, jobjectArray dims)
 {
     PointViewRawPtr *pvrp = getHandle<PointViewRawPtr>(env, obj);
@@ -207,7 +207,7 @@ JNIEXPORT jbyteArray JNICALL Java_io_pdal_PointView_getPackedPoints
     return array;
 }
 
-JNIEXPORT jobject JNICALL Java_io_pdal_PointView_getTriangularMesh
+JNIEXPORT jobject JNICALL Java_io_pdal_PointView_getTriangularMesh__Ljava_lang_String_2
   (JNIEnv *env, jobject obj, jstring name)
 {
     PointViewRawPtr *pvrp = getHandle<PointViewRawPtr>(env, obj);
@@ -233,7 +233,7 @@ JNIEXPORT jobject JNICALL Java_io_pdal_PointView_getTriangularMesh
 
 // A rasterizer port from GeoTrellis, see:
 // https://github.com/geotrellis/geotrellis-pointcloud/blob/837545f67818ce252e315b13a327a74821dc0594/pointcloud/src/main/scala/geotrellis/pointcloud/raster/rasterize/triangles/PDALTrianglesRasterizer.scala#L33-L153
-JNIEXPORT jdoubleArray JNICALL Java_io_pdal_PointView_rasterizeTriangularMesh
+JNIEXPORT jdoubleArray JNICALL Java_io_pdal_PointView_rasterizeTriangularMesh___3DIILio_pdal_DimType_2Ljava_lang_String_2
   (JNIEnv *env, jobject obj, jdoubleArray extent, jint cols, jint rows, jobject jDimType, jstring name)
 {
     std::string cname = std::string(env->GetStringUTFChars(name, 0));

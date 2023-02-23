@@ -8,49 +8,49 @@
 extern "C" {
 #endif
 /*
- * Class:     io_pdal_TriangularMesh
- * Method:    size
- * Signature: ()I
+ * Class:      io_pdal_TriangularMesh
+ * Method:     size
+ * Signature:  ()I
  */
 JNIEXPORT jint JNICALL Java_io_pdal_TriangularMesh_size
   (JNIEnv *, jobject);
 
 /*
- * Class:     io_pdal_TriangularMesh
- * Method:    get
- * Signature: (J)Lio/pdal/Triangle;
+ * Class:      io_pdal_TriangularMesh
+ * Method:     get
+ * Signature:  (J)Lio/pdal/Triangle;
  */
 JNIEXPORT jobject JNICALL Java_io_pdal_TriangularMesh_get
   (JNIEnv *, jobject, jlong);
 
 /*
- * Class:     io_pdal_TriangularMesh
- * Method:    hasNext
- * Signature: ()Z
+ * Class:      io_pdal_TriangularMesh
+ * Method:     hasNext
+ * Signature:  ()Z
  */
 JNIEXPORT jboolean JNICALL Java_io_pdal_TriangularMesh_hasNext
   (JNIEnv *, jobject);
 
 /*
- * Class:     io_pdal_TriangularMesh
- * Method:    next
- * Signature: ()Lio/pdal/Triangle;
+ * Class:      io_pdal_TriangularMesh
+ * Method:     next
+ * Signature:  ()Lio/pdal/Triangle;
  */
-JNIEXPORT jobject JNICALL Java_io_pdal_TriangularMesh_next
+JNIEXPORT jobject JNICALL Java_io_pdal_TriangularMesh_next__
   (JNIEnv *, jobject);
 
 /*
- * Class:     io_pdal_TriangularMesh
- * Method:    asArray
- * Signature: ()[Lio/pdal/Triangle;
+ * Class:      io_pdal_TriangularMesh
+ * Method:     asArray
+ * Signature:  ()[Lio/pdal/Triangle;
  */
 JNIEXPORT jobjectArray JNICALL Java_io_pdal_TriangularMesh_asArray
   (JNIEnv *, jobject);
 
 /*
- * Class:     io_pdal_TriangularMesh
- * Method:    close
- * Signature: ()V
+ * Class:      io_pdal_TriangularMesh
+ * Method:     close
+ * Signature:  ()V
  */
 JNIEXPORT void JNICALL Java_io_pdal_TriangularMesh_close
   (JNIEnv *, jobject);

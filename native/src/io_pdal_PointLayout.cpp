@@ -85,7 +85,7 @@ JNIEXPORT jobject JNICALL Java_io_pdal_PointLayout_findDimType
     return result;
 }
 
-JNIEXPORT jlong JNICALL Java_io_pdal_PointLayout_dimSize
+JNIEXPORT jlong JNICALL Java_io_pdal_PointLayout_dimSize__Ljava_lang_String_2
   (JNIEnv *env, jobject obj, jstring jstr)
 {
     std::string fid = std::string(env->GetStringUTFChars(jstr, 0));
@@ -94,7 +94,7 @@ JNIEXPORT jlong JNICALL Java_io_pdal_PointLayout_dimSize
     return pl->dimSize(pl->findDim(fid));
 }
 
-JNIEXPORT jlong JNICALL Java_io_pdal_PointLayout_dimPackedOffset
+JNIEXPORT jlong JNICALL Java_io_pdal_PointLayout_dimPackedOffset__Ljava_lang_String_2
   (JNIEnv *env, jobject obj, jstring jstr)
 {
     std::string fid = std::string(env->GetStringUTFChars(jstr, 0));

@@ -48,7 +48,7 @@ JNIEXPORT jboolean JNICALL Java_io_pdal_PointViewIterator_hasNext
     return it->hasNext();
 }
 
-JNIEXPORT jobject JNICALL Java_io_pdal_PointViewIterator_next
+JNIEXPORT jobject JNICALL Java_io_pdal_PointViewIterator_next__
   (JNIEnv *env, jobject obj)
 {
     PointViewIterator *it = getHandle<PointViewIterator>(env, obj);
