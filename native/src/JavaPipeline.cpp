@@ -45,6 +45,8 @@ namespace libpdaljava
 void CountPointTable::reset()
 {
     for (pdal::PointId idx = 0; idx < numPoints(); idx++)
+        if (!skip(idx))
+            m_count++;
     FixedPointTable::reset();
 }
 
