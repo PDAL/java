@@ -5,10 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [2.5.0] - 2023-02-25
 ## Added
 * PDAL 2.5.1 [#65](https://github.com/pdal/java/pull/65) (@pomadchin)
 
-## [2.4.0] - 2021-08-01
+## [2.4.0] - 2022-10-29
 ## Added
 * PDAL 2.4.3 [#62](https://github.com/pdal/java/pull/62) (@pomadchin)
 
@@ -128,7 +130,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Moved from the PDAL repo and established own lifecycle.
 
-[Unreleased]: https://github.com/PDAL/java/compare/v2.4.0...HEAD
+[Unreleased]: https://github.com/PDAL/java/compare/v2.5.0...HEAD
+[2.5.0]: https://github.com/PDAL/java/compare/v2.4.0...v2.5.0
 [2.4.0]: https://github.com/PDAL/java/compare/v2.3.1...v2.4.0
 [2.3.1]: https://github.com/PDAL/java/compare/v2.3.0...v2.3.1
 [2.3.0]: https://github.com/PDAL/java/compare/v2.2.0...v2.3.0
