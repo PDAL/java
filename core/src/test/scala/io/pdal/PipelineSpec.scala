@@ -194,9 +194,6 @@ class PipelineSpec extends TestEnvironmentSpec {
     it("should get quickInfo with metadata") {
       val p = Pipeline(json)
       p.execute()
-      println("----------------")
-      println(p.getQuickInfo())
-      println("----------------")
       parser.parse(p.getQuickInfo()) should be(quickInfoWithMetadataJson).or(be(quickInfoWithMetadataMacJson))
     }
 
