@@ -191,7 +191,7 @@ MetadataNode computePreview(Stage* stage)
 string PipelineExecutor::getQuickInfo() const
 {
 
-    pdal::Stage* stage(nullptr);
+    Stage* stage(nullptr);
     vector<Stage *> stages = m_manager.stages();
     vector<Stage *> previewStages;
 
