@@ -36,29 +36,38 @@
 #include <pdal/XMLSchema.hpp>
 #endif
 
+using pdal::LogPtr;
+using pdal::MetadataNode;
+using pdal::PointId;
 using pdal::PointViewSet;
+using pdal::PointTableRef;
+using pdal::Stage;
 using pdal::point_count_t;
+
+using std::string;
+using std::stringstream;
+using std::vector;
 
 namespace libpdaljava
 {
 
 void CountPointTable::reset()
 {
-    for (pdal::PointId idx = 0; idx < numPoints(); idx++)
+    for (PointId idx = 0; idx < numPoints(); idx++)
         if (!skip(idx))
             m_count++;
     FixedPointTable::reset();
 }
 
-PipelineExecutor::PipelineExecutor(std::string const& json, int level)
+PipelineExecutor::PipelineExecutor(string const& json, int level)
 {
     setLogLevel(level);
 
-    pdal::LogPtr log(pdal::Log::makeLog("javapipeline", &m_logStream));
+    LogPtr log(pdal::Log::makeLog("javapipeline", &m_logStream));
     log->setLevel(m_logLevel);
     m_manager.setLog(log);
 
-    std::stringstream strm;
+    stringstream strm;
     strm << json;
     m_manager.readPipeline(strm);
 
@@ -71,10 +80,10 @@ bool PipelineExecutor::validate()
     return true;
 }
 
-pdal::point_count_t PipelineExecutor::execute()
+point_count_t PipelineExecutor::execute()
 {
 
-    pdal::point_count_t count = m_manager.execute();
+    point_count_t count = m_manager.execute();
     m_executed = true;
     return count;
 }
@@ -95,10 +104,10 @@ const PointViewSet& PipelineExecutor::views() const
     return m_manager.views();
 }
 
-std::string PipelineExecutor::getSrsWKT2() const
+string PipelineExecutor::getSrsWKT2() const
 {
-    std::string output("");
-    pdal::PointTableRef pointTable = m_manager.pointTable();
+    string output("");
+    PointTableRef pointTable = m_manager.pointTable();
 
     pdal::SpatialReference srs = pointTable.spatialReference();
     output = srs.getWKT();
@@ -106,41 +115,111 @@ std::string PipelineExecutor::getSrsWKT2() const
     return output;
 }
 
-std::string PipelineExecutor::getPipeline() const
+string PipelineExecutor::getPipeline() const
 {
-    std::stringstream strm;
+    stringstream strm;
     pdal::PipelineWriter::writePipeline(m_manager.getStage(), strm);
     return strm.str();
 }
 
 
-std::string PipelineExecutor::getMetadata() const
+string PipelineExecutor::getMetadata() const
 {
     if (!m_executed)
         throw java_error("Pipeline has not been executed!");
 
-    std::stringstream strm;
-    pdal::MetadataNode root = m_manager.getMetadata().clone("metadata");
+    stringstream strm;
+    MetadataNode root = m_manager.getMetadata().clone("metadata");
     pdal::Utils::toJSON(root, strm);
     return strm.str();
 }
 
 
-std::string PipelineExecutor::getSchema() const
+string PipelineExecutor::getSchema() const
 {
     if (!m_executed)
         throw java_error("Pipeline has not been executed!");
 
-    std::stringstream strm;
-    pdal::MetadataNode root = pointTable().layout()->toMetadata().clone("schema");
+    stringstream strm;
+    MetadataNode root = pointTable().layout()->toMetadata().clone("schema");
     pdal::Utils::toJSON(root, strm);
+    return strm.str();
+}
+
+MetadataNode computePreview(pdal::Stage* stage)
+{
+    if (!stage)
+        throw java_error("no valid stage in QuickInfo");
+
+    stage->preview();
+
+    pdal::QuickInfo qi = stage->preview();
+    if (!qi.valid())
+        throw java_error("No summary data available for stage '" + stage->getName()+"'" );
+
+    stringstream strm;
+    MetadataNode summary(stage->getName());
+    summary.add("num_points", qi.m_pointCount);
+    if (qi.m_srs.valid())
+    {
+        MetadataNode srs = qi.m_srs.toMetadata();
+        summary.add(srs);
+    }
+    if (qi.m_bounds.valid())
+    {
+        MetadataNode bounds = pdal::Utils::toMetadata(qi.m_bounds);
+        summary.add(bounds.clone("bounds"));
+    }
+
+    string dims;
+    auto di = qi.m_dimNames.begin();
+
+    while (di != qi.m_dimNames.end())
+    {
+        dims += *di;
+        ++di;
+        if (di != qi.m_dimNames.end())
+           dims += ", ";
+    }
+    if (dims.size())
+        summary.add("dimensions", dims);
+    pdal::Utils::toJSON(summary, strm);
+    return summary;
+}
+
+
+string PipelineExecutor::getQuickInfo() const
+{
+
+    pdal::Stage* stage(nullptr);
+    vector<Stage *> stages = m_manager.stages();
+    vector<Stage *> previewStages;
+
+    for (auto const& s: stages)
+    {
+        auto n = s->getName();
+        auto v = pdal::Utils::split2(n,'.');
+        if (v.size() > 0)
+            if (pdal::Utils::iequals(v[0], "readers"))
+                previewStages.push_back(s);
+    }
+
+    MetadataNode summary;
+    for (auto const& stage: previewStages)
+    {
+        MetadataNode n = computePreview(stage);
+        summary.add(n);
+    }
+
+    stringstream strm;
+    pdal::Utils::toJSON(summary, strm);
     return strm.str();
 }
 
 void PipelineExecutor::setLogStream(std::ostream& strm)
 {
 
-    pdal::LogPtr log(pdal::Log::makeLog("javapipeline", &strm));
+    LogPtr log(pdal::Log::makeLog("javapipeline", &strm));
     log->setLevel(m_logLevel);
     m_manager.setLog(log);
 }

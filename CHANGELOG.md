@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Added
+* Add QuickInfo support [#70](https://github.com/PDAL/java/pull/70) (@pomadchin)
+
 ## [2.5.0] - 2023-02-25
 ## Added
 * PDAL 2.5.1 [#65](https://github.com/pdal/java/pull/65) (@pomadchin)

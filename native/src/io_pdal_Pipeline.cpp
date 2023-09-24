@@ -159,6 +159,20 @@ JNIEXPORT jstring JNICALL Java_io_pdal_Pipeline_getSchema
     }
 }
 
+JNIEXPORT jstring JNICALL Java_io_pdal_Pipeline_getQuickInfo
+  (JNIEnv *env, jobject obj)
+{
+    try
+    {
+        PipelineExecutor *p = getHandle<PipelineExecutor>(env, obj);
+        return env->NewStringUTF(p->getQuickInfo().c_str());
+    }
+    catch(const pdal_error &pe)
+    {
+        return throwExecutionException(env, pe.what());
+    }
+}
+
 JNIEXPORT jboolean JNICALL Java_io_pdal_Pipeline_validate
   (JNIEnv *env, jobject obj)
 {
