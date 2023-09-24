@@ -73,6 +73,14 @@ JNIEXPORT jstring JNICALL Java_io_pdal_Pipeline_getSchema
 
 /*
  * Class:      io_pdal_Pipeline
+ * Method:     getQuickInfo
+ * Signature:  ()Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_io_pdal_Pipeline_getQuickInfo
+  (JNIEnv *, jobject);
+
+/*
+ * Class:      io_pdal_Pipeline
  * Method:     validate
  * Signature:  ()Z
  */

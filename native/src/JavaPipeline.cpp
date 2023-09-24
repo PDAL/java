@@ -36,6 +36,8 @@
 #include <pdal/XMLSchema.hpp>
 #endif
 
+#include <pdal/util/Utils.hpp>
+
 using pdal::PointViewSet;
 using pdal::point_count_t;
 
@@ -134,6 +136,76 @@ std::string PipelineExecutor::getSchema() const
     std::stringstream strm;
     pdal::MetadataNode root = pointTable().layout()->toMetadata().clone("schema");
     pdal::Utils::toJSON(root, strm);
+    return strm.str();
+}
+
+pdal::MetadataNode computePreview(pdal::Stage* stage)
+{
+    if (!stage)
+        throw java_error("no valid stage in QuickInfo");
+
+    stage->preview();
+
+    pdal::QuickInfo qi = stage->preview();
+    if (!qi.valid())
+        throw java_error("No summary data available for stage '" + stage->getName()+"'" );
+
+    std::stringstream strm;
+    pdal::MetadataNode summary(stage->getName());
+    summary.add("num_points", qi.m_pointCount);
+    if (qi.m_srs.valid())
+    {
+        pdal::MetadataNode srs = qi.m_srs.toMetadata();
+        summary.add(srs);
+    }
+    if (qi.m_bounds.valid())
+    {
+        pdal::MetadataNode bounds = pdal::Utils::toMetadata(qi.m_bounds);
+        summary.add(bounds.clone("bounds"));
+    }
+
+    std::string dims;
+    auto di = qi.m_dimNames.begin();
+
+    while (di != qi.m_dimNames.end())
+    {
+        dims += *di;
+        ++di;
+        if (di != qi.m_dimNames.end())
+           dims += ", ";
+    }
+    if (dims.size())
+        summary.add("dimensions", dims);
+    pdal::Utils::toJSON(summary, strm);
+    return summary;
+}
+
+
+std::string PipelineExecutor::getQuickInfo() const
+{
+
+    pdal::Stage* stage(nullptr);
+    std::vector<pdal::Stage *> stages = m_manager.stages();
+    std::vector<pdal::Stage *> previewStages;
+
+    for (auto const& s: stages)
+    {
+        auto n = s->getName();
+        auto v = pdal::Utils::split2(n,'.');
+        if (v.size() > 0)
+            if (pdal::Utils::iequals(v[0], "readers"))
+                previewStages.push_back(s);
+    }
+
+    pdal::MetadataNode summary;
+    for (auto const& stage: previewStages)
+    {
+        pdal::MetadataNode n = computePreview(stage);
+        summary.add(n);
+    }
+
+    std::stringstream strm;
+    pdal::Utils::toJSON(summary, strm);
     return strm.str();
 }
 

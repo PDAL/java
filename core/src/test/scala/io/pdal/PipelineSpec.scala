@@ -186,6 +186,10 @@ class PipelineSpec extends TestEnvironmentSpec {
       parser.parse(pipeline.getMetadata()) shouldBe metadataJson
     }
 
+    it("should get quickInfo") {
+      parser.parse(pipeline.getQuickInfo()) shouldBe quickInfoJson
+    }
+
     it("should extract mesh in iterative fashion") {
       pipelineDelaunay.validate() should be(true)
       pipelineDelaunay.execute()

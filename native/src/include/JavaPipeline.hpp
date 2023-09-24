@@ -36,6 +36,7 @@
 #include <pdal/PipelineManager.hpp>
 #include <pdal/PipelineWriter.hpp>
 #include <pdal/util/FileUtils.hpp>
+#include <pdal/Stage.hpp>
 
 #include <string>
 #include <sstream>
