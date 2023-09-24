@@ -146,7 +146,7 @@ string PipelineExecutor::getSchema() const
     return strm.str();
 }
 
-MetadataNode computePreview(pdal::Stage* stage)
+MetadataNode computePreview(Stage* stage)
 {
     if (!stage)
         throw java_error("no valid stage in QuickInfo");
