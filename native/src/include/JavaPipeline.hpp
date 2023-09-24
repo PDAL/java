@@ -33,11 +33,11 @@
 
 #pragma once
 
+#include <pdal/util/FileUtils.hpp>
 #include <pdal/PipelineManager.hpp>
 #include <pdal/PipelineWriter.hpp>
-#include <pdal/util/FileUtils.hpp>
-#include <pdal/util/Utils.hpp>
 #include <pdal/Stage.hpp>
+#include <pdal/util/Utils.hpp>
 
 #include <string>
 #include <sstream>
