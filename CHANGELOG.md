@@ -7,7 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ## Added
-* Add QuickInfo support [#70](https://github.com/PDAL/java/pull/70) (@pomadchin)
+- Add QuickInfo support [#70](https://github.com/pdal/java/pull/70) (@pomadchin)
+
+## Changed
+- Scala & dependencies versions update [#71](https://github.com/pdal/java/pull/71) (@pomadchin)
 
 ## [2.5.0] - 2023-02-25
 ## Added
