@@ -58,13 +58,16 @@ using pdal::Triangle;
 using pdal::DimType;
 using pdal::pdal_error;
 
+using std::size_t;
+using std::string;
+
 /// Converts JavaArray of DimTypes (In Java interpretation DimType is a pair of strings)
 /// into DimTypeList (vector of DimTypes), puts dim size into bufSize
 /// \param[in] env       JNI environment
 /// \param[in] dims      JavaArray of DimTypes
 /// \param[in] bufSize   Dims sum size
 /// \param[in] dimTypes  Vector of DimTypes
-void convertDimTypeJavaArrayToVector(JNIEnv *env, jobjectArray dims, std::size_t *pointSize, DimTypeList *dimTypes, PointLayoutPtr pl) 
+void convertDimTypeJavaArrayToVector(JNIEnv *env, jobjectArray dims, size_t *pointSize, DimTypeList *dimTypes, PointLayoutPtr pl) 
 {
     for (jint i = 0; i < env->GetArrayLength(dims); i++) 
     {
@@ -74,7 +77,7 @@ void convertDimTypeJavaArrayToVector(JNIEnv *env, jobjectArray dims, std::size_t
         jfieldID ftype = env->GetFieldID(cDimType, "type", "Ljava/lang/String;");
 
         jstring jid = reinterpret_cast<jstring>(env->GetObjectField(jDimType, fid));
-        DimType dimType = pl->findDimType(std::string(env->GetStringUTFChars(jid, 0)));
+        DimType dimType = pl->findDimType(string(env->GetStringUTFChars(jid, 0)));
 
         *pointSize += pl->dimSize(dimType.m_id);
         dimTypes->insert(dimTypes->begin() + i, dimType);
@@ -87,9 +90,9 @@ void convertDimTypeJavaArrayToVector(JNIEnv *env, jobjectArray dims, std::size_t
 /// \param[in] dims  List of dimensions/types to retrieve.
 /// \param[in] idx   Index of point to get.
 /// \param[in] buf   Pointer to buffer to fill.
-void appendPackedPoint(PointViewPtr pv, const DimTypeList& dims, PointId idx, std::size_t pointSize, char *buf)
+void appendPackedPoint(PointViewPtr pv, const DimTypeList& dims, PointId idx, size_t pointSize, char *buf)
 {
-    std::size_t from = idx * pointSize;
+    size_t from = idx * pointSize;
     if(from >= pv->size() * pointSize) return;
     buf += from;
     pv->getPackedPoint(dims, idx, buf);
@@ -141,7 +144,7 @@ JNIEXPORT jstring JNICALL Java_io_pdal_PointView_getCrsWKT__Z
     PointViewRawPtr *pvrp = getHandle<PointViewRawPtr>(env, obj);
     PointViewPtr pv = pvrp->shared_pointer;
 
-    std::string wkt = pv->spatialReference().getWKT();
+    string wkt = pv->spatialReference().getWKT();
 
     if(pretty) wkt = SpatialReference::prettyWkt(wkt);
 
@@ -157,7 +160,7 @@ JNIEXPORT jbyteArray JNICALL Java_io_pdal_PointView_getPackedPoint__J_3Lio_pdal_
     PointLayoutPtr pl = pv->layout();
 
     // we need to calculate buffer size
-    std::size_t pointSize = 0;
+    size_t pointSize = 0;
     DimTypeList dimTypes;
 
     // calculate result buffer length (for one point) and get dimTypes
@@ -184,14 +187,14 @@ JNIEXPORT jbyteArray JNICALL Java_io_pdal_PointView_getPackedPoints___3Lio_pdal_
     PointLayoutPtr pl = pv->layout();
 
     // we need to calculate buffer size
-    std::size_t pointSize = 0;
+    size_t pointSize = 0;
     DimTypeList dimTypes;
 
     // calculate result buffer length (for one point) and get dimTypes
     convertDimTypeJavaArrayToVector(env, dims, &pointSize, &dimTypes, pl);
 
     // reading all points
-    std::size_t bufSize = pointSize * pv->size();
+    size_t bufSize = pointSize * pv->size();
     char *buf = new char[bufSize];
 
     for (PointId idx = 0; idx < pv->size(); idx++) 
@@ -212,7 +215,7 @@ JNIEXPORT jobject JNICALL Java_io_pdal_PointView_getTriangularMesh__Ljava_lang_S
 {
     PointViewRawPtr *pvrp = getHandle<PointViewRawPtr>(env, obj);
     PointViewPtr pv = pvrp->shared_pointer;
-    std::string cname = std::string(env->GetStringUTFChars(name, 0));
+    string cname = string(env->GetStringUTFChars(name, 0));
 
     TriangularMesh *m = pv->mesh(cname);
     
@@ -236,7 +239,7 @@ JNIEXPORT jobject JNICALL Java_io_pdal_PointView_getTriangularMesh__Ljava_lang_S
 JNIEXPORT jdoubleArray JNICALL Java_io_pdal_PointView_rasterizeTriangularMesh___3DIILio_pdal_DimType_2Ljava_lang_String_2
   (JNIEnv *env, jobject obj, jdoubleArray extent, jint cols, jint rows, jobject jDimType, jstring name)
 {
-    std::string cname = std::string(env->GetStringUTFChars(name, 0));
+    string cname = string(env->GetStringUTFChars(name, 0));
 
     PointViewRawPtr *pvrp = getHandle<PointViewRawPtr>(env, obj);
     PointViewPtr pv = pvrp->shared_pointer;
@@ -253,7 +256,7 @@ JNIEXPORT jdoubleArray JNICALL Java_io_pdal_PointView_rasterizeTriangularMesh___
     jstring jid = reinterpret_cast<jstring>(env->GetObjectField(jDimType, fid));
     
     PointLayoutPtr pl = pv->layout();
-    DimType dimType = pl->findDimType(std::string(env->GetStringUTFChars(jid, 0)));
+    DimType dimType = pl->findDimType(string(env->GetStringUTFChars(jid, 0)));
     Id dimId = dimType.m_id;
 
     int size = mesh->size();

@@ -187,7 +187,14 @@ class PipelineSpec extends TestEnvironmentSpec {
     }
 
     it("should get quickInfo") {
-      parser.parse(pipeline.getQuickInfo()) shouldBe quickInfoJson
+      val p = Pipeline(json)
+      parser.parse(p.getQuickInfo()) shouldBe quickInfoJson
+    }
+
+    it("should get quickInfo with metadata") {
+      val p = Pipeline(json)
+      p.execute()
+      parser.parse(p.getQuickInfo()) shouldBe quickInfoWithMetadataJson
     }
 
     it("should extract mesh in iterative fashion") {
