@@ -44,7 +44,7 @@ class Pipeline(val json: String, val logLevel: Int) extends Native {
   @native def getLog(): String
 }
 
-object Pipeline extends NativeLoader("pdaljni.2.5") {
+object Pipeline extends NativeLoader("pdaljni.2.6") {
   def apply(json: String, logLevel: Int = LogLevel.Error): Pipeline = {
     val p = new Pipeline(json, logLevel); p.initialize(); p
   }
