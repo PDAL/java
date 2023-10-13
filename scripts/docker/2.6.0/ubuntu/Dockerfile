@@ -18,7 +18,6 @@ RUN ln -s /opt/conda/envs/pdal/include/pdal /usr/include/pdal && \
     ln -s /opt/conda/envs/pdal/share/* /usr/share/* || true && \
     ln -s /opt/conda/envs/pdal/lib/* /usr/lib/* || true
 
-# upd g++
-RUN add-apt-repository -y ppa:ubuntu-toolchain-r/test
+# GLIBCXX_3.4.30
 # strings /usr/lib/x86_64-linux-gnu/libstdc++.so.6 | grep GLIBCXX
-RUN apt update -y && apt install -y g++-11
+RUN apt install -y build-essential
