@@ -32,10 +32,6 @@ if (JNI_FOUND)
 endif()
 
 if (NOT PDAL_BUILD)
-    if(DEFINED ENV{PDAL_DIR})
-      set(PDAL_DIR "$ENV{PDAL_DIR}")
-    endif()
-
     find_package(PDAL 2.0.0 REQUIRED CONFIG)
 endif()
 

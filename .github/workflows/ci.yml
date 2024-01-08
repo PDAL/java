@@ -10,37 +10,10 @@ on:
     # types: [published]
 
 jobs:
-  linux:
+  build:
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        image: ['daunnc/pdal-ubuntu:2.6.0']
-    runs-on: ${{ matrix.os }}
-    container:
-      image: ${{ matrix.image }}
-    
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      # https://github.com/actions/runner/issues/2033
-      - name: Set ownership
-        run: |
-          # this is to fix GIT not liking owner of the checkout dir
-          chown -R $(id -u):$(id -g) $PWD
-
-      - uses: coursier/cache-action@v6
-
-      - name: Check formatting
-        run: ./sbt scalafmtCheckAll
-
-      - name: Build project
-        run: ./sbt +test
-
-  macos:
-    strategy:
-      matrix:
-        os: [macos-latest]
+        os: [ubuntu-latest, macos-latest]
         java: [8]
         distribution: [temurin]
         pdal: [2.6.2]
@@ -61,29 +34,23 @@ jobs:
 
       - uses: conda-incubator/setup-miniconda@v3
         with:
-          # auto-update-conda: true
-          # auto-activate-base: true
-          activate-environment: "pdal-java"
+          activate-environment: pdal-java
           channels: conda-forge
 
       - name: Install PDAL
         run: conda install pdal=${{ matrix.pdal }}
 
-      # - name: Check formatting
-      #   run: sbt scalafmtCheckAll
+      - name: Set LD_LIBRARY_PATH 
+        run: echo "LD_LIBRARY_PATH=$CONDA/envs/pdal-java/lib:/usr/local/lib:$LD_LIBRARY_PATH" >> "$GITHUB_ENV"
+
+      - name: Check formatting
+        run: sbt scalafmtCheckAll
 
       - name: Build project
-        run: |
-          # export PDAL_DIR=$CONDAenvs/pdal-java/
-          echo "CONA: $CONDA"
-          ls $CONDA
-          echo "========"
-          ls ${CONDA}/envs
-          echo "======="
-          which pdal
-          sbt +test
+        run: sbt +test
 
       - uses: actions/upload-artifact@v3
+        if: ${{ startsWith(matrix.os, 'macos') }}
         with:
           name: macos
           path: native/target/native/x86_64-darwin/bin
@@ -92,12 +59,15 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        image: ['daunnc/pdal-ubuntu:2.5.1']
+        java: [8]
+        distribution: [temurin]
+        pdal: [2.6.2]
     runs-on: ${{ matrix.os }}
-    needs: [linux, macos]
-    container:
-      image: ${{ matrix.image }}
     if: github.event_name != 'pull_request'
+    needs: [build]
+    defaults:
+      run:
+        shell: bash -el {0}
     env: 
       PDAL_DEPEND_ON_NATIVE: "false"
       CI_CLEAN: ""
@@ -106,13 +76,22 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      # https://github.com/actions/runner/issues/2033
-      - name: Set ownership
-        run: |
-          # this is to fix GIT not liking owner of the checkout dir
-          chown -R $(id -u):$(id -g) $PWD
-
       - uses: coursier/cache-action@v6
+      - uses: actions/setup-java@v3
+        with:
+          distribution: ${{ matrix.distribution }}
+          java-version: ${{ matrix.java }}
+
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          activate-environment: pdal-java
+          channels: conda-forge
+
+      - name: Install PDAL
+        run: conda install pdal=${{ matrix.pdal }}
+
+      - name: Set LD_LIBRARY_PATH 
+        run: echo "LD_LIBRARY_PATH=$CONDA/envs/pdal-java/lib:/usr/local/lib:$LD_LIBRARY_PATH" >> "$GITHUB_ENV"
 
       - uses: actions/download-artifact@v3
         with:
@@ -120,7 +99,7 @@ jobs:
           path: native/target/native/x86_64-darwin/bin
 
       - name: Release
-        run: ./sbt ci-release
+        run: sbt ci-release
         env:
           PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
           PGP_SECRET: ${{ secrets.PGP_SECRET }}
