@@ -45,14 +45,15 @@ jobs:
       - name: Cache Conda envs
         uses: actions/cache@v3
         with:
-          path: ${{ env.CONDA }}/envs
+          path: /usr/share/miniconda/envs/pdal-java
           key:
-            conda-${{ runner.os }}--${{ runner.arch }}--${{steps.get-date.outputs.today }}-${{ matrix.pdal }}-${{ env.CACHE_NUMBER }}
+            conda-pdal-java-${{ runner.os }}--${{ runner.arch }}--${{steps.get-date.outputs.today }}-${{ matrix.pdal }}-${{ env.CACHE_NUMBER }}
         env:
           CACHE_NUMBER: 0
         id: conda-cache
 
       - name: Install PDAL
+        if: steps.conda-cache.outputs.cache-hit != 'true'
         run: conda install pdal=${{ matrix.pdal }}
 
       - name: Set LD_LIBRARY_PATH 
@@ -110,14 +111,15 @@ jobs:
       - name: Cache Conda envs
         uses: actions/cache@v3
         with:
-          path: ${{ env.CONDA }}/envs
+          path: /usr/share/miniconda/envs/pdal-java
           key:
-            conda-${{ runner.os }}--${{ runner.arch }}--${{steps.get-date.outputs.today }}-${{ matrix.pdal }}-${{ env.CACHE_NUMBER }}
+            conda-pdal-java-${{ runner.os }}--${{ runner.arch }}--${{steps.get-date.outputs.today }}-${{ matrix.pdal }}-${{ env.CACHE_NUMBER }}
         env:
           CACHE_NUMBER: 0
         id: conda-cache
 
       - name: Install PDAL
+        if: steps.conda-cache.outputs.cache-hit != 'true'
         run: conda install pdal=${{ matrix.pdal }}
 
       - name: Set LD_LIBRARY_PATH 
