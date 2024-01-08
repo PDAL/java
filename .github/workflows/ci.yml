@@ -37,17 +37,19 @@ jobs:
           activate-environment: pdal-java
           channels: conda-forge
 
-      - name: Get Date
-        id: get-date
-        run: echo "today=$(/bin/date -u '+%Y%m%d')" >> $GITHUB_OUTPUT
+      - name: Conda cache config
+        id: cache-config
+        run: | 
+          echo "today=$(/bin/date -u '+%Y%m%d')" >> $GITHUB_OUTPUT
+          echo "path=$CONDA/envs/pdal-java" >> $GITHUB_OUTPUT
         shell: bash
 
-      - name: Cache Conda envs
+      - name: Cache Conda env
         uses: actions/cache@v3
         with:
-          path: /usr/share/miniconda/envs/pdal-java
+          path: ${{ steps.cache-config.outputs.path }}
           key:
-            conda-pdal-java-${{ runner.os }}--${{ runner.arch }}--${{steps.get-date.outputs.today }}-${{ matrix.pdal }}-${{ env.CACHE_NUMBER }}
+            conda-pdal-java-${{ runner.os }}--${{ runner.arch }}--${{ steps.cache-config.outputs.today }}-${{ matrix.pdal }}-${{ env.CACHE_NUMBER }}
         env:
           CACHE_NUMBER: 0
         id: conda-cache
@@ -103,17 +105,19 @@ jobs:
           activate-environment: pdal-java
           channels: conda-forge
 
-      - name: Get Date
-        id: get-date
-        run: echo "today=$(/bin/date -u '+%Y%m%d')" >> $GITHUB_OUTPUT
+      - name: Conda cache config
+        id: cache-config
+        run: | 
+          echo "today=$(/bin/date -u '+%Y%m%d')" >> $GITHUB_OUTPUT
+          echo "path=$CONDA/envs/pdal-java" >> $GITHUB_OUTPUT
         shell: bash
 
-      - name: Cache Conda envs
+      - name: Cache Conda env
         uses: actions/cache@v3
         with:
-          path: /usr/share/miniconda/envs/pdal-java
+          path: ${{ steps.cache-config.outputs.path }}
           key:
-            conda-pdal-java-${{ runner.os }}--${{ runner.arch }}--${{steps.get-date.outputs.today }}-${{ matrix.pdal }}-${{ env.CACHE_NUMBER }}
+            conda-pdal-java-${{ runner.os }}--${{ runner.arch }}--${{ steps.cache-config.outputs.today }}-${{ matrix.pdal }}-${{ env.CACHE_NUMBER }}
         env:
           CACHE_NUMBER: 0
         id: conda-cache
