@@ -37,6 +37,21 @@ jobs:
           activate-environment: pdal-java
           channels: conda-forge
 
+      - name: Get Date
+        id: get-date
+        run: echo "today=$(/bin/date -u '+%Y%m%d')" >> $GITHUB_OUTPUT
+        shell: bash
+
+      - name: Cache Conda envs
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.CONDA }}/envs
+          key:
+            conda-${{ runner.os }}--${{ runner.arch }}--${{steps.get-date.outputs.today }}-${{ matrix.pdal }}-${{ env.CACHE_NUMBER }}
+        env:
+          CACHE_NUMBER: 0
+        id: conda-cache
+
       - name: Install PDAL
         run: conda install pdal=${{ matrix.pdal }}
 
@@ -86,6 +101,21 @@ jobs:
         with:
           activate-environment: pdal-java
           channels: conda-forge
+
+      - name: Get Date
+        id: get-date
+        run: echo "today=$(/bin/date -u '+%Y%m%d')" >> $GITHUB_OUTPUT
+        shell: bash
+
+      - name: Cache Conda envs
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.CONDA }}/envs
+          key:
+            conda-${{ runner.os }}--${{ runner.arch }}--${{steps.get-date.outputs.today }}-${{ matrix.pdal }}-${{ env.CACHE_NUMBER }}
+        env:
+          CACHE_NUMBER: 0
+        id: conda-cache
 
       - name: Install PDAL
         run: conda install pdal=${{ matrix.pdal }}
