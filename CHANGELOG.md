@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.6.0] - 2024-01-08
+## Added
+
+- PDAL 2.6.x [#73](https://github.com/pdal/java/pull/73) (@pomadchin)
+
 ## [2.5.1] - 2023-09-24
 ## Added
 - Add QuickInfo support [#70](https://github.com/pdal/java/pull/70) (@pomadchin)
@@ -137,7 +142,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Moved from the PDAL repo and established own lifecycle.
 
-[Unreleased]: https://github.com/PDAL/java/compare/v2.5.1...HEAD
+[Unreleased]: https://github.com/PDAL/java/compare/v2.6.0...HEAD
+[2.6.0]: https://github.com/PDAL/java/compare/v2.5.1...v2.6.0
 [2.5.1]: https://github.com/PDAL/java/compare/v2.5.0...v2.5.1
 [2.5.0]: https://github.com/PDAL/java/compare/v2.4.0...v2.5.0
 [2.4.0]: https://github.com/PDAL/java/compare/v2.3.1...v2.4.0
