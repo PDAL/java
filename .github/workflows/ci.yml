@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        image: ['daunnc/pdal-ubuntu:2.5.1']
+        image: ['daunnc/pdal-ubuntu:2.6.0']
     runs-on: ${{ matrix.os }}
     container:
       image: ${{ matrix.image }}
@@ -43,7 +43,7 @@ jobs:
         os: [macos-latest]
         java: [8]
         distribution: [temurin]
-        pdal: [2.5.6]
+        pdal: [2.6.2]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -56,20 +56,13 @@ jobs:
           distribution: ${{ matrix.distribution }}
           java-version: ${{ matrix.java }}
 
-      - name: Cache Homebrew
-        uses: actions/cache@v2
+      - uses: conda-incubator/setup-miniconda@v3
         with:
-          path: ~/Library/Caches/Homebrew
-          key: ${{ runner.os }}-homebrew
-
-      - name: Homebrew update & tap PDAL ${{ matrix.pdal }}
-        run: |
-          brew update && \
-          brew tap-new $USER/local-pdal && \
-          brew extract --version=${{ matrix.pdal }} pdal $USER/local-pdal
+          auto-activate-base: true
+          activate-environment: ""
 
       - name: Install PDAL
-        run: brew install pdal@${{ matrix.pdal }} || true
+        run: conda install conda-forge::pdal=${{ matrix.pdal }}
 
       - name: Check formatting
         run: sbt scalafmtCheckAll

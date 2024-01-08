@@ -7,7 +7,8 @@ import de.heikoseeberger.sbtheader.HeaderPlugin.autoImport.{headerLicense, heade
 object Version {
   val jts = "1.19.0"
   val scalaTest = "3.2.17"
-  val circe = "0.14.3"
+  val circe = "0.14.6"
+  val circeExtras = "0.14.3"
 }
 
 object Dependencies {
@@ -41,7 +42,10 @@ object Dependencies {
     )
   )
 
-  def circe(module: String) = "io.circe" %% s"circe-$module" % Version.circe
+  def circe(module: String) = module match {
+    case "generic-extras" => "io.circe" %% s"circe-$module" % Version.circeExtras
+    case _                => "io.circe" %% s"circe-$module" % Version.circe
+  }
 
   val jtsCore = "org.locationtech.jts" % "jts-core" % Version.jts
   val scalaTest = "org.scalatest" %% "scalatest" % Version.scalaTest
