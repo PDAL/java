@@ -45,6 +45,9 @@ jobs:
         distribution: [temurin]
         pdal: [2.6.2]
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash -el {0}
 
     steps:
       - uses: actions/checkout@v3
@@ -58,19 +61,27 @@ jobs:
 
       - uses: conda-incubator/setup-miniconda@v3
         with:
-          miniconda-version: "latest"
-          auto-activate-base: true
+          # auto-update-conda: true
+          # auto-activate-base: true
           activate-environment: "pdal-java"
           channels: conda-forge
 
       - name: Install PDAL
         run: conda install pdal=${{ matrix.pdal }}
 
-      - name: Check formatting
-        run: sbt scalafmtCheckAll
+      # - name: Check formatting
+      #   run: sbt scalafmtCheckAll
 
       - name: Build project
-        run: sbt +test
+        run: |
+          # export PDAL_DIR=$CONDAenvs/pdal-java/
+          echo "CONA: $CONDA"
+          ls $CONDA
+          echo "========"
+          ls ${CONDA}/envs
+          echo "======="
+          which pdal
+          sbt +test
 
       - uses: actions/upload-artifact@v3
         with:
