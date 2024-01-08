@@ -58,11 +58,13 @@ jobs:
 
       - uses: conda-incubator/setup-miniconda@v3
         with:
+          miniconda-version: "latest"
           auto-activate-base: true
-          activate-environment: ""
+          activate-environment: "pdal-java"
+          channels: conda-forge
 
       - name: Install PDAL
-        run: conda install conda-forge::pdal=${{ matrix.pdal }}
+        run: conda install pdal=${{ matrix.pdal }}
 
       - name: Check formatting
         run: sbt scalafmtCheckAll

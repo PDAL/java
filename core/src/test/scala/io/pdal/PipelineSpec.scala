@@ -188,7 +188,6 @@ class PipelineSpec extends TestEnvironmentSpec {
 
     it("should get quickInfo") {
       val p = Pipeline(json)
-      println(p.getQuickInfo())
       parser.parse(p.getQuickInfo()) shouldBe quickInfoJson
     }
 
