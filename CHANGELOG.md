@@ -8,7 +8,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.6.0] - 2024-01-08
 ## Added
-
 - PDAL 2.6.x [#73](https://github.com/pdal/java/pull/73) (@pomadchin)
 
 ## [2.5.1] - 2023-09-24
@@ -20,15 +19,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.5.0] - 2023-02-25
 ## Added
-* PDAL 2.5.1 [#65](https://github.com/pdal/java/pull/65) (@pomadchin)
+- PDAL 2.5.1 [#65](https://github.com/pdal/java/pull/65) (@pomadchin)
 
 ## [2.4.0] - 2022-10-29
 ## Added
-* PDAL 2.4.3 [#62](https://github.com/pdal/java/pull/62) (@pomadchin)
+- PDAL 2.4.3 [#62](https://github.com/pdal/java/pull/62) (@pomadchin)
 
 ## [2.3.1] - 2021-08-01
 ## Added
-* Fix the release to include MacOS native binaries.
+- Fix the release to include MacOS native binaries.
 
 ## [2.3.0] - 2021-08-01
 ### Added
