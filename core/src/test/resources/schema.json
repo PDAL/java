@@ -49,6 +49,26 @@
         "type": "unsigned"
       },
       {
+        "name": "Synthetic",
+        "size": 1,
+        "type": "unsigned"
+      },
+      {
+        "name": "KeyPoint",
+        "size": 1,
+        "type": "unsigned"
+      },
+      {
+        "name": "Withheld",
+        "size": 1,
+        "type": "unsigned"
+      },
+      {
+        "name": "Overlap",
+        "size": 1,
+        "type": "unsigned"
+      },
+      {
         "name": "ScanAngleRank",
         "size": 4,
         "type": "floating"

@@ -71,10 +71,12 @@ lazy val core = project
   .settings(name := "pdal")
   .settings(javah / target := (native / nativeCompile / sourceDirectory).value / "include")
   .settings(sbtJniCoreScope := Compile)
-  .settings(libraryDependencies ++= Seq(
-    Dependencies.scalaTest % Test,
-    Dependencies.circe("parser") % Test
-  ))
+  .settings(
+    libraryDependencies ++= Seq(
+      Dependencies.scalaTest % Test,
+      Dependencies.circe("parser") % Test
+    )
+  )
   .dependsOn(Environment.dependOnNative(native % Runtime): _*)
 
 lazy val native = project
@@ -84,9 +86,9 @@ lazy val native = project
   .settings(nativeCompile / sourceDirectory := sourceDirectory.value)
   .settings(
     Compile / unmanagedPlatformDependentNativeDirectories := Seq(
-      "x86_64-linux"  -> target.value / "native/x86_64-linux/bin/",
+      "x86_64-linux" -> target.value / "native/x86_64-linux/bin/",
       "x86_64-darwin" -> target.value / "native/x86_64-darwin/bin/",
-      "arm64-darwin"  -> target.value / "native/arm64-darwin/bin/"
+      "arm64-darwin" -> target.value / "native/arm64-darwin/bin/"
     )
   )
   .settings(artifactName := { (sv: ScalaVersion, module: ModuleID, artifact: Artifact) =>

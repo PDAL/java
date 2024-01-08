@@ -125,7 +125,7 @@ class PipelineSpec extends TestEnvironmentSpec {
     it("layout should have a valid number of dims") {
       val pvi = pipeline.getPointViews()
       val pv = pvi.next()
-      pv.layout().dimTypes().length should be(16)
+      pv.layout().dimTypes().length should be(20)
       pv.close()
       pvi.close()
     }
