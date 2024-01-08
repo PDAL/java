@@ -39,12 +39,13 @@ jobs:
 
       - name: Conda cache config
         id: cache-config
+        shell: bash
         run: | 
           echo "today=$(/bin/date -u '+%Y%m%d')" >> $GITHUB_OUTPUT
           echo "path=$CONDA/envs/pdal-java" >> $GITHUB_OUTPUT
-        shell: bash
 
       - name: Cache Conda env
+        id: conda-cache
         uses: actions/cache@v3
         with:
           path: ${{ steps.cache-config.outputs.path }}
@@ -52,7 +53,6 @@ jobs:
             conda-pdal-java-${{ runner.os }}--${{ runner.arch }}--${{ steps.cache-config.outputs.today }}-${{ matrix.pdal }}-${{ env.CACHE_NUMBER }}
         env:
           CACHE_NUMBER: 0
-        id: conda-cache
 
       - name: Install PDAL
         if: steps.conda-cache.outputs.cache-hit != 'true'
@@ -107,12 +107,13 @@ jobs:
 
       - name: Conda cache config
         id: cache-config
+        shell: bash
         run: | 
           echo "today=$(/bin/date -u '+%Y%m%d')" >> $GITHUB_OUTPUT
           echo "path=$CONDA/envs/pdal-java" >> $GITHUB_OUTPUT
-        shell: bash
 
       - name: Cache Conda env
+        id: conda-cache
         uses: actions/cache@v3
         with:
           path: ${{ steps.cache-config.outputs.path }}
@@ -120,7 +121,6 @@ jobs:
             conda-pdal-java-${{ runner.os }}--${{ runner.arch }}--${{ steps.cache-config.outputs.today }}-${{ matrix.pdal }}-${{ env.CACHE_NUMBER }}
         env:
           CACHE_NUMBER: 0
-        id: conda-cache
 
       - name: Install PDAL
         if: steps.conda-cache.outputs.cache-hit != 'true'
