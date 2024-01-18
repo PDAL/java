@@ -82,6 +82,50 @@ val pc = ReadLas("/path/to/las") ~ FilterCrop() ~ WriteLas("/path/to/new/las")
 // RawExpr accepts a circe.Json type, which can be a json object of any desired complexity
 val pcWithRawExpr = ReadLas("/path/to/las") ~ RawExpr(Map("type" -> "filters.crop").asJson) ~ WriteLas("/path/to/new/las") 
 ```
+## Use PDAL inside a JAVA environment
+This is an example about how to use pdal inside a pure java environment. 
+
+```java
+// Create the expected json String
+String expectedJSON =
+  """
+     |{
+     |  "pipeline" : [
+     |    {
+     |      "filename" : "/path/to/las",
+     |      "type" : "readers.las"
+     |    },
+     |    {
+     |      "type" : "filters.crop"
+     |    },
+     |    {
+     |      "filename" : "/path/to/new/las",
+     |      "type" : "writers.las"
+     |    }
+     |  ]
+     |}
+  """
+// Decide the verbosity of your output
+int logLevel = 0;
+
+// Initialine a Pipeline object
+// Be careful, before version v2.5.0 the constructor was 'new Pipeline(String jsonString)'
+Pipeline pipeline = new Pipeline(json,3);  
+
+// Initialize the pipeline
+pipeline.initialize();
+
+// Execute the pipeline
+pipeline.execute();
+
+// Now you can for example extract a PointViewIterator
+PointViewIterator pvs = pipeline.getPointViews();
+// And a single PointView..
+PointView pv = pvs.next();
+// Now remember to close the pipeline to avoid a leak of resources
+pvs.close();
+pipeline.close();
+```
 
 ### Demo project example
 
