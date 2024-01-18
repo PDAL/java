@@ -13,7 +13,8 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest, flyci-macos-large-latest-m1]
+        architecture: [x86_64, arm64]  # Add ARM64 architecture
         java: [8]
         distribution: [temurin]
         pdal: [2.6.2]
@@ -68,10 +69,16 @@ jobs:
         run: sbt +test
 
       - uses: actions/upload-artifact@v3
-        if: ${{ startsWith(matrix.os, 'macos') }}
+        if: matrix.os == 'macos-latest' && matrix.architecture == 'x86_64'
         with:
-          name: macos
+          name: macos-x86_64
           path: native/target/native/x86_64-darwin/bin
+
+      - uses: actions/upload-artifact@v3
+        if: matrix.os == 'flyci-macos-large-latest-m1' && matrix.architecture == 'arm64'
+        with:
+          name: macos-arm64
+          path: native/target/native/arm64-darwin/bin
 
   publish:
     strategy:
