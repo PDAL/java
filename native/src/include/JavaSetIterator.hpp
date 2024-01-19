@@ -59,7 +59,7 @@ public:
 	}
 	K next() {
 	    if(!hasNext())
-            throw java_error("iterator is out of bounds");
+            throw java_error("Iterator is out of bounds");
 
 	    return *std::next(container.begin(), curr_pos++);
     }
