@@ -36,6 +36,7 @@
 #include <pdal/XMLSchema.hpp>
 #endif
 
+using pdal::LogLevel;
 using pdal::LogPtr;
 using pdal::MetadataNode;
 using pdal::PointId;
@@ -227,8 +228,8 @@ void PipelineExecutor::setLogStream(std::ostream& strm)
 
 void PipelineExecutor::setLogLevel(int level)
 {
-    if (level < 0 || level > 8)
-        throw java_error("log level must be between 0 and 8!");
+    if (level < static_cast<int>(LogLevel::Error) || level > static_cast<int>(LogLevel::None))
+        throw java_error("log level must be between 0 and 9!");
 
     m_logLevel = static_cast<pdal::LogLevel>(level);
     setLogStream(m_logStream);
