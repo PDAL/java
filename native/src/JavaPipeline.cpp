@@ -150,7 +150,7 @@ string PipelineExecutor::getSchema() const
 MetadataNode computePreview(Stage* stage)
 {
     if (!stage)
-        throw java_error("no valid stage in QuickInfo");
+        throw java_error("No valid stage in QuickInfo");
 
     stage->preview();
 
@@ -229,7 +229,7 @@ void PipelineExecutor::setLogStream(std::ostream& strm)
 void PipelineExecutor::setLogLevel(int level)
 {
     if (level < static_cast<int>(LogLevel::Error) || level > static_cast<int>(LogLevel::None))
-        throw java_error("log level must be between 0 and 9!");
+        throw java_error("LogLevel should be between 0 and 9");
 
     m_logLevel = static_cast<pdal::LogLevel>(level);
     setLogStream(m_logStream);
