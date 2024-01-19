@@ -52,9 +52,127 @@ libraryDependencies ++= Seq(
 Scala API covers PDAL 2.0.x, to use any custom DSL that is not covered by the 
 current Scala API you can use `RawExpr` type to build `Pipeline Expression`.
 
-### Code examples
+## Code examples
+
+#### Demo project with examples
+
+JNI bindings basic usage examples can be found [here](./examples).
+
+### PDAL Core (Scala 2.x / 3.x)
 
 ```scala
+import io.pdal._
+
+// pipeline definition
+val json =
+  """
+     |{
+     |  "pipeline" : [
+     |    {
+     |      "filename" : "/path/to/las",
+     |      "type" : "readers.las"
+     |    },
+     |    {
+     |      "type" : "filters.crop"
+     |    },
+     |    {
+     |      "filename" : "/path/to/new/las",
+     |      "type" : "writers.las"
+     |    }
+     |  ]
+     |}
+  """.stripMargin
+
+val pipeline = Pipeline(json)
+pipeline.validate() // check if our JSON and options were good
+pipeline.setLogLevel(LogLevel.Debug5) // make it really noisy
+pipeline.execute() // execute the pipeline
+val metadata = pipeline.getMetadata() // retrieve metadata
+val pvs      = pipeline.getPointViews() // iterator over PointViews
+val pv       = pvs.next() // let's take the first PointView
+
+// load all points into JVM memory
+// PointCloud provides operations on PDAL points that
+// are loaded in this case into JVM memory as a single Array[Byte]
+val pointCloud = pv.getPointCloud()
+val x = pointCloud.getDouble(0, DimType.X) // get a point with PointId = 0 and only a single dimensions
+
+// in some cases it is not neccesary to load everything into JVM memory
+// so it is possible to get only required points directly from the PointView
+val y = pv.getDouble(0, DimType.Y)
+
+// it is also possible to get access to the triangular mesh generated via PDAL
+val mesh = pv.getTriangularMesh()
+// the output is an Array of Triangles
+// Each Triangle contains PointIds from the PDAL point table
+val triangles = mesh.asArray
+
+pv.close()
+pvs.close()
+pipeline.close()
+```
+
+### PDAL Core (Java)
+
+```java
+import io.pdal.*;
+
+// pipeline definition
+String json =
+  """
+     |{
+     |  "pipeline" : [
+     |    {
+     |      "filename" : "/path/to/las",
+     |      "type" : "readers.las"
+     |    },
+     |    {
+     |      "type" : "filters.crop"
+     |    },
+     |    {
+     |      "filename" : "/path/to/new/las",
+     |      "type" : "writers.las"
+     |    }
+     |  ]
+     |}
+  """;
+
+var pipeline = new Pipeline(json, LogLevel.Error());  
+
+pipeline.initialize(); // initialize the pipeline
+pipeline.execute(); // execute the pipeline
+
+var metadata = pipeline.getMetadata(); // retrieve metadata
+var pvs      = pipeline.getPointViews(); // iterator over PointViews
+var pv       = pvs.next(); // let's take the first PointView
+
+// load all points into JVM memory
+// PointCloud provides operations on PDAL points that
+// are loaded in this case into JVM memory as a single Array[Byte]
+var pointCloud = pv.getPointCloud();
+var x = pointCloud.getDouble(0, DimType.X()); // get a point with PointId = 0 and only a single dimensions
+
+// in some cases it is not neccesary to load everything into JVM memory
+// so it is possible to get only required points directly from the PointView
+var y = pv.getDouble(0, DimType.Y());
+
+// it is also possible to get access to the triangular mesh generated via PDAL
+var mesh = pv.getTriangularMesh();
+// the output is an Array of Triangles
+// Each Triangle contains PointIds from the PDAL point table
+var triangles = mesh.asArray();
+
+pv.close();
+pvs.close();
+pipeline.close();
+```
+
+### PDAL Scala
+
+```scala
+import io.pdal._
+import io.pdal.pipeline._
+
 // To construct the expected json
 val expected =
   """
@@ -81,55 +199,11 @@ val pc = ReadLas("/path/to/las") ~ FilterCrop() ~ WriteLas("/path/to/new/las")
 // The same, but using RawExpr, to support not implemented PDAL Pipeline API features
 // RawExpr accepts a circe.Json type, which can be a json object of any desired complexity
 val pcWithRawExpr = ReadLas("/path/to/las") ~ RawExpr(Map("type" -> "filters.crop").asJson) ~ WriteLas("/path/to/new/las") 
+
+// Create Pipelines from the constructed expressions
+val pipelinePc = pc.toPipeline
+val pipelinePc = pcWithRawExpr.toPipline
 ```
-## Use PDAL inside a JAVA environment
-This is an example about how to use pdal inside a pure java environment. 
-
-```java
-// Create the expected json String
-String expectedJSON =
-  """
-     |{
-     |  "pipeline" : [
-     |    {
-     |      "filename" : "/path/to/las",
-     |      "type" : "readers.las"
-     |    },
-     |    {
-     |      "type" : "filters.crop"
-     |    },
-     |    {
-     |      "filename" : "/path/to/new/las",
-     |      "type" : "writers.las"
-     |    }
-     |  ]
-     |}
-  """
-// Decide the verbosity of your output
-int logLevel = 0;
-
-// Initialine a Pipeline object
-// Be careful, before version v2.5.0 the constructor was 'new Pipeline(String jsonString)'
-Pipeline pipeline = new Pipeline(json,3);  
-
-// Initialize the pipeline
-pipeline.initialize();
-
-// Execute the pipeline
-pipeline.execute();
-
-// Now you can for example extract a PointViewIterator
-PointViewIterator pvs = pipeline.getPointViews();
-// And a single PointView..
-PointView pv = pvs.next();
-// Now remember to close the pipeline to avoid a leak of resources
-pvs.close();
-pipeline.close();
-```
-
-### Demo project example
-
-JNI bindings basic usage examples can be found [here](./examples).
 
 ## How to compile
 
