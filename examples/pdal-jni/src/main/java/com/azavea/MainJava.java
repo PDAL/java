@@ -1,7 +1,6 @@
 package com.azavea;
 
-import io.pdal.LogLevel;
-import io.pdal.Pipeline;
+import io.pdal.*;
 
 class MainJava {
   // to check laz "filename":"data/autzen_trim.laz"
@@ -9,7 +8,7 @@ class MainJava {
 
   public static void main(String[] args) {
     // can be replaced via io.pdal.Pipeline$.MODULE$.apply(json, LogLevel.Error());
-    // which incapsulates initialize() call
+    // which encapsulates initialize() call
     var pipeline = new Pipeline(json, LogLevel.Error());
     pipeline.initialize();
     pipeline.execute();
