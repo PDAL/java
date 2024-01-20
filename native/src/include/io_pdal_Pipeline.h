@@ -89,18 +89,10 @@ JNIEXPORT jboolean JNICALL Java_io_pdal_Pipeline_validate
 
 /*
  * Class:      io_pdal_Pipeline
- * Method:     setLogLevel
- * Signature:  (I)V
- */
-JNIEXPORT void JNICALL Java_io_pdal_Pipeline_setLogLevel
-  (JNIEnv *, jobject, jint);
-
-/*
- * Class:      io_pdal_Pipeline
- * Method:     getLogLevel
+ * Method:     _1getLogLevel
  * Signature:  ()I
  */
-JNIEXPORT jint JNICALL Java_io_pdal_Pipeline_getLogLevel
+JNIEXPORT jint JNICALL Java_io_pdal_Pipeline__1getLogLevel
   (JNIEnv *, jobject);
 
 #ifdef __cplusplus
