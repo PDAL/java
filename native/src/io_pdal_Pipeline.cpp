@@ -191,7 +191,7 @@ JNIEXPORT jboolean JNICALL Java_io_pdal_Pipeline_validate
     return result;
 }
 
-JNIEXPORT jint JNICALL Java_io_pdal_Pipeline__1getLogLevel
+JNIEXPORT jint JNICALL Java_io_pdal_Pipeline_getLogLevelInt
   (JNIEnv *env, jobject obj)
 {
     PipelineExecutor *p = getHandle<PipelineExecutor>(env, obj);

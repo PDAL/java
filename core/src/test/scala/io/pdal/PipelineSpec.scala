@@ -46,6 +46,11 @@ class PipelineSpec extends TestEnvironmentSpec {
       pipeline.execute()
     }
 
+    it("should get pipeline LogLevel") {
+      pipeline.getLogLevel() shouldBe LogLevel.Error
+      pipeline.getLogLevel() shouldBe LogLevel(pipeline.logLevel)
+    }
+
     it("should create pointViews iterator") {
       val pvi = pipeline.getPointViews()
       pvi.asScala.length should be(1)

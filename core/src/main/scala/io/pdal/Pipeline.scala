@@ -41,9 +41,9 @@ class Pipeline private (val json: String, val logLevel: Int) extends Native {
   @native def getSchema(): String
   @native def getQuickInfo(): String
   @native def validate(): Boolean
-  @native private def _getLogLevel(): Int
+  @native private def getLogLevelInt(): Int
 
-  def getLogLevel(): LogLevel.Value = LogLevel.apply(_getLogLevel())
+  def getLogLevel(): LogLevel.Value = LogLevel.apply(getLogLevelInt())
 }
 
 object Pipeline extends NativeLoader("pdaljni.2.6") {
