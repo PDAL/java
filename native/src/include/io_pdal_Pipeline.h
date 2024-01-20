@@ -103,14 +103,6 @@ JNIEXPORT void JNICALL Java_io_pdal_Pipeline_setLogLevel
 JNIEXPORT jint JNICALL Java_io_pdal_Pipeline_getLogLevel
   (JNIEnv *, jobject);
 
-/*
- * Class:      io_pdal_Pipeline
- * Method:     getLog
- * Signature:  ()Ljava/lang/String;
- */
-JNIEXPORT jstring JNICALL Java_io_pdal_Pipeline_getLog
-  (JNIEnv *, jobject);
-
 #ifdef __cplusplus
 }
 #endif

@@ -26,8 +26,10 @@ package io.pdal
 
 import com.github.sbt.jni.syntax.NativeLoader
 
-class Pipeline(val json: String, val logLevel: Int) extends Native {
-  Pipeline // reference the object so that the nativeLoader will load the JNI native libraries
+class Pipeline private (val json: String, val logLevel: Int) extends Native {
+  Pipeline // reference companion object so nativeLoader loads the JNI native libraries
+
+  def this(json: String, logLevel: LogLevel.Value = LogLevel.Error) = this(json, logLevel.id)
 
   @native def initialize(): Unit
   @native def execute(): Unit
@@ -41,11 +43,10 @@ class Pipeline(val json: String, val logLevel: Int) extends Native {
   @native def validate(): Boolean
   @native def setLogLevel(i: Int): Unit
   @native def getLogLevel(): Int
-  @native def getLog(): String
 }
 
 object Pipeline extends NativeLoader("pdaljni.2.6") {
-  def apply(json: String, logLevel: Int = LogLevel.Error): Pipeline = {
+  def apply(json: String, logLevel: LogLevel.Value = LogLevel.Error): Pipeline = {
     val p = new Pipeline(json, logLevel); p.initialize(); p
   }
 }
