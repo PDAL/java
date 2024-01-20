@@ -37,6 +37,30 @@ javaOptions += "-Djava.library.path=/usr/local/lib"
 You can use `pdal-native` dep in case you don't have installed JNI bindings and to avoid steps described above.
 Dependency contains bindings for `x86_64-darwin` and `x86_64-linux`, other versions are not supported yet.
 
+### Mac-OS ARM tutorial
+
+If you need to build your own `pdal-native` for `arm64-darwin`, the following is a temporary workaround:
+
+- If you are using `pdal` version `<= v2.4.x`, use `./sbt`. Otherwise, you need to install `sbt`: `brew install sbt`
+- Pay attention to your `pdal` installation: at the time of writing this, `conda` is the only working method, unless you build your own `pdal`. To install `pdal` with `conda`:
+```
+brew install miniconda
+conda create --name pdal_env python=3.9 # to create an environment separate from your system's
+conda activate pdal_env
+conda install -c conda-forge pdal
+pdal --version # to check the installation
+conda env export --from-history > pdal_env.yml # if you need to export the env for collaborative use
+conda deactivate # to exit the conda env
+```
+- Clone this repository, then run:
+`./sbt native/publishLocal` or `sbt native/publishLocal`
+- Run the following to check that everything is okay: `./sbt core/test` or `sbt core/test`
+- Go to `../pdal-java/native/target/`, here you will find the built `pdal-native.jar`. If you want to use it in a Java project, for example, you can go to `./m2/repository/io/pdal/pdal-native/<your-version>/` and replace the one taken from Maven with the one you have just built.
+
+
+
+
+
 ## PDAL-Scala (Scala 2.x)
 
 Scala API allows to build pipeline expressions instead of writing a raw JSON.
