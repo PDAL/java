@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Changed
+- Improve java_error messages [#80](https://github.com/pdal/java/pull/80) (@pomadchin)
+
+## Fixed
+- Fix Failing Logging capture [#82](https://github.com/pdal/java/pull/82) (@pomadchin)
+- Plugins update & minor improvements [#78](https://github.com/pdal/java/pull/78) (@pomadchin)
+
 ## [2.6.0] - 2024-01-08
 ## Added
 - PDAL 2.6.x [#73](https://github.com/pdal/java/pull/73) (@pomadchin)
