@@ -73,9 +73,7 @@ public:
     std::string getSchema() const;
     std::string getSrsWKT2() const;
     pdal::PipelineManager const& getManager() const { return m_manager; }
-    void setLogLevel(int level);
     int getLogLevel() const;
-    std::string getLog() const { return m_logStream.str(); }
 
 protected:
     virtual pdal::ConstPointTableRef pointTable() const { return m_manager.pointTable(); }
@@ -84,9 +82,9 @@ protected:
     bool m_executed = false;
 
 private:
-    void setLogStream(std::ostream& strm);
-    std::stringstream m_logStream;
     pdal::LogLevel m_logLevel;
+
+    void setLogLevel(int level);
 };
 
 class CountPointTable : public pdal::FixedPointTable
