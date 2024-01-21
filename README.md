@@ -103,26 +103,26 @@ JNI bindings basic usage examples can be found [here](./examples).
 import io.pdal._
 // pipeline definition
 val json =
-"""
-|{
-|  "pipeline" : [
-|    {
-|      "filename" : "/path/to/las",
-|      "type" : "readers.las"
-|    },
-|    {
-|      "type" : "filters.crop"
-|    },
-|    {
-|      "filename" : "/path/to/new/las",
-|      "type" : "writers.las"
-|    }
-|  ]
-|}
-""".stripMargin
-val pipeline = Pipeline(json)
+  """
+     |{
+     |  "pipeline" : [
+     |    {
+     |      "filename" : "/path/to/las",
+     |      "type" : "readers.las"
+     |    },
+     |    {
+     |      "type" : "filters.crop"
+     |    },
+     |    {
+     |      "filename" : "/path/to/new/las",
+     |      "type" : "writers.las"
+     |    }
+     |  ]
+     |}
+  """.stripMargin
+
+val pipeline = Pipeline(json, LogLevel.Debug5) // initialize and make it really noisy
 pipeline.validate() // check if our JSON and options were good
-pipeline.setLogLevel(LogLevel.Debug5) // make it really noisy
 pipeline.execute() // execute the pipeline
 val metadata = pipeline.getMetadata() // retrieve metadata
 val pvs      = pipeline.getPointViews() // iterator over PointViews

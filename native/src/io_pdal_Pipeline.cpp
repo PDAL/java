@@ -191,25 +191,11 @@ JNIEXPORT jboolean JNICALL Java_io_pdal_Pipeline_validate
     return result;
 }
 
-JNIEXPORT void JNICALL Java_io_pdal_Pipeline_setLogLevel
-  (JNIEnv *env, jobject obj, jint i)
-{
-    PipelineExecutor *p = getHandle<PipelineExecutor>(env, obj);
-    p->setLogLevel(i);
-}
-
-JNIEXPORT jint JNICALL Java_io_pdal_Pipeline_getLogLevel
+JNIEXPORT jint JNICALL Java_io_pdal_Pipeline_getLogLevelInt
   (JNIEnv *env, jobject obj)
 {
     PipelineExecutor *p = getHandle<PipelineExecutor>(env, obj);
     return p->getLogLevel();
-}
-
-JNIEXPORT jstring JNICALL Java_io_pdal_Pipeline_getLog
-  (JNIEnv *env, jobject obj)
-{
-    PipelineExecutor *p = getHandle<PipelineExecutor>(env, obj);
-    return env->NewStringUTF(p->getLog().c_str());
 }
 
 JNIEXPORT jobject JNICALL Java_io_pdal_Pipeline_getPointViews

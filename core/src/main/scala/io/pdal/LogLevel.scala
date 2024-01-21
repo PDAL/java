@@ -24,15 +24,6 @@
 
 package io.pdal
 
-object LogLevel {
-  val Error = 0
-  val Warning = 1
-  val Info = 2
-  val Debug = 3
-  val Debug1 = 4
-  val Debug2 = 5
-  val Debug3 = 6
-  val Debug4 = 7
-  val Debug5 = 8
-  val None = 9
+object LogLevel extends Enumeration {
+  val Error, Warning, Info, Debug, Debug1, Debug2, Debug3, Debug4, Debug5 = Value
 }

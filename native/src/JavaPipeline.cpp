@@ -36,8 +36,6 @@
 #include <pdal/XMLSchema.hpp>
 #endif
 
-using pdal::LogLevel;
-using pdal::LogPtr;
 using pdal::MetadataNode;
 using pdal::PointId;
 using pdal::PointViewSet;
@@ -64,14 +62,9 @@ PipelineExecutor::PipelineExecutor(string const& json, int level)
 {
     setLogLevel(level);
 
-    LogPtr log(pdal::Log::makeLog("javapipeline", &m_logStream));
-    log->setLevel(m_logLevel);
-    m_manager.setLog(log);
-
     stringstream strm;
     strm << json;
     m_manager.readPipeline(strm);
-
 }
 
 bool PipelineExecutor::validate()
@@ -123,7 +116,6 @@ string PipelineExecutor::getPipeline() const
     return strm.str();
 }
 
-
 string PipelineExecutor::getMetadata() const
 {
     if (!m_executed)
@@ -134,7 +126,6 @@ string PipelineExecutor::getMetadata() const
     pdal::Utils::toJSON(root, strm);
     return strm.str();
 }
-
 
 string PipelineExecutor::getSchema() const
 {
@@ -188,7 +179,6 @@ MetadataNode computePreview(Stage* stage)
     return summary;
 }
 
-
 string PipelineExecutor::getQuickInfo() const
 {
 
@@ -217,24 +207,17 @@ string PipelineExecutor::getQuickInfo() const
     return strm.str();
 }
 
-void PipelineExecutor::setLogStream(std::ostream& strm)
+void PipelineExecutor::setLogLevel(int level)
 {
+    if (level < 0 || level > 8)
+        throw java_error("LogLevel should be between 0 and 8!");
 
-    LogPtr log(pdal::Log::makeLog("javapipeline", &strm));
+    m_logLevel = static_cast<pdal::LogLevel>(level);
+    
+    pdal::LogPtr log(pdal::Log::makeLog("javapipeline", "stdlog"));
     log->setLevel(m_logLevel);
     m_manager.setLog(log);
 }
-
-
-void PipelineExecutor::setLogLevel(int level)
-{
-    if (level < static_cast<int>(LogLevel::Error) || level > static_cast<int>(LogLevel::None))
-        throw java_error("LogLevel should be between 0 and 9");
-
-    m_logLevel = static_cast<pdal::LogLevel>(level);
-    setLogStream(m_logStream);
-}
-
 
 int PipelineExecutor::getLogLevel() const
 {
