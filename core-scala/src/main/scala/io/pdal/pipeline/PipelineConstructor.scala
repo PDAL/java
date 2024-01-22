@@ -16,8 +16,7 @@
 
 package io.pdal.pipeline
 
-import io.pdal.Pipeline
-
+import io.pdal.{LogLevel, Pipeline}
 import io.circe.{Decoder, Encoder, Json}
 import io.circe.syntax._
 
@@ -30,6 +29,7 @@ case class PipelineConstructor(list: List[PipelineExpr]) {
   def ~(e: Option[PipelineExpr]): PipelineConstructor = e.fold(this)(this ~ _)
   def map[B](f: PipelineExpr => B): List[B] = list.map(f)
   def toPipeline: Pipeline = Pipeline(this.asJson.noSpaces)
+  def toPipeline(logLevel: LogLevel.Value): Pipeline = Pipeline(this.asJson.noSpaces, logLevel)
 }
 
 object PipelineConstructor {

@@ -1,4 +1,8 @@
+package com.azavea
+
 import io.pdal.Pipeline
+
+import io.pdal._
 
 object MainLogging {
   val json =
