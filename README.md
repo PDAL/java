@@ -2,14 +2,18 @@
 
 # PDAL Java Bindings
 
-Java bindings to use PDAL on JVM (supports PDAL >= 2.0). Mac users can experience some issues with bindings that were build against a different PDAL version, so try to use a consistent PDAL version. It is released independently from PDAL itself as of PDAL 1.7. See [https://pdal.io/java.html](https://pdal.io/java.html) for more info.
+Java bindings to use PDAL on JVM (supports PDAL >= 2.0). Mac users can experience some issues with bindings that were build against a different PDAL version, so try to use a consistent PDAL version. 
+
+It is released independently from PDAL itself as of PDAL 1.7.
+
+ See [https://pdal.io/java.html](https://pdal.io/java.html) for more info.
 
 
 ## Table of Contents
 - [Usage](#usage)
 - [Examples](#examples)
 - [Build](#build) 
-- [Known Issues](#possible-issues-and-solutions)
+- [Possible issues and solutions](#possible-issues-and-solutions)
 - [How To Release](#how-to-release)
 
 ## Usage 
@@ -20,12 +24,12 @@ Dependency contains bindings for `x86_64-darwin` and `x86_64-linux`, other versi
 ```scala
 // pdal is published to maven central, but you can use the following repos in addition
 resolvers ++=
-Resolver.sonatypeOssRepos("releases") ++
-Resolver.sonatypeOssRepos("snapshots") // for snaphots
+  Resolver.sonatypeOssRepos("releases") ++
+  Resolver.sonatypeOssRepos("snapshots") // for snaphots
 // `<latest version>` refers to the version indicated by the badge above
 libraryDependencies ++= Seq(
-"io.pdal" %% "pdal" % "<latest version>", // core library
-"io.pdal" %  "pdal-native" % "<latest version>" // jni bindings
+  "io.pdal" %% "pdal" % "<latest version>", // core library
+  "io.pdal" %  "pdal-native" % "<latest version>" // jni bindings
 )
 ```
 
@@ -41,20 +45,24 @@ javaOptions += "-Djava.library.path=/usr/local/lib"
 
 ### PDAL-Scala (Scala 2.x)
 Scala API allows to build pipeline expressions instead of writing a raw JSON.
+
 ```scala
 // `<latest version>` refers to the version indicated by the badge above
 libraryDependencies ++= Seq(
-"io.pdal" %% "pdal-scala" % "<latest version>", // scala core library
-"io.pdal" %  "pdal-native" % "<latest version>" // jni bindings
+  "io.pdal" %% "pdal-scala" % "<latest version>", // scala core library
+  "io.pdal" %  "pdal-native" % "<latest version>" // jni bindings
 )
 ```
+
 Scala API covers PDAL 2.0.x, to use any custom DSL that is not covered by the
 current Scala API you can use `RawExpr` type to build `Pipeline Expression`.
 
 
 ## Examples
 #### Demo project with examples
+
 JNI bindings basic usage examples can be found [here](./examples).
+
 ### PDAL Core (Scala 2.x / 3.x)
 ```scala
 import io.pdal._
@@ -115,23 +123,25 @@ import io.pdal.*;
 // pipeline definition
 String json =
   """
-    |{
-    |  "pipeline" : [
-    |    {
-    |      "filename" : "/path/to/las",
-    |      "type" : "readers.las"
-    |    },
-    |    {
-    |      "type" : "filters.crop"
-    |    },
-    |    {
-    |      "filename" : "/path/to/new/las",
-    |      "type" : "writers.las"
-    |    }
-    |  ]
-    |}
+      |{
+      |  "pipeline" : [
+      |    {
+      |      "filename" : "/path/to/las",
+      |      "type" : "readers.las"
+      |    },
+      |    {
+      |      "type" : "filters.crop"
+      |    },
+      |    {
+      |      "filename" : "/path/to/new/las",
+      |      "type" : "writers.las"
+      |    }
+      |  ]
+      |}
   """;
+
 var pipeline = new Pipeline(json, LogLevel.Error());
+
 pipeline.initialize(); // initialize the pipeline
 pipeline.execute(); // execute the pipeline
 
@@ -169,21 +179,21 @@ import io.pdal.pipeline._
 // To construct the expected json
 val expected =
   """ 
-    |{
-    |  "pipeline" : [
-    |    {
-    |      "filename" : "/path/to/las",
-    |      "type" : "readers.las"
-    |    },
-    |    {
-    |      "type" : "filters.crop"
-    |    },
-    |    {
-    |      "filename" : "/path/to/new/las",
-    |      "type" : "writers.las"
-    |    }
-    |  ]
-    |}
+      |{
+      |  "pipeline" : [
+      |    {
+      |      "filename" : "/path/to/las",
+      |      "type" : "readers.las"
+      |    },
+      |    {
+      |      "type" : "filters.crop"
+      |    },
+      |    {
+      |      "filename" : "/path/to/new/las",
+      |      "type" : "writers.las"
+      |    }
+      |  ]
+      |}
   """.stripMargin
 // The same, but using scala DSL
 val pc = ReadLas("/path/to/las") ~ FilterCrop() ~ WriteLas("/path/to/new/las")
@@ -225,7 +235,7 @@ Natives for arm64 are still not pre-built. If you need to get them, follow the g
 
 ## Possible issues and solutions
 
-### 1. In case of not installed as global PDAL change [this](./java/native/src/CMakeLists.txt#L25) line to:
+####  In case of not installed as global PDAL change [this](./java/native/src/CMakeLists.txt#L25) line to:
 ```cmake
 set(CMAKE_CXX_FLAGS "$ENV{PDAL_LD_FLAGS} $ENV{PDAL_CXX_FLAGS} -std=c++11")
 ```
@@ -234,7 +244,7 @@ In this case sbt launch would be the following:
 PDAL_LD_FLAGS=`pdal-config --libs` PDAL_CXX_FLAGS=`pdal-config --includes` sbt
 ```
 
-### 2. Sometimes can happen a bad dynamic linking issue (somehow spoiled environment),
+#### - Sometimes can happen a bad dynamic linking issue (somehow spoiled environment),
 
 the quick workaround would be to replace [this](./java/native/src/CMakeLists.txt#L25) line to:
 
@@ -242,24 +252,25 @@ the quick workaround would be to replace [this](./java/native/src/CMakeLists.txt
 set(CMAKE_CXX_FLAGS "-L<path to dynamic libs> -std=c++11")
 ```
 
-### 3. On mac os could be difficult to install PDAL sometimes (near new releases). You have three options
+#### - On mac os could be difficult to install PDAL sometimes (near new releases). You have three options
+- ##### Install PDAL with conda (Well tested)
+    <details> <summary> Guide </summary>
 
-- #### Install PDAL with conda (Well teste)
+    ```
+    brew install miniconda
+    conda create --name pdal_env python=3.9 # to create an environment separate from your system's
+    conda activate pdal_env
+    conda install -c conda-forge pdal
+    pdal --version # to check the installation
+    conda env export --from-history > pdal_env.yml # if you need to export the env for collaborative use
+    conda deactivate # to exit the conda env
+    ```
+    </details>
 
-```
-brew install miniconda
-conda create --name pdal_env python=3.9 # to create an environment separate from your system's
-conda activate pdal_env
-conda install -c conda-forge pdal
-pdal --version # to check the installation
-conda env export --from-history > pdal_env.yml # if you need to export the env for collaborative use
-conda deactivate # to exit the conda env
-```
-
-- #### Install PDAL with brew (less tested)
+- ##### Install PDAL with brew (less tested)
   Just run `brew install pdal`
 
-- #### Build PDAL from sources (for expert users)
+- ##### Build PDAL from sources (for expert users)
   Follow the [official guide](https://pdal.io/en/latest/development/compilation/index.html#compilation)
 
 ## How To Release
