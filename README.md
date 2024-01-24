@@ -1,6 +1,7 @@
+# PDAL Java Bindings
+
 [![CI](https://github.com/PDAL/java/workflows/CI/badge.svg)](https://github.com/PDAL/java/actions) [![Join the chat at https://gitter.im/PDAL/PDAL](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PDAL/PDAL?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Maven Central](https://img.shields.io/maven-central/v/io.pdal/pdal_2.13)](https://search.maven.org/search?q=g:io.pdal) [![Snapshots](https://img.shields.io/nexus/s/https/oss.sonatype.org/io.pdal/pdal_2.13)](https://oss.sonatype.org/content/repositories/snapshots/io/pdal/)
 
-# PDAL Java Bindings
 
 Java bindings to use PDAL on JVM (supports PDAL >= 2.0). Mac users can experience some issues with bindings that were build against a different PDAL version, so try to use a consistent PDAL version. 
 
@@ -235,7 +236,7 @@ Natives for arm64 are still not pre-built. If you need to get them, follow the g
 
 ## Possible issues and solutions
 
-####  In case of not installed as global PDAL change [this](./java/native/src/CMakeLists.txt#L25) line to:
+#### - In case of not installed as global PDAL change [this](./java/native/src/CMakeLists.txt#L25) line to:
 ```cmake
 set(CMAKE_CXX_FLAGS "$ENV{PDAL_LD_FLAGS} $ENV{PDAL_CXX_FLAGS} -std=c++11")
 ```
@@ -253,24 +254,13 @@ set(CMAKE_CXX_FLAGS "-L<path to dynamic libs> -std=c++11")
 ```
 
 #### - On mac os could be difficult to install PDAL sometimes (near new releases). You have three options
-- ##### Install PDAL with conda (Well tested)
-    <details> <summary> Guide </summary>
+- ##### Install PDAL with conda 
+  Here the [PDAL conda guide](https://pdal.io/en/2.6.0/workshop/conda.html)
 
-    ```
-    brew install miniconda
-    conda create --name pdal_env python=3.9 # to create an environment separate from your system's
-    conda activate pdal_env
-    conda install -c conda-forge pdal
-    pdal --version # to check the installation
-    conda env export --from-history > pdal_env.yml # if you need to export the env for collaborative use
-    conda deactivate # to exit the conda env
-    ```
-    </details>
-
-- ##### Install PDAL with brew (less tested)
+- ##### Install PDAL with brew 
   Just run `brew install pdal`
 
-- ##### Build PDAL from sources (for expert users)
+- ##### Build PDAL from sources 
   Follow the [official guide](https://pdal.io/en/latest/development/compilation/index.html#compilation)
 
 ## How To Release
