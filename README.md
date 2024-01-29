@@ -204,8 +204,9 @@ val pc = ReadLas("/path/to/las") ~ FilterCrop() ~ WriteLas("/path/to/new/las")
 val pcWithRawExpr = ReadLas("/path/to/las") ~ RawExpr(Map("type" -> "filters.crop").asJson) ~ WriteLas("/path/to/new/las")
 
 // Create Pipelines from the constructed expressions
-val pipelinePc = pc.toPipeline
-val pipelinePc = pcWithRawExpr.toPipline
+val pipeline = pc.toPipeline
+
+val pipelineRaw = pcWithRawExpr.toPipline
 ```
 
 ## Build
