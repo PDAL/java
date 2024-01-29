@@ -205,7 +205,6 @@ val pcWithRawExpr = ReadLas("/path/to/las") ~ RawExpr(Map("type" -> "filters.cro
 
 // Create Pipelines from the constructed expressions
 val pipeline = pc.toPipeline
-
 val pipelineRaw = pcWithRawExpr.toPipline
 ```
 
