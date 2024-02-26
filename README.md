@@ -124,21 +124,21 @@ import io.pdal.*;
 // pipeline definition
 String json =
   """
-      |{
-      |  "pipeline" : [
-      |    {
-      |      "filename" : "/path/to/las",
-      |      "type" : "readers.las"
-      |    },
-      |    {
-      |      "type" : "filters.crop"
-      |    },
-      |    {
-      |      "filename" : "/path/to/new/las",
-      |      "type" : "writers.las"
-      |    }
-      |  ]
-      |}
+      {
+        "pipeline" : [
+          {
+            "filename" : "/path/to/las",
+            "type" : "readers.las"
+          },
+          {
+            "type" : "filters.crop"
+          },
+          {
+            "filename" : "/path/to/new/las",
+            "type" : "writers.las"
+          }
+        ]
+      }
   """;
 
 var pipeline = new Pipeline(json, LogLevel.Error());
