@@ -21,6 +21,14 @@ It is released independently from PDAL itself as of PDAL 1.7.
 You can use `pdal-native` dep published into maven central in case you don't have installed JNI bindings and to avoid steps described below.
 Dependency contains bindings for `x86_64-darwin` and `x86_64-linux`, other versions are not supported yet.
 
+### Versioning scheme
+
+Given a `{major}.{minor}.{patch}` version:
+* `{major}.{minor}` - matches the **PDAL** version it is published for
+  * e.g. **pdal-java** of version `2.6.1` is suitable for all **PDAL** versions `2.6.x` (`2.6.0`, ..., `2.6.3`, etc) major = `2`, minor = `6`
+* `{patch}` - this portion of the version corresponds to updates within **pdal-java** and should remain compatible with **PDAL library** `{major}.{minor}` versions
+  * This implies that there may be multiple **pdal-java** releases for the same **PDAL library** version. All releases are compatible with the matching **PDAL library** `{major}.{minor}` version. Thus, higher patch versions are to be preferred.
+
 ### Using PDAL JNI With SBT
 ```scala
 // pdal is published to maven central, but you can use the following repos in addition
