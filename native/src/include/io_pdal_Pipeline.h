@@ -81,14 +81,6 @@ JNIEXPORT jstring JNICALL Java_io_pdal_Pipeline_getQuickInfo
 
 /*
  * Class:      io_pdal_Pipeline
- * Method:     validate
- * Signature:  ()Z
- */
-JNIEXPORT jboolean JNICALL Java_io_pdal_Pipeline_validate
-  (JNIEnv *, jobject);
-
-/*
- * Class:      io_pdal_Pipeline
  * Method:     getLogLevelInt
  * Signature:  ()I
  */

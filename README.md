@@ -89,8 +89,9 @@ val json =
   """.stripMargin
 
 val pipeline = Pipeline(json, LogLevel.Debug5) // initialize and make it really noisy
-pipeline.validate() // check if our JSON and options were good
+
 pipeline.execute() // execute the pipeline
+
 val metadata = pipeline.getMetadata() // retrieve metadata
 val pvs      = pipeline.getPointViews() // iterator over PointViews
 val pv       = pvs.next() // let's take the first PointView

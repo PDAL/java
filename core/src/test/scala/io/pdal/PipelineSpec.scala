@@ -31,15 +31,14 @@ import scala.collection.JavaConverters._
 
 class PipelineSpec extends TestEnvironmentSpec {
   describe("Pipeline execution") {
-    it("should validate as incorrect json (bad json passed)") {
+    it("should throw ExecutionException when bad pipeline json passed into the constructor") {
       val badPipeline = Pipeline(badJson)
-      badPipeline.validate() should be(false)
+      val exception = intercept[ExecutionException](badPipeline.execute())
+      exception.getMessage should include(
+        "Unable to open stream for 'nofile.las' with error 'No such file or directory'"
+      )
       badPipeline.close()
       badPipeline.ptr() should be(0)
-    }
-
-    it("should validate json") {
-      pipeline.validate() should be(true)
     }
 
     it("should execute pipeline") {
@@ -203,7 +202,6 @@ class PipelineSpec extends TestEnvironmentSpec {
     }
 
     it("should extract mesh in iterative fashion") {
-      pipelineDelaunay.validate() should be(true)
       pipelineDelaunay.execute()
       val pvi = pipelineDelaunay.getPointViews()
       val pv = pvi.next()

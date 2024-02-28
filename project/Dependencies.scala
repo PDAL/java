@@ -6,7 +6,7 @@ import de.heikoseeberger.sbtheader.HeaderPlugin.autoImport.{headerLicense, heade
 
 object Version {
   val jts = "1.19.0"
-  val scalaTest = "3.2.17"
+  val scalaTest = "3.2.18"
   val circe = "0.14.6"
   val circeExtras = "0.14.3"
 }

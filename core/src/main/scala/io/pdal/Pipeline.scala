@@ -40,7 +40,6 @@ class Pipeline private (val json: String, val logLevel: Int) extends Native {
   @native def getMetadata(): String
   @native def getSchema(): String
   @native def getQuickInfo(): String
-  @native def validate(): Boolean
   @native private def getLogLevelInt(): Int
 
   def getLogLevel(): LogLevel.Value = LogLevel.apply(getLogLevelInt())

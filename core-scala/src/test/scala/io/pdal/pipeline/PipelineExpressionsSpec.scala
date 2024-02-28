@@ -96,7 +96,6 @@ class PipelineExpressionsSpec extends AnyFunSpec with Matchers with BeforeAndAft
           FilterReprojection(outSrs = "EPSG:3857")
 
       val pipeline = expression.toPipeline
-      pipeline.validate() shouldBe true
       pipeline.execute()
       pipeline.close()
     }
