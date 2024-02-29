@@ -67,13 +67,6 @@ PipelineExecutor::PipelineExecutor(string const& json, int level)
     m_manager.readPipeline(strm);
 }
 
-bool PipelineExecutor::validate()
-{
-    m_manager.prepare();
-
-    return true;
-}
-
 point_count_t PipelineExecutor::execute()
 {
 

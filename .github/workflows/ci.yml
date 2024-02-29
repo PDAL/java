@@ -16,7 +16,7 @@ jobs:
         os: [ubuntu-latest, macos-latest]
         java: [8]
         distribution: [temurin]
-        pdal: [2.6.2]
+        pdal: [2.6.3]
     runs-on: ${{ matrix.os }}
     defaults:
       run:
@@ -79,7 +79,7 @@ jobs:
         os: [ubuntu-latest]
         java: [8]
         distribution: [temurin]
-        pdal: [2.6.2]
+        pdal: [2.6.3]
     runs-on: ${{ matrix.os }}
     if: github.event_name != 'pull_request'
     needs: [build]

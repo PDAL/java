@@ -173,24 +173,6 @@ JNIEXPORT jstring JNICALL Java_io_pdal_Pipeline_getQuickInfo
     }
 }
 
-JNIEXPORT jboolean JNICALL Java_io_pdal_Pipeline_validate
-  (JNIEnv *env, jobject obj)
-{
-    PipelineExecutor *p = getHandle<PipelineExecutor>(env, obj);
-    bool result;
-    try
-    {
-        result = p->validate();
-    }
-    catch(const pdal_error& pe)
-    {
-        std::cerr << "Runtime error: " << pe.what() << std::endl;
-        result = false;
-    }
-
-    return result;
-}
-
 JNIEXPORT jint JNICALL Java_io_pdal_Pipeline_getLogLevelInt
   (JNIEnv *env, jobject obj)
 {

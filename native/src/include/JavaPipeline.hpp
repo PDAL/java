@@ -62,7 +62,6 @@ public:
     PipelineExecutor(std::string const& json, int level);
     virtual ~PipelineExecutor() = default;
 
-    bool validate();
     point_count_t execute();
     point_count_t executeStream(point_count_t streamLimit);
 
