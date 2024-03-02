@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.6.2] - 2024-03-02
+## Changed
+- Remove pipeline.validate() method [#86](https://github.com/pdal/java/pull/86) (@pomadchin)
+
 ## [2.6.1] - 2024-01-27
 ## Changed
 - Improve java_error messages [#80](https://github.com/pdal/java/pull/80) (@pomadchin)
@@ -149,7 +153,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Moved from the PDAL repo and established own lifecycle.
 
-[Unreleased]: https://github.com/PDAL/java/compare/v2.6.1...HEAD
+[Unreleased]: https://github.com/PDAL/java/compare/v2.6.2...HEAD
+[2.6.2]: https://github.com/PDAL/java/compare/v2.6.1...v2.6.2
 [2.6.1]: https://github.com/PDAL/java/compare/v2.6.0...v2.6.1
 [2.6.0]: https://github.com/PDAL/java/compare/v2.5.1...v2.6.0
 [2.5.1]: https://github.com/PDAL/java/compare/v2.5.0...v2.5.1
