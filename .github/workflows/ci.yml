@@ -6,6 +6,8 @@ on:
   push:
     branches: ['main']
     tags: [v*]
+  workflow_dispatch:
+
   # release:
     # types: [published]
 
@@ -13,7 +15,8 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        # Specifying `macos-14` is the way to get aarch64
+        os: [ubuntu-latest, macos-12, macos-14]
         java: [8]
         distribution: [temurin]
         pdal: [2.6.3]
@@ -71,7 +74,7 @@ jobs:
         if: ${{ startsWith(matrix.os, 'macos') }}
         with:
           name: macos
-          path: native/target/native/x86_64-darwin/bin
+          path: native/target/native/${{ runner.arch }}-darwin/bin
 
   publish:
     strategy:
@@ -132,7 +135,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: macos
-          path: native/target/native/x86_64-darwin/bin
+          path: native/target/native/${{ runner.arch }}-darwin/bin
 
       - name: Release
         run: sbt ci-release
