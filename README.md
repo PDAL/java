@@ -19,7 +19,7 @@ It is released independently from PDAL itself as of PDAL 1.7.
 
 ## Usage 
 You can use `pdal-native` dep published into maven central in case you don't have installed JNI bindings and to avoid steps described below.
-Dependency contains bindings for `x86_64-darwin` and `x86_64-linux`, other versions are not supported yet.
+Dependency contains bindings for `x86_64-darwin`, `arm64-darwin`, and `x86_64-linux`, other versions are not supported yet.
 
 ### Versioning scheme
 
@@ -240,9 +240,6 @@ sbt
 # Java side development without binaries build
 PDAL_DEPEND_ON_NATIVE=false sbt -Djava.library.path=<path>
 ```
-#### Mac-OS ARM 
-Natives for arm64 are still not pre-built. If you need to get them, follow the guide above for a self build and finally go to `../pdal-java/native/target/`, here you will find the built `pdal-native.jar`. If you want to use it in a Java project, for example, you can go to `./m2/repository/io/pdal/pdal-native/<your-version>/` and replace the one taken from Maven with the one you have just built.
-
 ## Possible issues and solutions
 
 #### - In case of not installed as global PDAL change [this](./java/native/src/CMakeLists.txt#L25) line to:

@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Added
+- Added Apple Silicon (ARM 64) to native build [#89](https://github.com/PDAL/java/pull/89) (@metasim)
+
 ## [2.6.2] - 2024-03-02
 ## Changed
 - Remove pipeline.validate() method [#86](https://github.com/pdal/java/pull/86) (@pomadchin)
