@@ -152,7 +152,6 @@ String json =
 
 var pipeline = new Pipeline(json, LogLevel.Error());
 
-pipeline.initialize(); // initialize the pipeline
 pipeline.execute(); // execute the pipeline
 
 var metadata = pipeline.getMetadata(); // retrieve metadata
