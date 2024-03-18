@@ -33,7 +33,7 @@ class Pipeline private (val json: String, val logLevel: Int) extends Native {
     this(json, logLevel.id); initialize()
   }
 
-  @native def initialize(): Unit
+  @native private def initialize(): Unit
   @native def execute(): Unit
   @native def getPointViews(): PointViewIterator
   @native def close(): Unit
