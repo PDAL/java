@@ -3,7 +3,7 @@
 [![CI](https://github.com/PDAL/java/workflows/CI/badge.svg)](https://github.com/PDAL/java/actions) [![Join the chat at https://gitter.im/PDAL/PDAL](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PDAL/PDAL?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Maven Central](https://img.shields.io/maven-central/v/io.pdal/pdal_2.13)](https://search.maven.org/search?q=g:io.pdal) [![Snapshots](https://img.shields.io/nexus/s/https/oss.sonatype.org/io.pdal/pdal_2.13)](https://oss.sonatype.org/content/repositories/snapshots/io/pdal/)
 
 
-Java bindings to use PDAL on JVM (supports PDAL >= 2.0). Mac users can experience some issues with bindings that were build against a different PDAL version, so try to use a consistent PDAL version. 
+Java bindings to use PDAL on JVM (supports PDAL >= 2.0). macOS users can experience some issues with bindings that were build against a different PDAL version, so try to use a consistent PDAL version. 
 
 It is released independently from PDAL itself as of PDAL 1.7.
 
@@ -45,7 +45,7 @@ libraryDependencies ++= Seq(
 If you would like to use your own bindings, it is necessary to set `java.library.path`:
 
 ```scala
-// Mac OS X example with manual JNI installation
+// macOS X example with manual JNI installation
 // cp -f native/target/resource_managed/main/native/x86_64-darwin/libpdaljni.2.1.dylib /usr/local/lib/libpdaljni.2.1.dylib
 // place built binary into /usr/local/lib, and pass java.library.path to your JVM
 javaOptions += "-Djava.library.path=/usr/local/lib"
@@ -224,9 +224,8 @@ Development purposes (including binaries) compilation:
 3. Build native libs `sbt native/nativeCompile` (optionally, binaries would be built during tests run) or `sbt native/publishLocal` for the built jar only
 4. Run `sbt core/test` to run PDAL tests
 
-
 Only Java development purposes compilation:
-1. Provide `$LD_LIBRARY_PATH` or `$DYLD_LIBRARY_PATH`
+1. Provide `$LD_LIBRARY_PATH` or `$DYLD_FALLBACK_LIBRARY_PATH`
 2. If you don't want to provide global variable you can pass `-Djava.library.path=<path>` into sbt:
 `./sbt -Djava.library.path=<path>`
 3. Set `PDAL_DEPEND_ON_NATIVE=false` (to disable `native` project build)
@@ -259,7 +258,7 @@ the quick workaround would be to replace [this](./java/native/src/CMakeLists.txt
 set(CMAKE_CXX_FLAGS "-L<path to dynamic libs> -std=c++11")
 ```
 
-#### - On mac os could be difficult to install PDAL sometimes (near new releases). You have three options
+#### - On macOS could be difficult to install PDAL sometimes (near new releases). You have three options
 - ##### Install PDAL with conda 
   Here the [PDAL conda guide](https://pdal.io/en/2.6.0/workshop/conda.html)
 
@@ -268,6 +267,16 @@ set(CMAKE_CXX_FLAGS "-L<path to dynamic libs> -std=c++11")
 
 - ##### Build PDAL from sources 
   Follow the [official guide](https://pdal.io/en/latest/development/compilation/index.html#compilation)
+
+#### - When using the Maven Central JARs on macOS, I get `Library not loaded: @rpath/libpdalcpp.16.dylib` error
+
+If you are sure PDAL is correctly installed, you can run `pdal-config --libs` and take the path after the `-L` argument
+and assign it to the `DYLD_FALLBACK_LIBRARY_PATH`:
+
+    ❯ pdal-config --libs
+    -L/opt/homebrew/Cellar/pdal/2.6.3/lib -lpdalcpp
+    ❯ export DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/Cellar/pdal/2.6.3/lib
+    ❯ java -jar my-pdal-proj.jar
 
 ## How To Release
 All the instructions related to the local / maven release process are documented in the [HOWTORELEASE.txt](./HOWTORELEASE.txt) file.

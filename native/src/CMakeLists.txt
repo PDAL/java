@@ -19,6 +19,7 @@ if (APPLE)
   SET(CMAKE_SKIP_BUILD_RPATH TRUE)
   SET(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
   SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+  set(CMAKE_INSTALL_RPATH "@rpath:/usr/local/lib:/opt/homebrew/lib:/opt/local/lib")
 endif ()
 
 if (NOT PDAL_BUILD)

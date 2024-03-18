@@ -69,7 +69,8 @@ jobs:
         if: steps.conda-cache.outputs.cache-hit != 'true'
         run: conda install pdal=${{ matrix.pdal }}
 
-      - name: Set LD_LIBRARY_PATH 
+      - name: Set LD_LIBRARY_PATH
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         run: echo "LD_LIBRARY_PATH=$CONDA/envs/pdal-java/lib:/usr/local/lib:$LD_LIBRARY_PATH" >> "$GITHUB_ENV"
 
       - name: Check formatting
@@ -137,7 +138,8 @@ jobs:
         if: steps.conda-cache.outputs.cache-hit != 'true'
         run: conda install pdal=${{ matrix.pdal }}
 
-      - name: Set LD_LIBRARY_PATH 
+      - name: Set LD_LIBRARY_PATH
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         run: echo "LD_LIBRARY_PATH=$CONDA/envs/pdal-java/lib:/usr/local/lib:$LD_LIBRARY_PATH" >> "$GITHUB_ENV"
 
       - uses: actions/download-artifact@v4
