@@ -29,9 +29,11 @@ import com.github.sbt.jni.syntax.NativeLoader
 class Pipeline private (val json: String, val logLevel: Int) extends Native {
   Pipeline // reference companion object so nativeLoader loads the JNI native libraries
 
-  def this(json: String, logLevel: LogLevel.Value = LogLevel.Error) = this(json, logLevel.id)
+  def this(json: String, logLevel: LogLevel.Value = LogLevel.Error) = {
+    this(json, logLevel.id); initialize()
+  }
 
-  @native def initialize(): Unit
+  @native private def initialize(): Unit
   @native def execute(): Unit
   @native def getPointViews(): PointViewIterator
   @native def close(): Unit
@@ -46,7 +48,6 @@ class Pipeline private (val json: String, val logLevel: Int) extends Native {
 }
 
 object Pipeline extends NativeLoader("pdaljni.2.6") {
-  def apply(json: String, logLevel: LogLevel.Value = LogLevel.Error): Pipeline = {
-    val p = new Pipeline(json, logLevel); p.initialize(); p
-  }
+  def apply(json: String, logLevel: LogLevel.Value = LogLevel.Error): Pipeline =
+    new Pipeline(json, logLevel)
 }
