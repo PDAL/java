@@ -6,8 +6,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.6.3] - 2024-03-18
+
 ## Added
-- Added Apple Silicon (ARM 64) to native build [#89](https://github.com/PDAL/java/pull/89) (@metasim)
+- Adding MacOS M1 support. [#89](https://github.com/pdal/java/pull/89) (@metasim)
+
+## Changed
+- Call initialize in the Pipeline public constructor [#94](https://github.com/pdal/java/pull/94) (@pomadchin)
+- Added extra rpath entries to common macOS library install locations. [#95](https://github.com/pdal/java/pull/95) (@metasim)
+
+## Fixed
+- CMake list delimiter should be `;` [#96](https://github.com/pdal/java/pull/96) (@metasim)
+
 
 ## [2.6.2] - 2024-03-02
 ## Changed
@@ -156,7 +166,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Moved from the PDAL repo and established own lifecycle.
 
-[Unreleased]: https://github.com/PDAL/java/compare/v2.6.2...HEAD
+[Unreleased]: https://github.com/PDAL/java/compare/v2.6.3...HEAD
+[2.6.3]: https://github.com/PDAL/java/compare/v2.6.2...v2.6.3
 [2.6.2]: https://github.com/PDAL/java/compare/v2.6.1...v2.6.2
 [2.6.1]: https://github.com/PDAL/java/compare/v2.6.0...v2.6.1
 [2.6.0]: https://github.com/PDAL/java/compare/v2.5.1...v2.6.0
