@@ -150,7 +150,7 @@ String json =
       }
   """;
 
-var pipeline = new Pipeline(json, LogLevel.Error());
+var pipeline = new Pipeline(json, LogLevel.Debug5()); // initialize and make it really noisy
 
 pipeline.execute(); // execute the pipeline
 
