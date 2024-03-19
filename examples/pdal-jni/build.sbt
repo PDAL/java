@@ -23,7 +23,7 @@ resolvers ++= Resolver.sonatypeOssRepos("releases") ++ Resolver.sonatypeOssRepos
 
 fork := true
 
-val pdalVersion = "2.6.0"
+val pdalVersion = "2.6.3"
 
 libraryDependencies ++= Seq(
   "io.pdal" %% "pdal"        % pdalVersion,
