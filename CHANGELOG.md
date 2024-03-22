@@ -6,8 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [2.6.3] - 2024-03-18
+## [2.7.0] - 2024-03-22
+## Added
+- PDAL 2.7.x [#97](https://github.com/pdal/java/pull/97) (@pomadchin)
 
+## [2.6.3] - 2024-03-18
 ## Added
 - Adding MacOS M1 support. [#89](https://github.com/pdal/java/pull/89) (@metasim)
 
@@ -17,7 +20,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Fixed
 - CMake list delimiter should be `;` [#96](https://github.com/pdal/java/pull/96) (@metasim)
-
 
 ## [2.6.2] - 2024-03-02
 ## Changed
