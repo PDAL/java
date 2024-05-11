@@ -1,6 +1,6 @@
-val scala212 = "2.12.18"
-val scala213 = "2.13.12"
-val scala3   = "3.3.1"
+val scala212 = "2.12.19"
+val scala213 = "2.13.14"
+val scala3   = "3.4.0"
 val scalaVersions = Seq(scala3, scala213, scala212)
 
 name := "pdal-jni"
@@ -23,7 +23,7 @@ resolvers ++= Resolver.sonatypeOssRepos("releases") ++ Resolver.sonatypeOssRepos
 
 fork := true
 
-val pdalVersion = "2.7.0"
+val pdalVersion = "2.7.1"
 
 libraryDependencies ++= Seq(
   "io.pdal" %% "pdal"        % pdalVersion,
