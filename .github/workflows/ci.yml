@@ -24,7 +24,7 @@ jobs:
             arch: arm64
         java: [11]
         distribution: [temurin]
-        pdal: [2.7.1]
+        pdal: [2.8.0]
     runs-on: ${{ matrix.os }}
     defaults:
       run:
@@ -91,7 +91,7 @@ jobs:
         os: [ubuntu-latest]
         java: [11]
         distribution: [temurin]
-        pdal: [2.7.1]
+        pdal: [2.8.0]
     runs-on: ${{ matrix.os }}
     if: github.event_name != 'pull_request'
     needs: [build]
