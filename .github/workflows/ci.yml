@@ -15,16 +15,13 @@ jobs:
   build:
     strategy:
       matrix:
-        # Specifying `macos-14` is the way to get aarch64
-        os: [ubuntu-latest, macos-12, macos-14]
+        os: [ubuntu-latest, macos-latest]
         include:
-          - os: macos-12
-            arch: x86_64
-          - os: macos-14
+          - os: macos-latest
             arch: arm64
         java: [11]
         distribution: [temurin]
-        pdal: [2.7.1]
+        pdal: [2.8.0]
     runs-on: ${{ matrix.os }}
     defaults:
       run:
@@ -41,7 +38,7 @@ jobs:
           java-version: ${{ matrix.java }}
 
       - run: brew install sbt
-        if: ${{ matrix.os == 'macos-14' }}
+        if: ${{ matrix.os == 'macos-latest' }}
 
       - uses: conda-incubator/setup-miniconda@v3
         with:
@@ -67,7 +64,7 @@ jobs:
 
       - name: Install PDAL
         if: steps.conda-cache.outputs.cache-hit != 'true'
-        run: conda install pdal=${{ matrix.pdal }}
+        run: conda install libpdal-core=${{ matrix.pdal }}
 
       - name: Set LD_LIBRARY_PATH
         if: ${{ matrix.os == 'ubuntu-latest' }}
@@ -91,7 +88,7 @@ jobs:
         os: [ubuntu-latest]
         java: [11]
         distribution: [temurin]
-        pdal: [2.7.1]
+        pdal: [2.8.0]
     runs-on: ${{ matrix.os }}
     if: github.event_name != 'pull_request'
     needs: [build]
@@ -136,7 +133,7 @@ jobs:
 
       - name: Install PDAL
         if: steps.conda-cache.outputs.cache-hit != 'true'
-        run: conda install pdal=${{ matrix.pdal }}
+        run: conda install libpdal-core=${{ matrix.pdal }}
 
       - name: Set LD_LIBRARY_PATH
         if: ${{ matrix.os == 'ubuntu-latest' }}
@@ -144,11 +141,7 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: macos-12
-          path: native/target/native/x86_64-darwin/bin
-      - uses: actions/download-artifact@v4
-        with:
-          name: macos-14
+          name: macos-latest
           path: native/target/native/arm64-darwin/bin
 
       - name: Release
