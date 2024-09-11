@@ -38,6 +38,7 @@ jobs:
           java-version: ${{ matrix.java }}
 
       - run: brew install sbt
+        if: ${{ matrix.os == 'macos-latest' }}
 
       - uses: conda-incubator/setup-miniconda@v3
         with:
