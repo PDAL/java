@@ -176,7 +176,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Moved from the PDAL repo and established own lifecycle.
 
-[Unreleased]: https://github.com/PDAL/java/compare/v2.6.3...HEAD
+[Unreleased]: https://github.com/PDAL/java/compare/v2.8.0...HEAD
+[2.8.0]: https://github.com/PDAL/java/compare/v2.7.0...v2.8.0
+[2.7.0]: https://github.com/PDAL/java/compare/v2.6.3...v2.7.0
 [2.6.3]: https://github.com/PDAL/java/compare/v2.6.2...v2.6.3
 [2.6.2]: https://github.com/PDAL/java/compare/v2.6.1...v2.6.2
 [2.6.1]: https://github.com/PDAL/java/compare/v2.6.0...v2.6.1
