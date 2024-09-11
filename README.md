@@ -19,7 +19,7 @@ It is released independently from PDAL itself as of PDAL 1.7.
 
 ## Usage 
 You can use `pdal-native` dep published into maven central in case you don't have installed JNI bindings and to avoid steps described below.
-Dependency contains bindings for `x86_64-darwin`, `arm64-darwin`, and `x86_64-linux`, other versions are not supported yet.
+Dependency contains bindings for `arm64-darwin`, and `x86_64-linux`, other versions are not supported yet. We dropped `x86_64-darwin` as of the PDAL Java `2.8.0` release.
 
 ### Versioning scheme
 
@@ -46,7 +46,7 @@ If you would like to use your own bindings, it is necessary to set `java.library
 
 ```scala
 // macOS X example with manual JNI installation
-// cp -f native/target/resource_managed/main/native/x86_64-darwin/libpdaljni.2.1.dylib /usr/local/lib/libpdaljni.2.1.dylib
+// cp -f native/target/resource_managed/main/native/arm64-darwin/libpdaljni.2.8.dylib /usr/local/lib/libpdaljni.2.8.dylib
 // place built binary into /usr/local/lib, and pass java.library.path to your JVM
 javaOptions += "-Djava.library.path=/usr/local/lib"
 ```

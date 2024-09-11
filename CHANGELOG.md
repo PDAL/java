@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.8.0] - 2024-09-10
+## Added
+- PDAL 2.8.x [#105](https://github.com/pdal/java/pull/105) (@pomadchin)
+
+## Changed
+- PDAL dependencies update [#107](https://github.com/pdal/java/pull/107) (@pomadchin)
+- Bump PDAL JNI lib version up to 2.8 [#106](https://github.com/pdal/java/pull/106) (@pomadchin)
+
 ## [2.7.0] - 2024-03-22
 ## Added
 - PDAL 2.7.x [#97](https://github.com/pdal/java/pull/97) (@pomadchin)
