@@ -21,7 +21,7 @@ jobs:
             arch: arm64
         java: [11]
         distribution: [temurin]
-        pdal: [2.8.0]
+        pdal: [2.8.1]
     runs-on: ${{ matrix.os }}
     defaults:
       run:
@@ -37,8 +37,8 @@ jobs:
           distribution: ${{ matrix.distribution }}
           java-version: ${{ matrix.java }}
 
-      - run: brew install sbt
-        if: ${{ matrix.os == 'macos-latest' }}
+      - name: Install sbt
+        uses: sbt/setup-sbt@v1
 
       - uses: conda-incubator/setup-miniconda@v3
         with:
@@ -88,7 +88,7 @@ jobs:
         os: [ubuntu-latest]
         java: [11]
         distribution: [temurin]
-        pdal: [2.8.0]
+        pdal: [2.8.1]
     runs-on: ${{ matrix.os }}
     if: github.event_name != 'pull_request'
     needs: [build]
@@ -108,6 +108,9 @@ jobs:
         with:
           distribution: ${{ matrix.distribution }}
           java-version: ${{ matrix.java }}
+
+      - name: Install sbt
+        uses: sbt/setup-sbt@v1
 
       - uses: conda-incubator/setup-miniconda@v3
         with:
