@@ -19,7 +19,7 @@ scalacOptions ++= Seq(
   "-feature"
 )
 
-resolvers ++= Resolver.sonatypeOssRepos("releases") ++ Resolver.sonatypeOssRepos("snapshots")
+resolvers += Resolver.sonatypeCentralSnapshots
 
 fork := true
 

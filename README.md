@@ -1,6 +1,6 @@
 # PDAL Java Bindings
 
-[![CI](https://github.com/PDAL/java/workflows/CI/badge.svg)](https://github.com/PDAL/java/actions) [![Join the chat at https://gitter.im/PDAL/PDAL](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PDAL/PDAL?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Maven Central](https://img.shields.io/maven-central/v/io.pdal/pdal_2.13)](https://search.maven.org/search?q=g:io.pdal) [![Snapshots Badge](https://img.shields.io/badge/snapshots-available-orange)](https://central.sonatype.com/service/rest/repository/browse/maven-snapshots/io.pdal/) 
+[![CI](https://github.com/PDAL/java/workflows/CI/badge.svg)](https://github.com/PDAL/java/actions) [![Join the chat at https://gitter.im/PDAL/PDAL](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PDAL/PDAL?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Maven Central](https://img.shields.io/maven-central/v/io.pdal/pdal_2.13)](https://search.maven.org/search?q=g:io.pdal) [![Snapshots Badge](https://img.shields.io/badge/snapshots-available-orange)](https://central.sonatype.com/service/rest/repository/browse/maven-snapshots/io/pdal/) 
 
 
 Java bindings to use PDAL on JVM (supports PDAL >= 2.0). macOS users can experience some issues with bindings that were build against a different PDAL version, so try to use a consistent PDAL version. 
@@ -31,10 +31,8 @@ Given a `{major}.{minor}.{patch}` version:
 
 ### Using PDAL JNI With SBT
 ```scala
-// pdal is published to maven central, but you can use the following repos in addition
-resolvers ++=
-  Resolver.sonatypeOssRepos("releases") ++
-  Resolver.sonatypeOssRepos("snapshots") // for snaphots
+// pdal is published to maven central, the snapshot repository can be added in addition
+resolvers += Resolver.sonatypeCentralSnapshots // for snaphots
 // `<latest version>` refers to the version indicated by the badge above
 libraryDependencies ++= Seq(
   "io.pdal" %% "pdal" % "<latest version>", // core library
