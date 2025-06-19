@@ -15,7 +15,8 @@ Release Process
 
 1) Publish JNI Bindings
     What you need:
-        - an account on sonatype (https://issues.sonatype.org/secure/Signup!default.jspa)
+        - (new) an account on central (https://central.sonatype.com/publishing/deployments)
+        - (old) an account on sonatype (https://issues.sonatype.org/secure/Signup!default.jspa)
         - ~/.sbt/1.0/sonatype.sbt file with the following content:
             credentials += Credentials("Sonatype Nexus Repository Manager",
                            "oss.sonatype.org",
