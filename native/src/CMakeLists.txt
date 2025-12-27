@@ -22,8 +22,18 @@ if (APPLE)
   set(CMAKE_INSTALL_RPATH "@rpath;/usr/local/lib;/opt/homebrew/lib;/opt/local/lib")
 endif ()
 
+if(MSVC)
+    add_definitions(-DWIN32_LEAN_AND_MEAN)
+    add_definitions(-D_WINSOCK_DEPRECATED_NO_WARNINGS)
+    add_compile_options(/EHsc /utf-8)
+    add_compile_definitions(_DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR=1)
+    add_compile_options(/wd4996 /wd4530)
+else()
+
 if (NOT PDAL_BUILD)
     set(CMAKE_CXX_FLAGS "-std=c++14")
+endif()
+
 endif()
 
 # Setup JNI

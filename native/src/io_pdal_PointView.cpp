@@ -307,10 +307,10 @@ JNIEXPORT jdoubleArray JNICALL Java_io_pdal_PointView_rasterizeTriangularMesh___
 
         double determinant = (v2y - v3y) * (v1x - v3x) + (v3x - v2x) * (v1y - v3y);
 
-        double ymin = std::min(v1y, std::min(v2y, v3y));
-        double ymax = std::max(v1y, std::max(v2y, v3y));
+        double ymin = (std::min)(v1y, (std::min)(v2y, v3y));
+        double ymax = (std::max)(v1y, (std::max)(v2y, v3y));
 
-        double scanrow0 = std::max(std::ceil((ymin - eymin) / h - 0.5), 0.0);
+        double scanrow0 = (std::max)(std::ceil((ymin - eymin) / h - 0.5), 0.0);
         double scany = eymin + scanrow0 * h + h / 2.0;
 
         while (scany <= eymax && scany <= ymax) 
@@ -370,7 +370,7 @@ JNIEXPORT jdoubleArray JNICALL Java_io_pdal_PointView_rasterizeTriangularMesh___
                 }
             }
 
-            double scancol0 = std::max(std::ceil((xmin - exmin) / w - 0.5), 0.0);
+            double scancol0 = (std::max)(std::ceil((xmin - exmin) / w - 0.5), 0.0);
             double scanx = exmin + scancol0 * w + w / 2;
 
             while (scanx <= exmax && scanx <= xmax) 
