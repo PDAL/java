@@ -45,6 +45,11 @@
 #undef tolower
 #undef isspace
 
+#ifndef PDAL_DLL
+#   define PDAL_DLL     PDAL_EXPORT
+#endif // !PDAL_DLL
+
+
 using pdal::point_count_t;
 
 namespace libpdaljava
