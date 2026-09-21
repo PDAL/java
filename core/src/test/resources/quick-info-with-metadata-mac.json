@@ -19,6 +19,7 @@
         "type": "ProjectedCRS",
         "name": "NAD83(HARN) / Oregon LCC (m)",
         "base_crs": {
+          "type": "GeographicCRS",
           "name": "NAD83(HARN)",
           "datum": {
             "type": "GeodeticReferenceFrame",
