@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Added
+
+- PDAL 2.10.x [#117](https://github.com/pdal/java/pull/117) (@pomadchin)
+
 ## [2.9.0] - 2026-09-21
 ## Added
 
