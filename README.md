@@ -43,7 +43,7 @@ If you would like to use your own bindings, it is necessary to set `java.library
 
 ```scala
 // macOS X example with manual JNI installation
-// cp -f native/target/resource_managed/main/native/arm64-darwin/libpdaljni.2.8.dylib /usr/local/lib/libpdaljni.2.8.dylib
+// cp -f native/target/resource_managed/main/native/arm64-darwin/libpdaljni.2.9.dylib /usr/local/lib/libpdaljni.2.9.dylib
 // place built binary into /usr/local/lib, and pass java.library.path to your JVM
 javaOptions += "-Djava.library.path=/usr/local/lib"
 ```
