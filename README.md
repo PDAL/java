@@ -24,7 +24,7 @@ Dependency contains bindings for `arm64-darwin`, and `x86_64-linux`, other versi
 
 Given a `{major}.{minor}.{patch}` version:
 * `{major}.{minor}` - matches the **PDAL** version it is published for
-  * e.g. **pdal-java** of version `2.9.0` is suitable for all **PDAL** versions `2.9.x` (`2.9.0`, ..., `2.9.3`, etc) major = `2`, minor = `9`
+  * e.g. **pdal-java** of version `2.10.0` is suitable for all **PDAL** versions `2.10.x` (`2.10.0`, ..., `2.10.2`, etc) major = `2`, minor = `10`
 * `{patch}` - this portion of the version corresponds to updates within **pdal-java** and should remain compatible with **PDAL library** `{major}.{minor}` versions
   * This implies that there may be multiple **pdal-java** releases for the same **PDAL library** version. All releases are compatible with the matching **PDAL library** `{major}.{minor}` version. Thus, higher patch versions are to be preferred.
 
@@ -43,7 +43,7 @@ If you would like to use your own bindings, it is necessary to set `java.library
 
 ```scala
 // macOS X example with manual JNI installation
-// cp -f native/target/resource_managed/main/native/arm64-darwin/libpdaljni.2.9.dylib /usr/local/lib/libpdaljni.2.9.dylib
+// cp -f native/target/resource_managed/main/native/arm64-darwin/libpdaljni.2.10.dylib /usr/local/lib/libpdaljni.2.10.dylib
 // place built binary into /usr/local/lib, and pass java.library.path to your JVM
 javaOptions += "-Djava.library.path=/usr/local/lib"
 ```

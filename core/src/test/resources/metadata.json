@@ -74,7 +74,7 @@
             }
           },
           "conversion": {
-            "name": "unnamed",
+            "name": "unknown",
             "method": {
               "name": "Lambert Conic Conformal (2SP)",
               "id": {
@@ -144,13 +144,13 @@
             "axis": [
               {
                 "name": "Easting",
-                "abbreviation": "",
+                "abbreviation": "E",
                 "direction": "east",
                 "unit": "metre"
               },
               {
                 "name": "Northing",
-                "abbreviation": "",
+                "abbreviation": "N",
                 "direction": "north",
                 "unit": "metre"
               }
