@@ -23,7 +23,7 @@ resolvers += Resolver.sonatypeCentralSnapshots
 
 fork := true
 
-val pdalVersion = "2.8.0"
+val pdalVersion = "2.9.0"
 
 libraryDependencies ++= Seq(
   "io.pdal" %% "pdal"        % pdalVersion,

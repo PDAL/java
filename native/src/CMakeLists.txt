@@ -9,7 +9,7 @@ set(MAKE_COLOR_MAKEFILE ON)
 
 project (pdaljni)
 set(PROJECT_VERSION_MAJOR 2)
-set(PROJECT_VERSION_MINOR 8)
+set(PROJECT_VERSION_MINOR 9)
 set(PROJECT_VERSION_PATCH 0)
 
 set(PDAL_LIB_NAME pdalcpp)
@@ -28,10 +28,16 @@ if(MSVC)
     add_compile_options(/EHsc /utf-8)
     add_compile_definitions(_DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR=1)
     add_compile_options(/wd4996 /wd4530)
+
+if (NOT PDAL_BUILD)
+    # pdal/FileSpec.hpp uses std::filesystem, MSVC still defaults to C++14
+    add_compile_options(/std:c++17)
+endif()
+
 else()
 
 if (NOT PDAL_BUILD)
-    set(CMAKE_CXX_FLAGS "-std=c++14")
+    set(CMAKE_CXX_FLAGS "-std=c++17")
 endif()
 
 endif()

@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+## Added
+- PDAL 2.9.x [#116](https://github.com/pdal/java/pull/116) (@pomadchin)
+
+## Changed
+- Bump PDAL JNI lib version up to 2.9 [#116](https://github.com/pdal/java/pull/116) (@pomadchin)
+- Build the native bindings with C++17, required by `pdal/FileSpec.hpp` [#116](https://github.com/pdal/java/pull/116) (@pomadchin)
+- Update GitHub Actions used by CI [#116](https://github.com/pdal/java/pull/116) (@pomadchin)
 
 ## [2.8.0] - 2024-09-10
 ## Added
