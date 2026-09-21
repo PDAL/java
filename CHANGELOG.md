@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Fixed
 
-- fix: windows build [#115](https://github.com/pdal/java/pull/115) (@hxbb00))
+- fix: windows build [#115](https://github.com/pdal/java/pull/115) (@hxbb00)
 
 ## [2.8.0] - 2024-09-10
 ## Added
