@@ -8,12 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.9.0] - 2026-09-21
 ## Added
-- PDAL 2.9.x [#116](https://github.com/pdal/java/pull/116) (@pomadchin)
+
+- PDAL 2.9.x  [#116](https://github.com/pdal/java/pull/116) (@pomadchin)
 
 ## Changed
-- Bump PDAL JNI lib version up to 2.9 [#116](https://github.com/pdal/java/pull/116) (@pomadchin)
-- Build the native bindings with C++17, required by `pdal/FileSpec.hpp` [#116](https://github.com/pdal/java/pull/116) (@pomadchin)
-- Update GitHub Actions used by CI [#116](https://github.com/pdal/java/pull/116) (@pomadchin)
+
+- Update SBT and plugins, prepare for the central migration [#113](https://github.com/pdal/java/pull/113) (@pomadchin)
+- Update SBT & Scala versions [#109](https://github.com/pdal/java/pull/109) (@pomadchin)
+
+## Fixed
+
+- fix: windows build [#115](https://github.com/pdal/java/pull/115) (@hxbb00))
 
 ## [2.8.0] - 2024-09-10
 ## Added
