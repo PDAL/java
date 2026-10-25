@@ -1,17 +1,17 @@
 name := "pdal-jni"
 
-val scala212 = "2.12.20"
-val scala213 = "2.13.16"
-val scala3 = "3.7.1"
-val scalaVersions = Seq(scala3, scala213, scala212)
+val scala212 = "2.12.21"
+val scala213 = "2.13.18"
+val scala3 = "3.10.0"
+val scalaVersions = Seq(scala213, scala3, scala212)
 
 lazy val commonSettings = Seq(
   scalaVersion := scalaVersions.head,
   crossScalaVersions := scalaVersions,
   organization := "io.pdal",
   description := "PDAL JNI bindings",
-  licenses := Seq("BSD" -> url("https://github.com/PDAL/PDAL/blob/master/LICENSE.txt")),
-  homepage := Some(url("https://www.pdal.io")),
+  licenses := Seq("BSD" -> uri("https://github.com/PDAL/PDAL/blob/master/LICENSE.txt")),
+  homepage := Some(uri("https://www.pdal.io")),
   versionScheme := Some("semver-spec"),
   scalacOptions ++= Seq(
     "-deprecation",
@@ -31,13 +31,13 @@ lazy val commonSettings = Seq(
       "pomadchin",
       "Grigory Pomadchin",
       "@pomadchin",
-      url("https://github.com/pomadchin")
+      uri("https://github.com/pomadchin")
     )
   )
 )
 
 lazy val root = (project in file("."))
-  .settings(commonSettings: _*)
+  .settings(commonSettings*)
   .settings(
     scalaVersion := scalaVersions.head,
     crossScalaVersions := Nil,
@@ -47,7 +47,7 @@ lazy val root = (project in file("."))
   .aggregate(`core-scala`, core, native)
 
 lazy val `core-scala` = project
-  .settings(commonSettings: _*)
+  .settings(commonSettings*)
   .settings(Dependencies.macroSettings)
   .settings(Dependencies.licenseSettings)
   .settings(scalaVersion := scala213, crossScalaVersions := Seq(scala213, scala212))
@@ -64,10 +64,10 @@ lazy val `core-scala` = project
     )
   )
   .dependsOn(core)
-  .dependsOn(Environment.dependOnNative(native % Runtime): _*)
+  .dependsOn(Environment.dependOnNative(native % Runtime)*)
 
 lazy val core = project
-  .settings(commonSettings: _*)
+  .settings(commonSettings*)
   .settings(name := "pdal")
   .settings(javah / target := (native / nativeCompile / sourceDirectory).value / "include")
   .settings(sbtJniCoreScope := Compile)
@@ -77,18 +77,20 @@ lazy val core = project
       Dependencies.circe("parser") % Test
     )
   )
-  .dependsOn(Environment.dependOnNative(native % Runtime): _*)
+  .dependsOn(Environment.dependOnNative(native % Runtime)*)
 
 lazy val native = project
-  .settings(commonSettings: _*)
+  .settings(commonSettings*)
   .settings(crossPaths := false)
   .settings(name := "pdal-native")
   .settings(nativeCompile / sourceDirectory := sourceDirectory.value)
+  // keep native binaries at native/target/native/<platform> (sbt 2 moved target under target/out)
+  .settings(nativeCompile / target := baseDirectory.value / "target" / "native" / nativePlatform.value)
   .settings(
     Compile / unmanagedPlatformDependentNativeDirectories := Seq(
-      "x86_64-linux" -> target.value / "native/x86_64-linux/bin/",
-      "x86_64-darwin" -> target.value / "native/x86_64-darwin/bin/",
-      "arm64-darwin" -> target.value / "native/arm64-darwin/bin/"
+      "x86_64-linux" -> baseDirectory.value / "target/native/x86_64-linux/bin/",
+      "x86_64-darwin" -> baseDirectory.value / "target/native/x86_64-darwin/bin/",
+      "arm64-darwin" -> baseDirectory.value / "target/native/arm64-darwin/bin/"
     )
   )
   .settings(artifactName := { (sv: ScalaVersion, module: ModuleID, artifact: Artifact) =>
