@@ -2,7 +2,7 @@ name := "pdal-jni"
 
 val scala212 = "2.12.21"
 val scala213 = "2.13.18"
-val scala3 = "3.10.0"
+val scala3 = "3.9.0"
 val scalaVersions = Seq(scala213, scala3, scala212)
 
 lazy val commonSettings = Seq(
