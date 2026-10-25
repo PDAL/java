@@ -1,13 +1,13 @@
 import sbt._
 import sbt.Keys._
 
-import de.heikoseeberger.sbtheader.{CommentStyle, FileType}
-import de.heikoseeberger.sbtheader.HeaderPlugin.autoImport.{headerLicense, headerMappings, HeaderLicense}
+import sbtheader.{CommentStyle, FileType}
+import sbtheader.HeaderPlugin.autoImport.{headerLicense, headerMappings, HeaderLicense}
 
 object Version {
   val jts = "1.20.0"
-  val scalaTest = "3.2.19"
-  val circe = "0.14.14"
+  val scalaTest = "3.2.20"
+  val circe = "0.14.17"
   val circeExtras = "0.14.4"
 }
 
@@ -18,7 +18,7 @@ object Dependencies {
       case _                              => false
     }
 
-  lazy val macroSettings: Seq[Setting[_]] = Seq(
+  lazy val macroSettings: Seq[Setting[?]] = Seq(
     libraryDependencies ++= (
       if (priorTo213(scalaVersion.value))
         Seq(compilerPlugin(("org.scalamacros" %% "paradise" % "2.1.1").cross(CrossVersion.full)))
@@ -27,7 +27,7 @@ object Dependencies {
     scalacOptions ++= (if (priorTo213(scalaVersion.value)) Nil else Seq("-Ymacro-annotations"))
   )
 
-  lazy val licenseSettings: Seq[Setting[_]] = Seq(
+  lazy val licenseSettings: Seq[Setting[?]] = Seq(
     headerLicense := Some(HeaderLicense.ALv2(java.time.Year.now.getValue.toString, "Azavea")),
     headerMappings := Map(
       FileType.scala -> CommentStyle.cStyleBlockComment.copy(
